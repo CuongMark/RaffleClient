@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright © 2017 Magestore. All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="raffle_new_ticket" label="Send notify email when ticket created to player" file="raffle/new_ticket.html" type="html" module="Angel_RaffleClient" area="frontend"/>
+    <template id="raffle_winning_to_admin" label="Send notify email to admin" file="raffle/winning_to_admin.html" type="html" module="Angel_RaffleClient" area="frontend"/>
+    <template id="raffle_winning_to_winner" label="Send happy email to winner" file="raffle/winning_to_winner.html" type="html" module="Angel_RaffleClient" area="frontend"/>
+    <template id="raffle_losing_to_player" label="Send sorry email to unlucky guys." file="raffle/losing.html" type="html" module="Angel_RaffleClient" area="frontend"/>
+</config>

@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+	<acl>
+		<resources>
+			<resource id="Magento_Backend::admin">
+				<resource id="Magento_Backend::stores">
+					<resource id="Magento_Backend::stores_settings">
+						<resource id="Magento_Config::config">
+							<resource id="Angel_RaffleClient::config_angel_raffleclient" title="raffle_client"/>
+						</resource>
+					</resource>
+				</resource>
+				<resource id="Angel_RaffleClient::raffle" sortOrder="10" title="raffle">
+					<resource id="Angel_RaffleClient::index_index" sortOrder="10" title="index index"/>
+				</resource>
+				<resource id="Angel_RaffleClient::Prize" sortOrder="10" title="Prize">
+					<resource id="Angel_RaffleClient::Prize_save" sortOrder="10" title="Save Prize"/>
+					<resource id="Angel_RaffleClient::Prize_delete" sortOrder="20" title="Delete Prize"/>
+					<resource id="Angel_RaffleClient::Prize_update" sortOrder="30" title="Update Prize"/>
+					<resource id="Angel_RaffleClient::Prize_view" sortOrder="40" title="View Prize"/>
+				</resource>
+				<resource id="Angel_RaffleClient::Ticket" sortOrder="10" title="Ticket">
+					<resource id="Angel_RaffleClient::Ticket_save" sortOrder="10" title="Save Ticket"/>
+					<resource id="Angel_RaffleClient::Ticket_delete" sortOrder="20" title="Delete Ticket"/>
+					<resource id="Angel_RaffleClient::Ticket_update" sortOrder="30" title="Update Ticket"/>
+					<resource id="Angel_RaffleClient::Ticket_view" sortOrder="40" title="View Ticket"/>
+				</resource>
+				<resource id="Angel_RaffleClient::RandomNumber" sortOrder="10" title="RandomNumber">
+					<resource id="Angel_RaffleClient::RandomNumber_save" sortOrder="10" title="Save RandomNumber"/>
+					<resource id="Angel_RaffleClient::RandomNumber_delete" sortOrder="20" title="Delete RandomNumber"/>
+					<resource id="Angel_RaffleClient::RandomNumber_update" sortOrder="30" title="Update RandomNumber"/>
+					<resource id="Angel_RaffleClient::RandomNumber_view" sortOrder="40" title="View RandomNumber"/>
+				</resource>
+				<resource id="Angel_RaffleClient::Transaction" sortOrder="10" title="Transaction">
+					<resource id="Angel_RaffleClient::Transaction_save" sortOrder="10" title="Save Transaction"/>
+					<resource id="Angel_RaffleClient::Transaction_delete" sortOrder="20" title="Delete Transaction"/>
+					<resource id="Angel_RaffleClient::Transaction_update" sortOrder="30" title="Update Transaction"/>
+					<resource id="Angel_RaffleClient::Transaction_view" sortOrder="40" title="View Transaction"/>
+				</resource>
+			</resource>
+		</resources>
+	</acl>
+</config>

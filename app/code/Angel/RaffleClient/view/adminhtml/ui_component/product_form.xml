@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="raffle">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Raffle</item>
+                <item name="provider" xsi:type="string">product</item>
+                <item name="dataScope" xsi:type="string">data.product</item>
+                <item name="sortOrder" xsi:type="number">2</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="opened" xsi:type="boolean">false</item>
+                <item name="ns" xsi:type="string">product_form</item>
+                <item name="apply_to" xsi:type="string">raffle</item>
+            </item>
+        </argument>
+        <container name="prizes">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">100</item>
+                </item>
+            </argument>
+            <container name="warehouse_stock_list">
+                <dynamicRows name="items">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="dataScope" xsi:type="string">prize</item>
+                            <item name="itemTemplate" xsi:type="string">record</item>
+                            <item name="label" xsi:type="string" translate="true">Prizes</item>
+                            <item name="dndConfig" xsi:type="boolean">false</item>
+                            <item name="template" xsi:type="string">ui/dynamic-rows/templates/default</item>
+                        </item>
+                    </argument>
+                    <container name="record">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="isTemplate" xsi:type="boolean">true</item>
+                                <item name="is_collection" xsi:type="boolean">true</item>
+                                <item name="component" xsi:type="string">Magento_Ui/js/lib/core/collection</item>
+                            </item>
+                        </argument>
+                        <field name="label">
+                            <argument name="data" xsi:type="array">
+                                <item name="config" xsi:type="array">
+                                    <item name="dataType" xsi:type="string">text</item>
+                                    <item name="formElement" xsi:type="string">input</item>
+                                    <item name="validation" xsi:type="array">
+                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                    </item>
+                                    <item name="dataScope" xsi:type="string">label</item>
+                                    <item name="label" xsi:type="string" translate="true">Label</item>
+                                </item>
+                            </argument>
+                        </field>
+                        <field name="price">
+                            <argument name="data" xsi:type="array">
+                                <item name="config" xsi:type="array">
+                                    <item name="dataType" xsi:type="string">decimal</item>
+                                    <item name="formElement" xsi:type="string">input</item>
+                                    <item name="addbefore" xsi:type="string">$</item>
+                                    <item name="validation" xsi:type="array">
+                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                        <item name="validate-number" xsi:type="boolean">true</item>
+                                        <item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+                                        <item name="less-than-equals-to" xsi:type="number">99999999</item>
+                                    </item>
+                                    <item name="dataScope" xsi:type="string">price</item>
+                                    <item name="label" xsi:type="string" translate="true">price</item>
+                                </item>
+                            </argument>
+                        </field>
+                        <field name="type">
+                            <argument name="data" xsi:type="array">
+                                <item name="options" xsi:type="object">Magento\Catalog\Model\Config\Source\Product\Options\Price</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="dataType" xsi:type="string">text</item>
+                                    <item name="formElement" xsi:type="string">select</item>
+                                    <item name="dataScope" xsi:type="string">type</item>
+                                    <item name="label" xsi:type="string" translate="true">Type</item>
+                                </item>
+                            </argument>
+                        </field>
+                        <field name="total">
+                            <argument name="data" xsi:type="array">
+                                <item name="config" xsi:type="array">
+                                    <item name="dataType" xsi:type="string">text</item>
+                                    <item name="formElement" xsi:type="string">input</item>
+                                    <item name="dataScope" xsi:type="string">total</item>
+                                    <item name="label" xsi:type="string" translate="true">Total</item>
+                                    <item name="validation" xsi:type="array">
+                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                        <item name="validate-number" xsi:type="boolean">true</item>
+                                        <item name="validate-digits" xsi:type="boolean">true</item>
+                                        <item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+                                        <item name="less-than-equals-to" xsi:type="number">99999999</item>
+                                    </item>
+                                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                                </item>
+                            </argument>
+                        </field>
+                        <field name="action_delete">
+                            <argument name="data" xsi:type="array">
+                                <item name="config" xsi:type="array">
+                                    <item name="dataType" xsi:type="string">text</item>
+                                    <item name="formElement" xsi:type="string">input</item>
+                                    <item name="component" xsi:type="string">Magestore_InventorySuccess/js/dynamic-rows/action-delete</item>
+                                    <item name="elementTmpl" xsi:type="string">Magestore_InventorySuccess/dynamic-rows/cells/action-delete</item>
+                                    <item name="dataScope" xsi:type="string"/>
+                                    <item name="label" xsi:type="string" translate="true">Remove</item>
+                                </item>
+                            </argument>
+                        </field>
+                    </container>
+                </dynamicRows>
+            </container>
+        </container>
+    </fieldset>
+</form>

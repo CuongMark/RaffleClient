@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<tab id="raffle" sortOrder="999" translate="label">
+			<label>Raffle</label>
+		</tab>
+		<section id="raffle_client" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+			<label>Raffle Client</label>
+			<tab>raffle</tab>
+			<resource>Angel_RaffleClient::config_angel_raffleclient</resource>
+			<group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+				<label>General</label>
+				<field id="enable" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="10" translate="label" type="select">
+					<label>Enable</label>
+					<comment/>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="account" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+					<label>Account</label>
+					<comment/>
+				</field>
+				<field id="password" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+					<label>Password</label>
+					<comment/>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

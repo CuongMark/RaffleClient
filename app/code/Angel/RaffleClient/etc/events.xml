@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+	<event name="catalog_product_save_after">
+		<observer instance="Angel\RaffleClient\Observer\Catalog\ProductSaveAfter" name="angel_raffleclient_observer_catalog_productsaveafter_catalog_product_save_after"/>
+	</event>
+	<event name="sales_order_save_after">
+		<observer instance="Angel\RaffleClient\Observer\Sales\OrderSaveAfter" name="angel_raffleclient_observer_sales_ordersaveafter_sales_order_save_after"/>
+	</event>
+	<event name="sales_invoice_save_after">
+		<observer instance="Angel\RaffleClient\Observer\Sales\InvoiceSaveAfter" name="angel_raffleclient_observer_sales_invoicesaveafter_sales_invoice_save_after"/>
+	</event>
+	<event name="sales_creditmemo_save_after">
+		<observer instance="Angel\RaffleClient\Observer\Sales\CreditmemoSaveAfter" name="angel_raffleclient_observer_sales_creditmemosaveafter_sales_creditmemo_save_after"/>
+	</event>
+	<event name="sales_invoice_item_save_after">
+		<observer instance="Angel\RaffleClient\Observer\Sales\InvoiceItemSaveAfter" name="angel_raffleclient_observer_sales_invoiceitemsaveafter_sales_invoice_item_save_after"/>
+	</event>
+</config>
