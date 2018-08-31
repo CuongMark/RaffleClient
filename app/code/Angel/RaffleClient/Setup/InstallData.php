@@ -35,30 +35,89 @@ class InstallData implements InstallDataInterface
 
         $eavSetup->addAttribute(
             \Magento\Catalog\Model\Product::ENTITY,
-            'raffle_type',
+            'raffle_prefix',
             [
-                'type' => 'int',
+                'type' => 'varchar',
                 'backend' => '',
                 'frontend' => '',
-                'label' => 'Raffle Type',
-                'input' => 'select',
+                'label' => 'Prefix',
+                'input' => 'text',
                 'class' => '',
                 'source' => '',
-                'global' => 1,
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
                 'visible' => true,
-                'required' => true,
-                'user_defined' => true,
+                'required' => false,
+                'user_defined' => false,
                 'default' => null,
                 'searchable' => false,
                 'filterable' => false,
                 'comparable' => false,
                 'visible_on_front' => true,
                 'used_in_product_listing' => true,
-                'unique' => false,
-                'apply_to' => 'raffle',
+                'unique' => true,
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::RAFFLE.','.\Angel\RaffleClient\Model\Raffle::RAFFLE,
                 'system' => 1,
                 'group' => 'Raffle',
-                'option' => array('values' => array("standard","50_50"))
+                'option' => array('values' => array(""))
+            ]
+        );
+
+
+        $eavSetup->addAttribute(
+            \Magento\Catalog\Model\Product::ENTITY,
+            'total_tickets',
+            [
+                'type' => 'varchar',
+                'backend' => '',
+                'frontend' => '',
+                'label' => 'Total Tickets',
+                'input' => 'text',
+                'class' => '',
+                'source' => '',
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                'visible' => true,
+                'required' => true,
+                'user_defined' => false,
+                'default' => null,
+                'searchable' => false,
+                'filterable' => false,
+                'comparable' => true,
+                'visible_on_front' => true,
+                'used_in_product_listing' => false,
+                'unique' => false,
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::RAFFLE,
+                'system' => 1,
+                'group' => 'Raffle',
+                'option' => array('values' => array(""))
+            ]
+        );
+
+        $eavSetup->addAttribute(
+            \Magento\Catalog\Model\Product::ENTITY,
+            'raffle_type',
+            [
+                'type' => 'int',
+                'backend' => '',
+                'frontend' => '',
+                'label' => 'Generate when new ticket created',
+                'input' => 'boolean',
+                'class' => '',
+                'source' => '',
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                'visible' => true,
+                'required' => true,
+                'user_defined' => false,
+                'default' => true,
+                'searchable' => false,
+                'filterable' => true,
+                'comparable' => false,
+                'visible_on_front' => false,
+                'used_in_product_listing' => true,
+                'unique' => false,
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::FIFTY,
+                'system' => 1,
+                'group' => 'Raffle',
+                'option' => array('values' => array(''))
             ]
         );
 
@@ -73,10 +132,10 @@ class InstallData implements InstallDataInterface
                 'input' => 'date',
                 'class' => '',
                 'source' => '',
-                'global' => 1,
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
                 'visible' => true,
                 'required' => false,
-                'user_defined' => true,
+                'user_defined' => false,
                 'default' => null,
                 'searchable' => false,
                 'filterable' => false,
@@ -84,7 +143,7 @@ class InstallData implements InstallDataInterface
                 'visible_on_front' => true,
                 'used_in_product_listing' => true,
                 'unique' => false,
-                'apply_to' => 'raffle',
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::FIFTY,
                 'system' => 1,
                 'group' => 'Raffle',
                 'option' => array('values' => array(""))
@@ -102,10 +161,10 @@ class InstallData implements InstallDataInterface
                 'input' => 'date',
                 'class' => '',
                 'source' => '',
-                'global' => 1,
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
                 'visible' => true,
                 'required' => false,
-                'user_defined' => true,
+                'user_defined' => false,
                 'default' => null,
                 'searchable' => false,
                 'filterable' => false,
@@ -113,7 +172,7 @@ class InstallData implements InstallDataInterface
                 'visible_on_front' => true,
                 'used_in_product_listing' => true,
                 'unique' => false,
-                'apply_to' => 'raffle',
+                'apply_to' => 'fifty',
                 'system' => 1,
                 'group' => 'Raffle',
                 'option' => array('values' => array(""))
@@ -131,10 +190,10 @@ class InstallData implements InstallDataInterface
                 'input' => 'text',
                 'class' => '',
                 'source' => '',
-                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_WEBSITE,
-                'visible' => false,
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                'visible' => true,
                 'required' => true,
-                'user_defined' => true,
+                'user_defined' => false,
                 'default' => null,
                 'searchable' => false,
                 'filterable' => false,
@@ -142,12 +201,10 @@ class InstallData implements InstallDataInterface
                 'visible_on_front' => false,
                 'used_in_product_listing' => false,
                 'unique' => true,
-                'apply_to' => 'raffle',
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::RAFFLE.','.\Angel\RaffleClient\Model\Raffle::RAFFLE,
                 'system' => 1,
                 'group' => 'Raffle',
-                'option' => array('values' => array("")),
-                'is_visible' => 0,
-                'is_visible_in_grid' => 0
+                'option' => array('values' => array(""))
             ]
         );
 

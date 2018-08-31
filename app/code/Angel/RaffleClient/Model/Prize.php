@@ -131,4 +131,42 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
     {
         return $this->setData(self::STATUS, $status);
     }
+
+    /**
+     * Get price_type
+     * @return string
+     */
+    public function getPriceType()
+    {
+        return $this->getData(self::PRICE_TYPE);
+    }
+
+    /**
+     * Set price_type
+     * @param string $priceType
+     * @return \Angel\RaffleClient\Api\Data\PrizeInterface
+     */
+    public function setPriceType($priceType)
+    {
+        return $this->setData(self::PRICE_TYPE, $priceType);
+    }
+
+    /**
+     * Get sort_order
+     * @return string
+     */
+    public function getSortOrder()
+    {
+        return $this->getData(self::SORT_ORDER);
+    }
+
+    /**
+     * Set sort_order
+     * @param string $sortOrder
+     * @return \Angel\RaffleClient\Api\Data\PrizeInterface
+     */
+    public function setSortOrder($sortOrder)
+    {
+        return $this->setData(self::SORT_ORDER, $sortOrder);
+    }
 }

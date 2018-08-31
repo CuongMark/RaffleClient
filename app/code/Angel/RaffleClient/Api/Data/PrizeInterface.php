@@ -7,6 +7,8 @@ interface PrizeInterface
 {
 
     const LABEL = 'label';
+    const PRICE_TYPE = 'price_type';
+    const SORT_ORDER = 'sort_order';
     const PRIZE_ID = 'prize_id';
     const STATUS = 'status';
     const PRICE = 'price';
@@ -90,4 +92,30 @@ interface PrizeInterface
      * @return \Angel\RaffleClient\Api\Data\PrizeInterface
      */
     public function setStatus($status);
+
+    /**
+     * Get price_type
+     * @return string|null
+     */
+    public function getPriceType();
+
+    /**
+     * Set price_type
+     * @param string $priceType
+     * @return \Angel\RaffleClient\Api\Data\PrizeInterface
+     */
+    public function setPriceType($priceType);
+
+    /**
+     * Get sort_order
+     * @return string|null
+     */
+    public function getSortOrder();
+
+    /**
+     * Set sort_order
+     * @param string $sortOrder
+     * @return \Angel\RaffleClient\Api\Data\PrizeInterface
+     */
+    public function setSortOrder($sortOrder);
 }

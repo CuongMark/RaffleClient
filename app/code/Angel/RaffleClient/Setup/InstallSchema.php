@@ -46,11 +46,27 @@ class InstallSchema implements InstallSchemaInterface
         );
 
         $table_angel_raffleclient_prize->addColumn(
+            'sort_order',
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            null,
+            ['default' => '0','nullable' => False],
+            'Sort Order'
+        );
+
+        $table_angel_raffleclient_prize->addColumn(
             'label',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             null,
             [],
             'Prize Label'
+        );
+
+        $table_angel_raffleclient_prize->addColumn(
+            'price_type',
+            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+            null,
+            [],
+            'Price Type'
         );
 
         $table_angel_raffleclient_prize->addColumn(

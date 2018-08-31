@@ -15,4 +15,7 @@
 	<event name="sales_invoice_item_save_after">
 		<observer instance="Angel\RaffleClient\Observer\Sales\InvoiceItemSaveAfter" name="angel_raffleclient_observer_sales_invoiceitemsaveafter_sales_invoice_item_save_after"/>
 	</event>
+	<event name="controller_action_catalog_product_save_entity_after">
+		<observer name="angel_raffleclient_controller_action_catalog_product_save_entity_after" instance="Angel\RaffleClient\Observer\Catalog\ControllerProductSaveAfter" />
+	</event>
 </config>

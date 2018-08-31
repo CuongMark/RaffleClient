@@ -6,7 +6,7 @@
                 <item name="label" xsi:type="string" translate="true">Raffle</item>
                 <item name="provider" xsi:type="string">product</item>
                 <item name="dataScope" xsi:type="string">data.product</item>
-                <item name="sortOrder" xsi:type="number">2</item>
+                <item name="sortOrder" xsi:type="number">1</item>
                 <item name="collapsible" xsi:type="boolean">true</item>
                 <item name="opened" xsi:type="boolean">false</item>
                 <item name="ns" xsi:type="string">product_form</item>
@@ -27,6 +27,7 @@
                             <item name="itemTemplate" xsi:type="string">record</item>
                             <item name="label" xsi:type="string" translate="true">Prizes</item>
                             <item name="dndConfig" xsi:type="boolean">false</item>
+                            <item name="draggable" xsi:type="boolean">true</item>
                             <item name="template" xsi:type="string">ui/dynamic-rows/templates/default</item>
                         </item>
                     </argument>
@@ -38,6 +39,17 @@
                                 <item name="component" xsi:type="string">Magento_Ui/js/lib/core/collection</item>
                             </item>
                         </argument>
+                        <field name="prize_id">
+                            <argument name="data" xsi:type="array">
+                                <item name="config" xsi:type="array">
+                                    <item name="dataType" xsi:type="string">text</item>
+                                    <item name="formElement" xsi:type="string">input</item>
+                                    <item name="dataScope" xsi:type="string">prize_id</item>
+                                    <item name="label" xsi:type="string" translate="true">Prize Id</item>
+                                    <item name="disabled" xsi:type="boolean">true</item>
+                                </item>
+                            </argument>
+                        </field>
                         <field name="label">
                             <argument name="data" xsi:type="array">
                                 <item name="config" xsi:type="array">
@@ -54,9 +66,10 @@
                         <field name="price">
                             <argument name="data" xsi:type="array">
                                 <item name="config" xsi:type="array">
-                                    <item name="dataType" xsi:type="string">decimal</item>
+                                    <item name="dataType" xsi:type="string">number</item>
                                     <item name="formElement" xsi:type="string">input</item>
                                     <item name="addbefore" xsi:type="string">$</item>
+                                    <item name="addbeforePool" xsi:type="string">$</item>
                                     <item name="validation" xsi:type="array">
                                         <item name="required-entry" xsi:type="boolean">true</item>
                                         <item name="validate-number" xsi:type="boolean">true</item>
@@ -102,8 +115,8 @@
                                 <item name="config" xsi:type="array">
                                     <item name="dataType" xsi:type="string">text</item>
                                     <item name="formElement" xsi:type="string">input</item>
-                                    <item name="component" xsi:type="string">Magestore_InventorySuccess/js/dynamic-rows/action-delete</item>
-                                    <item name="elementTmpl" xsi:type="string">Magestore_InventorySuccess/dynamic-rows/cells/action-delete</item>
+                                    <item name="component" xsi:type="string">Magento_Ui/js/dynamic-rows/action-delete</item>
+                                    <item name="elementTmpl" xsi:type="string">Magento_Backend/dynamic-rows/cells/action-delete</item>
                                     <item name="dataScope" xsi:type="string"/>
                                     <item name="label" xsi:type="string" translate="true">Remove</item>
                                 </item>
