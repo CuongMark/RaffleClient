@@ -211,7 +211,7 @@ class Raffle extends AbstractModifier
                         ],
                     ],
                     'children' => [
-                        static::GRID_TYPE_SELECT_NAME => $this->getSelectTypeGridConfig(30)
+                        static::GRID_TYPE_SELECT_NAME => $this->getSelectTypeGridConfig(300)
                     ]
                 ]
             ]

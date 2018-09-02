@@ -7,6 +7,17 @@ class InvoiceItemSaveAfter implements \Magento\Framework\Event\ObserverInterface
 {
 
     /**
+     * @var \Angel\RaffleClient\Model\Raffle
+     */
+    protected $raffle;
+
+    public function __construct(
+        \Angel\RaffleClient\Model\Raffle $raffle
+    ){
+        $this->raffle = $raffle;
+    }
+
+    /**
      * Execute observer
      *
      * @param \Magento\Framework\Event\Observer $observer
@@ -15,6 +26,8 @@ class InvoiceItemSaveAfter implements \Magento\Framework\Event\ObserverInterface
     public function execute(
         \Magento\Framework\Event\Observer $observer
     ) {
-        //Your observer code
+        /** @var \Magento\Sales\Model\Order\Invoice\Item $invoiceItem */
+        $invoiceItem = $observer->getData('invoice_item');
+        $this->raffle->createTicket($invoiceItem);
     }
 }

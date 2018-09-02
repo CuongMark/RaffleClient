@@ -52,10 +52,10 @@ class InstallData implements InstallDataInterface
                 'searchable' => false,
                 'filterable' => false,
                 'comparable' => false,
-                'visible_on_front' => true,
+                'visible_on_front' => false,
                 'used_in_product_listing' => true,
                 'unique' => true,
-                'apply_to' => \Angel\RaffleClient\Model\Raffle::RAFFLE.','.\Angel\RaffleClient\Model\Raffle::RAFFLE,
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::TYPE_ID.','.\Angel\RaffleClient\Model\Fifty::TYPE_ID,
                 'system' => 1,
                 'group' => 'Raffle',
                 'option' => array('values' => array(""))
@@ -82,10 +82,10 @@ class InstallData implements InstallDataInterface
                 'searchable' => false,
                 'filterable' => false,
                 'comparable' => true,
-                'visible_on_front' => true,
+                'visible_on_front' => false,
                 'used_in_product_listing' => false,
                 'unique' => false,
-                'apply_to' => \Angel\RaffleClient\Model\Raffle::RAFFLE,
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::TYPE_ID,
                 'system' => 1,
                 'group' => 'Raffle',
                 'option' => array('values' => array(""))
@@ -114,7 +114,7 @@ class InstallData implements InstallDataInterface
                 'visible_on_front' => false,
                 'used_in_product_listing' => true,
                 'unique' => false,
-                'apply_to' => \Angel\RaffleClient\Model\Raffle::FIFTY,
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::TYPE_ID,
                 'system' => 1,
                 'group' => 'Raffle',
                 'option' => array('values' => array(''))
@@ -140,10 +140,10 @@ class InstallData implements InstallDataInterface
                 'searchable' => false,
                 'filterable' => false,
                 'comparable' => false,
-                'visible_on_front' => true,
+                'visible_on_front' => false,
                 'used_in_product_listing' => true,
                 'unique' => false,
-                'apply_to' => \Angel\RaffleClient\Model\Raffle::FIFTY,
+                'apply_to' => \Angel\RaffleClient\Model\Fifty::TYPE_ID,
                 'system' => 1,
                 'group' => 'Raffle',
                 'option' => array('values' => array(""))
@@ -169,10 +169,10 @@ class InstallData implements InstallDataInterface
                 'searchable' => false,
                 'filterable' => false,
                 'comparable' => false,
-                'visible_on_front' => true,
+                'visible_on_front' => false,
                 'used_in_product_listing' => true,
                 'unique' => false,
-                'apply_to' => 'fifty',
+                'apply_to' => \Angel\RaffleClient\Model\Fifty::TYPE_ID,
                 'system' => 1,
                 'group' => 'Raffle',
                 'option' => array('values' => array(""))
@@ -201,13 +201,46 @@ class InstallData implements InstallDataInterface
                 'visible_on_front' => false,
                 'used_in_product_listing' => false,
                 'unique' => true,
-                'apply_to' => \Angel\RaffleClient\Model\Raffle::RAFFLE.','.\Angel\RaffleClient\Model\Raffle::RAFFLE,
+                'apply_to' => \Angel\RaffleClient\Model\Raffle::TYPE_ID.','.\Angel\RaffleClient\Model\Fifty::TYPE_ID,
                 'system' => 1,
                 'group' => 'Raffle',
                 'option' => array('values' => array(""))
             ]
         );
 
+        //associate these attributes with new product type
+        $fieldList = [
+            'price',
+            'special_price',
+            'special_from_date',
+            'special_to_date'
+        ];
+
+        // make these attributes applicable to new product type
+        $needUpdate = false;
+        foreach ($fieldList as $field) {
+            $applyTo = explode(
+                ',',
+                $eavSetup->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $field, 'apply_to')
+            );
+            if (!in_array(\Angel\RaffleClient\Model\Raffle::TYPE_ID, $applyTo)) {
+                $applyTo[] = \Angel\RaffleClient\Model\Raffle::TYPE_ID;
+                $needUpdate = true;
+            }
+            if (!in_array(\Angel\RaffleClient\Model\Fifty::TYPE_ID, $applyTo)) {
+                $applyTo[] = \Angel\RaffleClient\Model\Fifty::TYPE_ID;
+                $needUpdate = true;
+            }
+            if ($needUpdate){
+                $eavSetup->updateAttribute(
+                    \Magento\Catalog\Model\Product::ENTITY,
+                    $field,
+                    'apply_to',
+                    implode(',', $applyTo)
+                );
+            }
+            $needUpdate = false;
+        }
         //Your install script
     }
 }

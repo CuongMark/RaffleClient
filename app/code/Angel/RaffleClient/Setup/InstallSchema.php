@@ -161,6 +161,22 @@ class InstallSchema implements InstallSchemaInterface
             'Random Number Generated'
         );
 
+        $table_angel_raffleclient_randomnumber->addColumn(
+            'price',
+            \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
+            12,
+            ['scale' => 4],
+            'winning price'
+        );
+
+        $table_angel_raffleclient_randomnumber->addColumn(
+            'base_price',
+            \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
+            12,
+            ['scale' => 4],
+            'base winning price'
+        );
+
         $table_angel_raffleclient_transaction = $setup->getConnection()->newTable($setup->getTable('angel_raffleclient_transaction'));
 
         $table_angel_raffleclient_transaction->addColumn(

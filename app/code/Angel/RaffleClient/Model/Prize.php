@@ -11,11 +11,48 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
     protected $_eventPrefix = 'angel_raffleclient_prize';
 
     /**
+     * @var int|boolean
+     */
+    protected $totalRNG;
+
+    /**
+     * @var ResourceModel\Ticket\CollectionFactory
+     */
+    protected $randomNumberCollectionFactory;
+    /**
      * @return void
      */
     protected function _construct()
     {
         $this->_init(\Angel\RaffleClient\Model\ResourceModel\Prize::class);
+    }
+
+    public function __construct(
+        \Magento\Framework\Model\Context $context,
+        \Magento\Framework\Registry $registry,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        \Angel\RaffleClient\Model\ResourceModel\RandomNumber\CollectionFactory $ticketCollectionFactory,
+        array $data = []
+    ){
+        parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+        $this->randomNumberCollectionFactory = $ticketCollectionFactory;
+        $this->totalRNG = false;
+    }
+
+    /**
+     * @param $productId
+     * @return int
+     */
+    public function getTotalRandomNumberGenerated($productId)
+    {
+        if ($this->totalRNG === false){
+            /** @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection $ticketCollection */
+            $ticketCollection = $this->randomNumberCollectionFactory->create();
+            $ticketCollection->addFieldToFilter('prize_id', $this->getId());
+            $this->totalRNG = $ticketCollection->getTotalRNG();
+        }
+        return $this->totalRNG;
     }
 
     /**

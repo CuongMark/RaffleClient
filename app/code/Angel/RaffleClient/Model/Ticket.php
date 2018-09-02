@@ -4,11 +4,53 @@
 namespace Angel\RaffleClient\Model;
 
 use Angel\RaffleClient\Api\Data\TicketInterface;
+use Magento\Sales\Model\Order\Invoice\Item;
+use Magento\Sales\Model\Order\Invoice\ItemFactory;
 
 class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInterface
 {
 
+    const CHECKED = 1;
+    const NOT_CHECKED = 0;
+    const WAIT = 2;
+
     protected $_eventPrefix = 'angel_raffleclient_ticket';
+
+    /**
+     * @var ItemFactory
+     */
+    protected $invoiceItemFactory;
+
+    /**
+     * @var PrizeFactory
+     */
+    protected $prizeFactory;
+
+    /**
+     * @var Raffle
+     */
+    protected $raffle;
+
+    /**
+     * @var \Magento\Sales\Model\Order\Invoice\Item
+     */
+    protected $invoiceItem;
+
+    public function __construct(
+        \Magento\Framework\Model\Context $context,
+        \Magento\Framework\Registry $registry,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        \Magento\Sales\Model\Order\Invoice\ItemFactory $invoiceItemFactory,
+        \Angel\RaffleClient\Model\Raffle $raffle,
+        \Angel\RaffleClient\Model\PrizeFactory $prizeFactory,
+        array $data = [])
+    {
+        parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+        $this->invoiceItemFactory = $invoiceItemFactory;
+        $this->raffle = $raffle;
+        $this->prizeFactory = $prizeFactory;
+    }
 
     /**
      * @return void
@@ -16,6 +58,41 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     protected function _construct()
     {
         $this->_init(\Angel\RaffleClient\Model\ResourceModel\Ticket::class);
+    }
+
+    public function check(array $RNGs){
+
+    }
+
+    public function validate(){
+
+    }
+
+    /**
+     * \Magento\Sales\Model\Order\Invoice\Item
+     * @return Item
+     */
+    public function getInvoiceItem(){
+        if (!$this->invoiceItem){
+            $this->invoiceItem = $this->invoiceItemFactory->create()->load($this->getInvoiceItemId());
+        }
+        return $this->invoiceItem;
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order\Invoice\Item $invoiceItem
+     * @return $this
+     */
+    public function setInvoiceItem($invoiceItem){
+        $this->invoiceItem = $invoiceItem;
+        return $this;
+    }
+
+    public function getRaffle(){
+        if (!$this->raffle){
+            $this->raffle = $this->raffle->setProduct($this->getInvoiceItem()->getProductId());
+        }
+        return $this->raffle;
     }
 
     /**
