@@ -8,6 +8,7 @@ interface RandomNumberInterface
 
     const RANDOMNUMBER_ID = 'randomnumber_id';
     const NUMBER = 'number';
+    const PRICE = 'price';
     const PRIZE_ID = 'prize_id';
 
     /**
@@ -48,4 +49,17 @@ interface RandomNumberInterface
      * @return \Angel\RaffleClient\Api\Data\RandomNumberInterface
      */
     public function setNumber($number);
+
+    /**
+     * Get price
+     * @return string|null
+     */
+    public function getPrice();
+
+    /**
+     * Set price
+     * @param string $price
+     * @return \Angel\RaffleClient\Api\Data\RandomNumberInterface
+     */
+    public function setPrice($price);
 }

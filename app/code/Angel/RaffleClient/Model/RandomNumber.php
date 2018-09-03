@@ -74,4 +74,23 @@ class RandomNumber extends \Magento\Framework\Model\AbstractModel implements Ran
     {
         return $this->setData(self::NUMBER, $number);
     }
+
+    /**
+     * Get price
+     * @return string
+     */
+    public function getPrice()
+    {
+        return $this->getData(self::PRICE);
+    }
+
+    /**
+     * Set price
+     * @param string $price
+     * @return \Angel\RaffleClient\Api\Data\RandomNumberInterface
+     */
+    public function setPrice($price)
+    {
+        return $this->setData(self::PRICE, $price);
+    }
 }

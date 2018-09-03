@@ -57,7 +57,8 @@ class Collection extends \Magento\Framework\View\Element\UiComponent\DataProvide
      */
     public function getRaffleTickets($productId){
         $this->joinInvoiceItemTable();
-        $this->addFieldToFilter(static::INVOICE_ITEM_TABLE.'.product_id', $productId);
+        if ($productId)
+            $this->addFieldToFilter(static::INVOICE_ITEM_TABLE.'.product_id', $productId);
         return $this;
     }
 

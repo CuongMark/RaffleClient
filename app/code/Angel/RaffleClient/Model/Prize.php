@@ -8,6 +8,9 @@ use Angel\RaffleClient\Api\Data\PrizeInterface;
 class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInterface
 {
 
+    const FIXED = 'fixed';
+    const PERCENT = 'percent';
+
     protected $_eventPrefix = 'angel_raffleclient_prize';
 
     /**
@@ -19,6 +22,16 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
      * @var ResourceModel\Ticket\CollectionFactory
      */
     protected $randomNumberCollectionFactory;
+
+    /**
+     * @var RaffleFactory
+     */
+    protected $raffleFactory;
+
+    /**
+     * @var \Angel\RaffleClient\Model\Raffle
+     */
+    protected $raffle;
     /**
      * @return void
      */
@@ -31,6 +44,7 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         \Angel\RaffleClient\Model\ResourceModel\RandomNumber\CollectionFactory $ticketCollectionFactory,
+        \Angel\RaffleClient\Model\RaffleFactory $raffleFactory,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
@@ -38,6 +52,7 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
         $this->randomNumberCollectionFactory = $ticketCollectionFactory;
         $this->totalRNG = false;
+        $this->raffleFactory = $raffleFactory;
     }
 
     /**
@@ -58,8 +73,30 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
         return $this->totalRNG;
     }
 
+    /**
+     * @return int
+     */
     public function getTotalRandomNumberNeedToGenerate(){
-        return $this->getTotal() - $this->getTotalRandomNumberGenerated();
+        return (int)($this->getTotal() - $this->getTotalRandomNumberGenerated());
+    }
+
+    public function getWinningPrice(){
+        if ($this->getPriceType() == static::FIXED){
+            return (float)$this->getPrice();
+        } else if($this->getPriceType() == static::PERCENT){
+            return $this->getRaffle()->getTotalPricePaid() * $this->getPrice() / 100;
+        }
+        return 0;
+    }
+
+    /**
+     * @return Raffle
+     */
+    public function getRaffle(){
+        if (!$this->raffle){
+            $this->raffle = $this->raffleFactory->create()->setProduct($this->getProductId());
+        }
+        return $this->raffle;
     }
 
     /**

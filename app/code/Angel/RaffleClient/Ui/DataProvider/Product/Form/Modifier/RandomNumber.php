@@ -10,6 +10,7 @@ namespace Angel\RaffleClient\Ui\DataProvider\Product\Form\Modifier;
 use Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\AbstractModifier;
 use Magento\Framework\UrlInterface;
 use Magento\Ui\Component\Form;
+use Magento\Catalog\Model\Locator\LocatorInterface;
 
 class RandomNumber extends AbstractModifier
 {
@@ -36,14 +37,22 @@ class RandomNumber extends AbstractModifier
      */
     protected $urlBuilder;
 
+    /**
+     * @var LocatorInterface
+     * @since 101.0.0
+     */
+    protected $locator;
+
     public function __construct(
         \Magento\Framework\App\RequestInterface $request,
         UrlInterface $urlBuilder,
-        \Angel\RaffleClient\Model\Raffle $raffle
+        \Angel\RaffleClient\Model\Raffle $raffle,
+        LocatorInterface $locator
     ){
         $this->request = $request;
         $this->raffle = $raffle;
         $this->urlBuilder = $urlBuilder;
+        $this->locator = $locator;
     }
 
     /**
@@ -58,7 +67,11 @@ class RandomNumber extends AbstractModifier
      * {@inheritdoc}
      */
     public function modifyMeta(array $meta)
-    {
+   {
+       $product = $this->locator->getProduct();
+       if (!in_array($product->getTypeId(), \Angel\RaffleClient\Model\Raffle::getRaffleProductTypes()) || !$product->getId()){
+           return $meta;
+       }
         $meta = array_replace_recursive(
             $meta,
             [

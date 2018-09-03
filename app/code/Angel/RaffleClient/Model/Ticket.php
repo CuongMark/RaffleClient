@@ -13,6 +13,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     const CHECKED = 1;
     const NOT_CHECKED = 0;
     const WAIT = 2;
+    const PAID = 3;
 
     protected $_eventPrefix = 'angel_raffleclient_ticket';
 
@@ -147,8 +148,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
             }
             $this->setStatus(static::CHECKED)->save();
         } catch (\Exception $e){
-//            \Zend_Debug::dump($e->__toString());
-//            die('ádfss');
+
         }
         return $this;
     }

@@ -261,6 +261,14 @@ class Raffle
     }
 
     /**
+     * @return float
+     */
+    public function getTotalPricePaid(){
+        // todo return sum of invoice
+        return $this->getProduct()->getPrice() * ($this->getCurrentLargestTicketNumber() + 1);
+    }
+
+    /**
      * @return int|null
      */
     public function isAbleToGenerateByTicket(){
