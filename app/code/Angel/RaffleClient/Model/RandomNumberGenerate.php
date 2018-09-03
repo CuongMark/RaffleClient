@@ -20,4 +20,25 @@ class RandomNumberGenerate
         }
         return $result;
     }
+
+    /**
+     * @param int $start
+     * @param int $end
+     * @param array $exitRand
+     * @return bool|int
+     */
+    public function generateRand($start, $end, &$exitRand){
+        if ($start == $end){
+            $exitRand[] = $start;
+            return $start;
+        }
+        if ($end - $start <= count($exitRand))
+            return false;
+        $rand = rand($start, $end);
+        while (in_array($rand, $exitRand)){
+            $rand = rand($start, $end);
+        }
+        $exitRand[] = $rand;
+        return $rand;
+    }
 }

@@ -113,7 +113,7 @@ class InstallSchema implements InstallSchemaInterface
 
         $table_angel_raffleclient_ticket->addColumn(
             'end',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
             null,
             [],
             'Ticket End Number'

@@ -36,20 +36,34 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      */
     protected $invoiceItem;
 
+    /**
+     * @var RandomNumberGenerate
+     */
+    protected $randomNumberGenerateModel;
+
+    /**
+     * @var \Angel\RaffleClient\Model\RandomNumberFactory
+     */
+    protected $randomNumberFactory;
+
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         \Magento\Sales\Model\Order\Invoice\ItemFactory $invoiceItemFactory,
         \Angel\RaffleClient\Model\Raffle $raffle,
         \Angel\RaffleClient\Model\PrizeFactory $prizeFactory,
-        array $data = [])
-    {
+        \Angel\RaffleClient\Model\RandomNumberFactory $randomNumberFactory,
+        \Angel\RaffleClient\Model\RandomNumberGenerate $numberGenerate,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        array $data = []
+    ){
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
         $this->invoiceItemFactory = $invoiceItemFactory;
         $this->raffle = $raffle;
         $this->prizeFactory = $prizeFactory;
+        $this->randomNumberGenerateModel = $numberGenerate;
+        $this->randomNumberFactory = $randomNumberFactory;
     }
 
     /**
@@ -60,8 +74,83 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
         $this->_init(\Angel\RaffleClient\Model\ResourceModel\Ticket::class);
     }
 
-    public function check(array $RNGs){
+    /**
+     * create and check Random Number
+     */
+    public function check1(){
+        if (!$this->getRaffle()->isAbleToGenerateByTicket()){
+            return;
+        }
+        /** rest total prizes */
+        $qty = $this->getRaffle()->getTotalPrizes() - $this->getRaffle()->getTotalRNGs();
+        /** random number from start */
+        $start = $this->getRaffle()->getCurrentLargestTicketNumber() + 1;
+        $end = $this->getRaffle()->getTotalTicket() -1;
+        if ($start > $end){
+            return;
+        }
 
+        $RNGs = $this->randomNumberGenerateModel->randomNumberArrayGenerate($start, $end, $qty);
+        $prizes = $this->getRaffle()->getPrizes();
+
+        $i = 0;
+        /** @var \Angel\RaffleClient\Model\Prize $_prize */
+        foreach ($prizes as $_prize){
+            $prizeQty = $_prize->getTotalRandomNumberNeedToGenerate();
+            if ($prizeQty > 0){
+                $next = $i + $prizeQty;
+                for ($i; $i < $next; $i++){
+                    if (isset($RNGs[$i]) && $this->getStart() <= $RNGs[$i] && $RNGs >= $this->getEnd()){
+                        /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
+                        $randomNumberModel = $this->randomNumberFactory->create();
+                        $randomNumberModel->setPrizeId($_prize->getId())
+                            ->setNumber($RNGs[$i]);
+                        $randomNumberModel->getResource()->save($randomNumberModel);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * create and check Random Number
+     */
+    public function check(){
+        if (!$this->getRaffle()->isAbleToGenerateByTicket() || $this->getStatus() == static::CHECKED){
+            return $this;
+        }
+        /** random number from start */
+        $start = $this->getRaffle()->getCurrentLargestTicketNumber() + 1;
+        $end = $this->getRaffle()->getTotalTicket() -1;
+        if ($start > $end){
+            $this->setStatus(static::CHECKED)->save();
+            return $this;
+        }
+        $prizes = $this->getRaffle()->getPrizes();
+        $exitRand = [];
+        /** @var \Angel\RaffleClient\Model\Prize $_prize */
+        try {
+            foreach ($prizes as $_prize) {
+                $prizeQty = $_prize->getTotalRandomNumberNeedToGenerate();
+                if ($prizeQty>0){
+                    for ($i = 0; $i < $prizeQty; $i++) {
+                        $rand = $this->randomNumberGenerateModel->generateRand($start, $end, $exitRand);
+                        if ($rand && $this->getStart() <= $rand && $rand <= $this->getEnd()) {
+                            /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
+                            $randomNumberModel = $this->randomNumberFactory->create();
+                            $randomNumberModel->setPrizeId($_prize->getId())
+                                ->setNumber($rand);
+                            $randomNumberModel->getResource()->save($randomNumberModel);
+                        }
+                    }
+                }
+            }
+            $this->setStatus(static::CHECKED)->save();
+        } catch (\Exception $e){
+//            \Zend_Debug::dump($e->__toString());
+//            die('ádfss');
+        }
+        return $this;
     }
 
     public function validate(){
@@ -88,6 +177,9 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
         return $this;
     }
 
+    /**
+     * @return Raffle
+     */
     public function getRaffle(){
         if (!$this->raffle){
             $this->raffle = $this->raffle->setProduct($this->getInvoiceItem()->getProductId());
@@ -135,7 +227,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
 
     /**
      * Get start
-     * @return string
+     * @return int
      */
     public function getStart()
     {
@@ -144,7 +236,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
 
     /**
      * Set start
-     * @param string $start
+     * @param int $start
      * @return \Angel\RaffleClient\Api\Data\TicketInterface
      */
     public function setStart($start)
@@ -154,7 +246,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
 
     /**
      * Get end
-     * @return string
+     * @return int
      */
     public function getEnd()
     {
@@ -163,7 +255,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
 
     /**
      * Set end
-     * @param string $end
+     * @param int $end
      * @return \Angel\RaffleClient\Api\Data\TicketInterface
      */
     public function setEnd($end)

@@ -9,9 +9,17 @@
     <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
         <arguments>
             <argument name="modifiers" xsi:type="array">
-                <item name="Prizes" xsi:type="array">
+                <item name="prizes" xsi:type="array">
                     <item name="class" xsi:type="string">Angel\RaffleClient\Ui\DataProvider\Product\Form\Modifier\Raffle</item>
                     <item name="sortOrder" xsi:type="number">70</item>
+                </item>
+                <item name="tickets" xsi:type="array">
+                    <item name="class" xsi:type="string">Angel\RaffleClient\Ui\DataProvider\Product\Form\Modifier\Tickets</item>
+                    <item name="sortOrder" xsi:type="number">80</item>
+                </item>
+                <item name="random_number" xsi:type="array">
+                    <item name="class" xsi:type="string">Angel\RaffleClient\Ui\DataProvider\Product\Form\Modifier\RandomNumber</item>
+                    <item name="sortOrder" xsi:type="number">80</item>
                 </item>
             </argument>
         </arguments>

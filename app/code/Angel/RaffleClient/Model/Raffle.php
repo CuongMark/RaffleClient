@@ -57,6 +57,16 @@ class Raffle
     protected $totalPrizes;
 
     /**
+     * @var \Angel\RaffleClient\Model\ResourceModel\Prize\Collection
+     */
+    protected $prizes;
+
+    /**
+     * @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection
+     */
+    protected $randomNumbers;
+
+    /**
      * @return array
      */
     static function getRaffleProductTypes(){
@@ -113,7 +123,7 @@ class Raffle
      */
     public function getCurrentLargestTicketNumber(){
         if ($this->product->isObjectNew()){
-            return 0;
+            return -1;
         }
         if ($this->currentTicketNumber === false){
             $this->currentTicketNumber = $this->ticketCollection->getCurrentLargestTicketNumber($this->getProduct()->getId());
@@ -131,6 +141,16 @@ class Raffle
     }
 
     /**
+     * @return int
+     */
+    public function getTotalTicket(){
+        if ($this->getProduct()->getTotalTickets()){
+            return (int) $this->getProduct()->getTotalTickets();
+        }
+        return 0;
+    }
+
+    /**
      * @param int|null $endNumber
      * @return bool
      */
@@ -138,12 +158,12 @@ class Raffle
         if ($this->getProduct()->getTypeId() == Fifty::TYPE_ID){
             return false;
         } elseif ($this->getProduct()->getTypeId() == static::TYPE_ID){
-            if (!$this->getProduct()->getTotalTicket()){
+            if (!$this->getTotalTicket()){
                 return true;
             } else if (!$endNumber){
-                return $this->getCurrentLargestTicketNumber() >= $this->getProduct()->getTotalTicket();
+                return $this->getCurrentLargestTicketNumber() > $this->getTotalTicket();
             } else {
-                return $endNumber > $this->getProduct()->getTotalTicket();
+                return $endNumber >= $this->getTotalTicket();
             }
         }
         return true;
@@ -161,7 +181,7 @@ class Raffle
             $qty = $invoiceItem->getQty();
             $invoiceItemId = $invoiceItem->getId();
             if (!$this->isAbleToCreateTicket()) {
-                throw new Exception(__('Unable to create ticket for %s raffle product', $this->getProduct()->getName()));
+                throw new Exception(__('Unable to create ticket for %1 raffle product', $this->getProduct()->getName()));
             }
             $start = $this->getCurrentLargestTicketNumber() + 1;
             $endNumber = $this->getCurrentLargestTicketNumber() + $qty;
@@ -179,11 +199,16 @@ class Raffle
             $ticket->getResource()->save($ticket);
             return $ticket;
         } catch (\Exception $e){
+            \Zend_Debug::dump($e->getMessage());
             // TOTO show exception message
         }
         return null;
     }
 
+    /**
+     * return total random number generated in current raffle
+     * @return int
+     */
     public function getTotalRNGs(){
         if ($this->totalRNGs === false){
             /** @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection $randomNumberCollection */
@@ -193,6 +218,35 @@ class Raffle
         return $this->totalRNGs;
     }
 
+    /**
+     * return prizes collection of current raffle
+     * @return ResourceModel\Prize\Collection
+     */
+    public function getPrizes(){
+        if (!$this->prizes){
+            /** @var \Angel\RaffleClient\Model\ResourceModel\Prize\Collection $prizeCollection */
+            $prizeCollection = $this->prizeCollectionFactory->create();
+            $this->prizes = $prizeCollection->addFieldToFilter('product_id', $this->getProduct()->getId())->addRNGsCount();
+        }
+        return $this->prizes;
+    }
+
+    /**
+     * @return ResourceModel\RandomNumber\Collection
+     */
+    public function getRandomNumbers(){
+        if (!$this->randomNumbers){
+            /** @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection $randomNumberCollection */
+            $randomNumberCollection = $this->randomNumberCollectionFactory->create();
+            $this->randomNumbers = $randomNumberCollection->addProductIdToFilter($this->getProduct()->getId());
+        }
+        return $this->randomNumbers;
+    }
+
+    /**
+     * return total prize availabe to generate random number
+     * @return int
+     */
     public function getTotalPrizes(){
         if ($this->totalRNGs === false){
             /** @var \Angel\RaffleClient\Model\ResourceModel\Prize\Collection $prizeCollection */
@@ -200,5 +254,18 @@ class Raffle
             $this->totalRNGs = $prizeCollection->addFieldToFilter('product_id', $this->getProduct()->getId())->getTotalPrizes();
         }
         return $this->totalRNGs;
+    }
+
+    public function getTickets(){
+        return $this->ticketCollection->getRaffleTickets($this->getProduct()->getId());
+    }
+
+    /**
+     * @return int|null
+     */
+    public function isAbleToGenerateByTicket(){
+        //Todo check raffle type
+        return true;
+        return $this->getProduct()->getData('raffle_type');
     }
 }

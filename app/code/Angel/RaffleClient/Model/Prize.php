@@ -30,9 +30,9 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
+        \Angel\RaffleClient\Model\ResourceModel\RandomNumber\CollectionFactory $ticketCollectionFactory,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
-        \Angel\RaffleClient\Model\ResourceModel\RandomNumber\CollectionFactory $ticketCollectionFactory,
         array $data = []
     ){
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
@@ -41,18 +41,25 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
     }
 
     /**
-     * @param $productId
      * @return int
      */
-    public function getTotalRandomNumberGenerated($productId)
+    public function getTotalRandomNumberGenerated()
     {
         if ($this->totalRNG === false){
-            /** @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection $ticketCollection */
-            $ticketCollection = $this->randomNumberCollectionFactory->create();
-            $ticketCollection->addFieldToFilter('prize_id', $this->getId());
-            $this->totalRNG = $ticketCollection->getTotalRNG();
+            if ($this->getData('total_generated')){
+                $this->totalRNG = $this->getData('total_generated');
+            } else {
+                /** @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection $ticketCollection */
+                $ticketCollection = $this->randomNumberCollectionFactory->create();
+                $ticketCollection->addFieldToFilter('prize_id', $this->getId());
+                $this->totalRNG = $ticketCollection->getTotalRNG();
+            }
         }
         return $this->totalRNG;
+    }
+
+    public function getTotalRandomNumberNeedToGenerate(){
+        return $this->getTotal() - $this->getTotalRandomNumberGenerated();
     }
 
     /**

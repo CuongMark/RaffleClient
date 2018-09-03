@@ -5,8 +5,7 @@ namespace Angel\RaffleClient\Model\ResourceModel\Prize;
 
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
-
-
+    const RANDOM_NUMBER_TABLE = 'random';
     /**
      * Define resource model
      *
@@ -37,5 +36,14 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
             return $result[0];
         }
         return 0;
+    }
+
+    public function addRNGsCount(){
+        $this->getSelect()->joinLeft(
+            [static::RANDOM_NUMBER_TABLE => $this->getTable('angel_raffleclient_randomnumber')],
+            static::RANDOM_NUMBER_TABLE.'.prize_id = main_table.prize_id',
+            ['total_generated' => 'COUNT('.static::RANDOM_NUMBER_TABLE.'.randomnumber_id)']
+        )->group('main_table.prize_id');
+        return $this;
     }
 }

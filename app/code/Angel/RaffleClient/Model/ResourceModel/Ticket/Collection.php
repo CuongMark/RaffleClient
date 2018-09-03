@@ -21,7 +21,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     }
 
     /**
-     * @param $productId
+     * @param int $productId
      * @return int
      */
     public function getCurrentLargestTicketNumber($productId)
@@ -40,7 +40,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
         if (isset($result[0]) && $result[0]){
             return $result[0];
         }
-        return 0;
+        return -1;
     }
 
     /**
@@ -52,6 +52,16 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
             static::INVOICE_ITEM_TABLE.'.entity_id = main_table.invoice_item_id',
             ['product_id' => static::INVOICE_ITEM_TABLE.'.product_id']
         );
+        return $this;
+    }
+
+    /**
+     * @param int $productId
+     * @return $this
+     */
+    public function getRaffleTickets($productId){
+        $this->joinInvoiceItemTable();
+        $this->addFieldToFilter(static::INVOICE_ITEM_TABLE.'.product_id', $productId);
         return $this;
     }
 }
