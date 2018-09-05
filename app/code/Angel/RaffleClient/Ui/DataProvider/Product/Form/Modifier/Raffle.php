@@ -159,6 +159,9 @@ class Raffle extends AbstractModifier
         if (!in_array($product->getTypeId(), \Angel\RaffleClient\Model\Raffle::getRaffleProductTypes())){
             return $meta;
         }
+        if ($product->getTypeId() == \Angel\RaffleClient\Model\Fifty::TYPE_ID){
+            $meta = $this->enableTime($meta);
+        }
         $this->meta = $meta;
         $this->createCustomOptionsPanel();
         return $this->meta;
@@ -514,5 +517,75 @@ class Raffle extends AbstractModifier
                 ],
             ],
         ];
+    }
+
+    /**
+     * Customise Custom Attribute field
+     *
+     * @param array $meta
+     *
+     * @return array
+     */
+    protected function enableTime(array $meta)
+    {
+        $fieldCode = 'raffle_start';
+        $elementPath = $this->arrayManager->findPath($fieldCode, $meta, null, 'children');
+        $containerPath = $this->arrayManager->findPath(static::CONTAINER_PREFIX . $fieldCode, $meta, null, 'children');
+        if ($elementPath) {
+            $meta = $this->arrayManager->merge(
+                $containerPath,
+                $meta,
+                [
+                    'children' => [
+                        $fieldCode => [
+                            'arguments' => [
+                                'data' => [
+                                    'config' => [
+                                        'default' => '',
+                                        'options' => [
+                                            'dateFormat' > 'Y-m-d',
+                                            'timeFormat' => 'HH:mm:ss',
+                                            'showsTime' => true
+                                        ]
+                                    ],
+                                ],
+                            ],
+                        ]
+                    ]
+                ]
+            );
+        }
+
+        $fieldCode = 'raffle_end';
+        $elementPath = $this->arrayManager->findPath($fieldCode, $meta, null, 'children');
+        $containerPath = $this->arrayManager->findPath(static::CONTAINER_PREFIX . $fieldCode, $meta, null, 'children');
+//        \Zend_Debug::dump($elementPath);
+//        \Zend_Debug::dump($meta['raffle']['children']['container_raffle_end']['children']['raffle_end']['arguments']);
+//        die('adsf');
+        if ($elementPath) {
+            $meta = $this->arrayManager->merge(
+                $containerPath,
+                $meta,
+                [
+                    'children' => [
+                        $fieldCode => [
+                            'arguments' => [
+                                'data' => [
+                                    'config' => [
+                                        'default' => '',
+                                        'options' => [
+                                            'dateFormat' > 'Y-m-d',
+                                            'timeFormat' => 'HH:mm:ss',
+                                            'showsTime' => true
+                                        ]
+                                    ],
+                                ],
+                            ],
+                        ]
+                    ]
+                ]
+            );
+        }
+        return $meta;
     }
 }

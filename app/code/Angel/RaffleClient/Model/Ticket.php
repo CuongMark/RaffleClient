@@ -136,7 +136,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
                 if ($prizeQty>0){
                     for ($i = 0; $i < $prizeQty; $i++) {
                         $rand = $this->randomNumberGenerateModel->generateRand($start, $end, $exitRand);
-                        if ($rand && $this->getStart() <= $rand && $rand <= $this->getEnd()) {
+                        if ($rand !== false && $this->getStart() <= $rand && $rand <= $this->getEnd()) {
                             /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
                             $randomNumberModel = $this->randomNumberFactory->create();
                             $randomNumberModel->setPrizeId($_prize->getId())

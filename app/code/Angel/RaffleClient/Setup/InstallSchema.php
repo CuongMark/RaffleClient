@@ -219,6 +219,42 @@ class InstallSchema implements InstallSchemaInterface
             'price'
         );
 
+        $table_angel_raffleclient_test = $setup->getConnection()->newTable($setup->getTable('angel_raffleclient_test'));
+
+        $table_angel_raffleclient_test->addColumn(
+            'test_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            null,
+            ['identity' => true,'nullable' => false,'primary' => true,'unsigned' => true,],
+            'Entity ID'
+        );
+
+        $table_angel_raffleclient_test->addColumn(
+            'Total',
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            null,
+            [],
+            'Total'
+        );
+
+        $table_angel_raffleclient_test->addColumn(
+            'total_numbers',
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            null,
+            ['default' => '1'],
+            'Total Random number to generate'
+        );
+
+        $table_angel_raffleclient_test->addColumn(
+            'total_raffles',
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            null,
+            [],
+            'Total Raffles'
+        );
+
+        $setup->getConnection()->createTable($table_angel_raffleclient_test);
+
         $setup->getConnection()->createTable($table_angel_raffleclient_transaction);
 
         $setup->getConnection()->createTable($table_angel_raffleclient_randomnumber);

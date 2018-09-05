@@ -67,6 +67,13 @@ class Raffle
     protected $randomNumbers;
 
     /**
+     * @var RandomNumberFactory
+     */
+    protected $randomNumberFactory;
+
+    protected $randomNumberGenerateModel;
+
+    /**
      * @return array
      */
     static function getRaffleProductTypes(){
@@ -77,6 +84,8 @@ class Raffle
         \Magento\Catalog\Model\ProductFactory $productFactory,
         \Angel\RaffleClient\Model\PrizeFactory $prizeFactory,
         \Angel\RaffleClient\Model\TicketFactory $ticketFactory,
+        \Angel\RaffleClient\Model\RandomNumberFactory $randomNumberFactory,
+        \Angel\RaffleClient\Model\RandomNumberGenerate $randomNumberGenerateModel,
         \Angel\RaffleClient\Model\ResourceModel\Ticket\Collection $ticketCollection,
         \Angel\RaffleClient\Model\ResourceModel\RandomNumber\CollectionFactory $randomNumberCollectionFactory,
         \Angel\RaffleClient\Model\ResourceModel\Prize\CollectionFactory $prizeCollectionFactory
@@ -88,6 +97,8 @@ class Raffle
         $this->prizeCollectionFactory = $prizeCollectionFactory;
         $this->ticketFactory = $ticketFactory;
         $this->currentTicketNumber = false;
+        $this->randomNumberFactory = $randomNumberFactory;
+        $this->randomNumberGenerateModel = $randomNumberGenerateModel;
     }
 
     /**
@@ -275,5 +286,43 @@ class Raffle
         //Todo check raffle type
         return true;
         return $this->getProduct()->getData('raffle_type');
+    }
+
+    /**
+     * create and check Random Number
+     */
+    public function check(){
+        //Todo check end time
+        if (!$this->getProduct()->getTypeId()==fifty::TYPE_ID
+            || $this->getTotalRNGs()){
+            return $this;
+        }
+        /** random number from start */
+        $start = 0;
+        $end = $this->getCurrentLargestTicketNumber();
+        if ($start > $end){
+            return $this;
+        }
+        $prizes = $this->getPrizes();
+        $exitRand = [];
+        /** @var \Angel\RaffleClient\Model\Prize $_prize */
+        try {
+            foreach ($prizes as $_prize) {
+                $prizeQty = $_prize->getTotal();
+                if ($prizeQty>0){
+                    for ($i = 0; $i < $prizeQty; $i++) {
+                        $rand = $this->randomNumberGenerateModel->generateRand($start, $end, $exitRand);
+                        /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
+                        $randomNumberModel = $this->randomNumberFactory->create();
+                        $randomNumberModel->setPrizeId($_prize->getId())
+                            ->setNumber($rand);
+                        $randomNumberModel->getResource()->save($randomNumberModel);
+                    }
+                }
+            }
+        } catch (\Exception $e){
+
+        }
+        return $this;
     }
 }

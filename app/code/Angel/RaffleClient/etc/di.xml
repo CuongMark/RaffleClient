@@ -14,6 +14,7 @@
 				<item name="angel_raffleclient_ticket_grid_data_source" xsi:type="string">Angel\RaffleClient\Model\ResourceModel\Ticket\Grid\Collection</item>
 				<item name="angel_raffleclient_randomnumber_grid_data_source" xsi:type="string">Angel\RaffleClient\Model\ResourceModel\RandomNumber\Grid\Collection</item>
 				<item name="angel_raffleclient_transaction_grid_data_source" xsi:type="string">Angel\RaffleClient\Model\ResourceModel\Transaction\Grid\Collection</item>
+				<item name="angel_raffleclient_test_grid_data_source" xsi:type="string">Angel\RaffleClient\Model\ResourceModel\Test\Grid\Collection</item>
 			</argument>
 		</arguments>
 	</type>
@@ -33,6 +34,12 @@
 		<arguments>
 			<argument name="mainTable" xsi:type="string">angel_raffleclient_transaction</argument>
 			<argument name="resourceModel" xsi:type="string">Angel\RaffleClient\Model\ResourceModel\Transaction\Collection</argument>
+		</arguments>
+	</virtualType>
+	<virtualType name="Angel\RaffleClient\Model\ResourceModel\Test\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">angel_raffleclient_test</argument>
+			<argument name="resourceModel" xsi:type="string">Angel\RaffleClient\Model\ResourceModel\Test\Collection</argument>
 		</arguments>
 	</virtualType>
 </config>

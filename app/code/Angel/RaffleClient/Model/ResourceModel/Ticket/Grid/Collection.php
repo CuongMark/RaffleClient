@@ -36,6 +36,8 @@ class Collection extends \Magento\Framework\View\Element\UiComponent\DataProvide
     {
         parent::_initSelect();
         $this->getRaffleTickets($this->request->getParam('product_id'));
+//        Zend_Debug::dump($this->getSelect()->__toString());
+//        die('adsfadsf');
         return $this;
     }
 
