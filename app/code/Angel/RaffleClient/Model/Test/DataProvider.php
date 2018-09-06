@@ -55,14 +55,20 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             $this->loadedData[$model->getId()] = $model->getData();
         }
         $data = $this->dataPersistor->get('angel_raffleclient_test');
-        
+
         if (!empty($data)) {
             $model = $this->collection->getNewEmptyItem();
             $model->setData($data);
             $this->loadedData[$model->getId()] = $model->getData();
+            $this->loadedData[$model->getId()]['Total'] = 10000;
+            $this->loadedData[$model->getId()]['total_numbers'] = 1000;
+            $this->loadedData[$model->getId()]['total_raffles'] = 10000;
             $this->dataPersistor->clear('angel_raffleclient_test');
         }
-        
+        $this->loadedData[0]['Total'] = 10000;
+        $this->loadedData[0]['total_numbers'] = 1000;
+        $this->loadedData[0]['total_raffles'] = 10000;
+
         return $this->loadedData;
     }
 }

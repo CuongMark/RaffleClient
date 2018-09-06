@@ -13,7 +13,7 @@
 		<item name="template" xsi:type="string">templates/form/collapsible</item>
 		<item name="buttons" xsi:type="array">
 			<!--<item name="back" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\BackButton</item>-->
-			<!--<item name="delete" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\DeleteButton</item>-->
+			<item name="save_and_continue" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\Distribution</item>
 			<item name="save" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\SaveButton</item>
 			<!--<item name="save_and_continue" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\SaveAndContinueButton</item>-->
 		</item>
@@ -52,8 +52,12 @@
 					<item name="sortOrder" xsi:type="number">200</item>
 					<item name="dataScope" xsi:type="string">Total</item>
 					<item name="validation" xsi:type="array">
-						<item name="required-entry" xsi:type="boolean">false</item>
+						<item name="required-entry" xsi:type="boolean">true</item>
+						<item name="validate-number" xsi:type="boolean">true</item>
+						<item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+						<item name="less-than-equals-to" xsi:type="number">100000</item>
 					</item>
+					<item name="notice" translate="true" xsi:type="string">The total tickets purchased for each raffles. The number from 0 to total tickets subtract 1.</item>
 				</item>
 			</argument>
 		</field>
@@ -61,14 +65,18 @@
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="dataType" xsi:type="string">text</item>
-					<item name="label" translate="true" xsi:type="string">total_numbers</item>
+					<item name="label" translate="true" xsi:type="string">Total Random Numbers</item>
 					<item name="formElement" xsi:type="string">input</item>
 					<item name="source" xsi:type="string">Test</item>
 					<item name="sortOrder" xsi:type="number">210</item>
 					<item name="dataScope" xsi:type="string">total_numbers</item>
 					<item name="validation" xsi:type="array">
-						<item name="required-entry" xsi:type="boolean">false</item>
+						<item name="required-entry" xsi:type="boolean">true</item>
+						<item name="validate-number" xsi:type="boolean">true</item>
+						<item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+						<item name="less-than-equals-to" xsi:type="number">100000</item>
 					</item>
+					<item name="notice" translate="true" xsi:type="string">The total random numbers to generate for each raffles.</item>
 				</item>
 			</argument>
 		</field>
@@ -76,14 +84,18 @@
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="dataType" xsi:type="string">text</item>
-					<item name="label" translate="true" xsi:type="string">total_raffles</item>
+					<item name="label" translate="true" xsi:type="string">Total Raffles</item>
 					<item name="formElement" xsi:type="string">input</item>
 					<item name="source" xsi:type="string">Test</item>
 					<item name="sortOrder" xsi:type="number">220</item>
 					<item name="dataScope" xsi:type="string">total_raffles</item>
 					<item name="validation" xsi:type="array">
-						<item name="required-entry" xsi:type="boolean">false</item>
+						<item name="required-entry" xsi:type="boolean">true</item>
+						<item name="validate-number" xsi:type="boolean">true</item>
+						<item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+						<item name="less-than-equals-to" xsi:type="number">100000</item>
 					</item>
+					<item name="notice" translate="true" xsi:type="string">The total times to run RNG function or total raffles created.</item>
 				</item>
 			</argument>
 		</field>

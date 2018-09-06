@@ -5,7 +5,8 @@
 		<add id="Angel::top_level" module="Angel_RaffleClient" resource="Magento_Backend::content" sortOrder="10" title="Raffle"/>
 		<!--<add action="angel_raffleclient/prize/index" id="Angel_RaffleClient::angel_raffleclient_prize" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Prize"/>-->
 		<add action="angel_raffleclient/ticket/index" id="Angel_RaffleClient::angel_raffleclient_ticket" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Ticket"/>
-		<add action="angel_raffleclient/randomnumber/index" id="Angel_RaffleClient::angel_raffleclient_randomnumber" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="RandomNumber"/>
+		<add action="angel_raffleclient/randomnumber/index" id="Angel_RaffleClient::angel_raffleclient_randomnumber" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Random Numbers"/>
+		<add action="angel_raffleclient/test/index" id="Angel_RaffleClient::angel_raffleclient_test_tickets" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Raffles"/>
 		<add action="angel_raffleclient/test/new" id="Angel_RaffleClient::angel_raffleclient_test" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Test"/>		<!--<add action="angel_raffleclient/transaction/index" id="Angel_RaffleClient::angel_raffleclient_transaction" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Transaction"/>-->
 	</menu>
 </config>

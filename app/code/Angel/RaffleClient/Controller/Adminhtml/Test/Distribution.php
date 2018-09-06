@@ -8,7 +8,7 @@ use Magento\Backend\App\Action\Context;
 use Angel\RaffleClient\Model\Test\ConvertToCsv;
 use Magento\Framework\App\Response\Http\FileFactory;
 
-class Save extends Action
+class Distribution extends Action
 {
 
     /**
@@ -45,9 +45,6 @@ class Save extends Action
     public function execute()
     {
         $total = $this->getRequest()->getParams();
-        if (isset($total['back'])){
-            return $this->fileFactory->create('distribution_'.time().'.csv', $this->converter->getDistribution($total), 'var');
-        }
-        return $this->fileFactory->create('random_number_'.time().'.csv', $this->converter->getCsvFile($total), 'var');
+        return $this->fileFactory->create('distribution_'.time().'.csv', $this->converter->getDistribution($total), 'var');
     }
 }
