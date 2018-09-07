@@ -147,7 +147,7 @@ class Raffle
      */
     public function isAbleToCreateTicket(){
         // TODO check raffle status
-        return $this->product->getId() && $this->isRaffleProduct($this->getProduct())
+        return $this->getProduct()->getId() && $this->isRaffleProduct($this->getProduct())
             && !$this->isOverTotalTicket();
     }
 
@@ -267,6 +267,9 @@ class Raffle
         return $this->totalRNGs;
     }
 
+    /**
+     * @return \Angel\RaffleClient\Model\ResourceModel\Ticket\Collection
+     */
     public function getTickets(){
         return $this->ticketCollection->getRaffleTickets($this->getProduct()->getId());
     }

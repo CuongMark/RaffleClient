@@ -153,6 +153,36 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
         return $this;
     }
 
+    /**
+     * @param int $end
+     * @param array $prizes
+     * @return array
+     */
+    public function checkTest($end, &$prizes){
+        $exitRand = [];
+        $result = [];
+        /** @var \Angel\RaffleClient\Model\Prize $_prize */
+        try {
+            foreach ($prizes as $key => $prizeQty) {
+                if ($prizeQty>0){
+                    $countNew = 0;
+                    for ($i = 0; $i < $prizeQty; $i++) {
+                        $rand = $this->randomNumberGenerateModel->generateRand($this->getStart(), $end, $exitRand);
+                        if ($rand !== false && $this->getStart() <= $rand && $rand <= $this->getEnd()) {
+                            /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
+                            $result[] = $rand;
+                            $countNew++;
+                        }
+                    }
+                    $prizes[$key] -= $countNew;
+                }
+            }
+        } catch (\Exception $e){
+
+        }
+        return $result;
+    }
+
     public function validate(){
 
     }

@@ -49,7 +49,7 @@
             </filterSelect>
         </filters>
         <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
-            <action name="status">
+            <action name="test">
                 <settings>
                     <type>test</type>
                     <label translate="true">Test RNG</label>
