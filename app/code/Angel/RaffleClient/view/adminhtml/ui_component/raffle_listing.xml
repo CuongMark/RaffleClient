@@ -96,6 +96,27 @@
                                 <param name="total_time">10000</param>
                             </url>
                         </action>
+                        <action name="6">
+                            <type>g</type>
+                            <label translate="true">Distribution RNG 1.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsDistribution">
+                                <param name="total_time">1000</param>
+                            </url>
+                        </action>
+                        <action name="7">
+                            <type>h</type>
+                            <label translate="true">Distribution RNG 5.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsDistribution">
+                                <param name="total_time">5000</param>
+                            </url>
+                        </action>
+                        <action name="8">
+                            <type>i</type>
+                            <label translate="true">Distribution RNG 10.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsDistribution">
+                                <param name="total_time">10000</param>
+                            </url>
+                        </action>
                     </actions>
                 </settings>
             </action>

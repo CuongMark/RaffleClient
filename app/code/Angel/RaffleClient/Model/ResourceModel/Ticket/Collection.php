@@ -49,11 +49,14 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
      * @return $this
      */
     protected function joinInvoiceItemTable(){
-        $this->getSelect()->joinLeft(
-            [static::INVOICE_ITEM_TABLE => $this->getTable('sales_invoice_item')],
-            static::INVOICE_ITEM_TABLE.'.entity_id = main_table.invoice_item_id',
-            ['product_id' => static::INVOICE_ITEM_TABLE.'.product_id']
-        );
+        if (!isset($this->isJoinedInvoieItem)) {
+            $this->isJoinedInvoieItem = true;
+            $this->getSelect()->joinLeft(
+                [static::INVOICE_ITEM_TABLE => $this->getTable('sales_invoice_item')],
+                static::INVOICE_ITEM_TABLE . '.entity_id = main_table.invoice_item_id',
+                ['product_id' => static::INVOICE_ITEM_TABLE . '.product_id']
+            );
+        }
         return $this;
     }
 
@@ -61,11 +64,14 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
      * @return $this
      */
     protected function joinInvoiceTable(){
-        $this->getSelect()->joinLeft(
-            [static::INVOICE_TABLE => $this->getTable('sales_invoice')],
-            static::INVOICE_ITEM_TABLE.'.parent_id ='.static::INVOICE_TABLE.'.entity_id',
-            ['invoice_id' => static::INVOICE_TABLE.'.entity_id']
-        );
+        if (!isset($this->isJoinedInvoie)) {
+            $this->isJoinedInvoie = true;
+            $this->getSelect()->joinLeft(
+                [static::INVOICE_TABLE => $this->getTable('sales_invoice')],
+                static::INVOICE_ITEM_TABLE . '.parent_id =' . static::INVOICE_TABLE . '.entity_id',
+                ['invoice_id' => static::INVOICE_TABLE . '.entity_id', 'created_at' => static::INVOICE_TABLE . '.created_at']
+            );
+        }
         return $this;
     }
 
@@ -76,7 +82,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
         $this->getSelect()->joinLeft(
             [static::ORDER_TABLE => $this->getTable('sales_order')],
             static::ORDER_TABLE.'.entity_id ='.static::INVOICE_TABLE.'.order_id',
-            ['customer_id' => static::ORDER_TABLE.'.customer_id']
+            ['customer_id' => static::ORDER_TABLE.'.customer_id', 'order_increment_id' => static::ORDER_TABLE.'.increment_id']
         );
         return $this;
     }

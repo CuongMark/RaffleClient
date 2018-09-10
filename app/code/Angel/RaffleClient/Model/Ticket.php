@@ -6,6 +6,7 @@ namespace Angel\RaffleClient\Model;
 use Angel\RaffleClient\Api\Data\TicketInterface;
 use Magento\Sales\Model\Order\Invoice\Item;
 use Magento\Sales\Model\Order\Invoice\ItemFactory;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
 
 class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInterface
 {
@@ -47,6 +48,11 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      */
     protected $randomNumberFactory;
 
+    /**
+     * @var PriceCurrencyInterface
+     */
+    protected $priceCurrency;
+
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
@@ -55,6 +61,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
         \Angel\RaffleClient\Model\PrizeFactory $prizeFactory,
         \Angel\RaffleClient\Model\RandomNumberFactory $randomNumberFactory,
         \Angel\RaffleClient\Model\RandomNumberGenerate $numberGenerate,
+        PriceCurrencyInterface $priceCurrency,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
@@ -65,6 +72,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
         $this->prizeFactory = $prizeFactory;
         $this->randomNumberGenerateModel = $numberGenerate;
         $this->randomNumberFactory = $randomNumberFactory;
+        $this->priceCurrency = $priceCurrency;
     }
 
     /**
@@ -214,10 +222,12 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
                             $order = $this->getInvoiceItem()->getOrderItem()->getOrder();
                             if(!isset($winners[$order->getCustomerId()])){
                                 $winners[$order->getCustomerId()] = ['email' => $order->getCustomerEmail(),
-                                    'winning_price' => $prize->getWinningPrice()
+                                    'winning_price' => $prize->getWinningPrice(),
+                                    'winning_times' => 1
                                 ];
                             } else {
                                 $winners[$order->getCustomerId()]['winning_price'] += $prize->getWinningPrice();
+                                $winners[$order->getCustomerId()]['winning_times']++;
                             }
                             $prizesArray[$prize->getId()]--;
                         }
@@ -245,6 +255,51 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     }
 
     /**
+     * @return string|null
+     */
+    public function getOrderIncrementId(){
+        return $this->getData('order_increment_id');
+    }
+
+    /**
+     * Retrieve formated price
+     *
+     * @param float $value
+     * @return string
+     */
+    public function formatPrice($value)
+    {
+        return $this->priceCurrency->format(
+            $value,
+            true,
+            PriceCurrencyInterface::DEFAULT_PRECISION,
+            1 //Todo getStore
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt(){
+        return $this->getData('created_at');
+    }
+
+    public function getStatusLabel(){
+        switch ($this->getStatus()){
+            case static::NOT_CHECKED:
+                return __('Enable');
+            case static::CHECKED:
+                return __('Enable');
+            case static::WAIT:
+                return __('Enable');
+            case static::PAID:
+                return __('Enable');
+            default:
+                return __('Enable');
+        }
+    }
+
+    /**
      * @param \Magento\Sales\Model\Order\Invoice\Item $invoiceItem
      * @return $this
      */
@@ -257,7 +312,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      * @return Raffle
      */
     public function getRaffle(){
-        if (!$this->raffle){
+        if (!$this->raffle->getProduct()){
             $this->raffle = $this->raffle->setProduct($this->getInvoiceItem()->getProductId());
         }
         return $this->raffle;

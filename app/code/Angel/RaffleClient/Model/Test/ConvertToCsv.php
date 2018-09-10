@@ -159,6 +159,56 @@ class ConvertToCsv
         ];
     }
 
+    public function generateDistributionTest($params, $isWinner = false){
+        $name = md5(microtime());
+        $file = 'export/random_numbers_' . $name . '.csv';
+        $this->directory->create('export');
+        $stream = $this->directory->openFile($file, 'w+');
+        $stream->lock();
+
+        $collection = $this->productCollectionFactory->create();
+        if (isset($params['selected']))
+            $collection->addAttributeToFilter('entity_id', $params['selected']);
+        $collection->addAttributeToFilter('type_id', ['in'=> \Angel\RaffleClient\Model\Raffle::getRaffleProductTypes()]);
+        $collection->addAttributeToSelect(['name', 'total_tickets']);
+        foreach ($collection as $product){
+            $raffle = $this->raffleFactory->create()->setProduct($product);
+            $prizes = $raffle->getPrizes()->getTotalPrizesItems();
+            $tickets = $raffle->getTickets();
+            $stream->writeCsv([$product->getName()]);
+            $totalTickets = $raffle->getTotalTicket() - 1;
+            $distribution = [];
+            for ($i=0;$i < $params['total_time']; $i++) {
+                /** @var \Angel\RaffleClient\Model\Ticket $ticket */
+                $result = $rand = [];
+                $dulicatePrizes = $prizes;
+                foreach ($tickets as $ticket) {
+                    $rand = $ticket->checkTest($totalTickets, $dulicatePrizes);
+                    $result = array_merge($rand, $result);
+                }
+                foreach ($result as $num){
+                    if (isset($distribution[$num])){
+                        $distribution[$num]['total']++;
+                    }else {
+                        $distribution[$num] = ['number' => $num, 'total' => 1];
+                    }
+                }
+            }
+            ksort($distribution);
+            foreach ($distribution as $item){
+                $stream->writeCsv($item);
+            }
+        }
+
+        $stream->unlock();
+        $stream->close();
+        return [
+            'type' => 'filename',
+            'value' => $file,
+            'rm' => true  // can delete file after use
+        ];
+    }
+
     /**
      * @param \Magento\Catalog\Model\Product $product
      * @param int $totalTimes
@@ -203,6 +253,7 @@ class ConvertToCsv
                 $ticket->checkTestCustomer($totalTickets, $raffle->getPrizes(), $dulicatePrizesArray, $winners);
             }
         }
+        $stream->writeCsv([__('Customer Email'), __('Total Winning Price'), __('Total Winning Times')]);
         foreach ($winners as $winner){
             $stream->writeCsv($winner);
         }

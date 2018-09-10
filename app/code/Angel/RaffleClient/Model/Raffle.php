@@ -155,6 +155,9 @@ class Raffle
      * @return int
      */
     public function getTotalTicket(){
+        if($this->getProduct()->getTypeId() == Fifty::TYPE_ID){
+            return $this->getCurrentLargestTicketNumber() + 1;
+        }
         if ($this->getProduct()->getTotalTickets()){
             return (int) $this->getProduct()->getTotalTickets();
         }

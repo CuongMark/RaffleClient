@@ -25,14 +25,15 @@
             </tr>
             </thead>
             <tbody>
+            <?php /** @var \Angel\RaffleClient\Model\Ticket $_ticket */ ?>
             <?php foreach ($_tickets as $_ticket): ?>
                 <tr>
-                    <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getRaffleName() ?></td>
-                    <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getRealOrderId() ?></td>
-                    <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($_ticket->getCreatedAt()) ?></td>
-                    <?php $extra = $block->getChildBlock('extra.container'); ?>
-                    <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>" class="col shipping"><?= $_ticket->getShippingAddress() ? $block->escapeHtml($_ticket->getShippingAddress()->getName()) : '&nbsp;' ?></td>
-                    <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->formatPrice($_ticket->getPrice()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Name')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getRaffle()->getProduct()->getName() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getOrderIncrementId() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Start Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getStart() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('End Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getEnd() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->formatPrice($_ticket->getPrice()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Purchased Time')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($_ticket->getCreatedAt()) ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ $_ticket->getStatusLabel() ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
                         <a href="<?= /* @escapeNotVerified */ $block->getViewUrl($_ticket) ?>" class="action view">
