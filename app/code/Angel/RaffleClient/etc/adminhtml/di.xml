@@ -15,7 +15,7 @@
                 </item>
                 <item name="tickets" xsi:type="array">
                     <item name="class" xsi:type="string">Angel\RaffleClient\Ui\DataProvider\Product\Form\Modifier\Tickets</item>
-                    <item name="sortOrder" xsi:type="number">80</item>
+                    <item name="sortOrder" xsi:type="number">75</item>
                 </item>
                 <item name="random_number" xsi:type="array">
                     <item name="class" xsi:type="string">Angel\RaffleClient\Ui\DataProvider\Product\Form\Modifier\RandomNumber</item>

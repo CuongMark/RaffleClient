@@ -55,44 +55,44 @@
                     <label translate="true">Test RNG</label>
                     <actions>
                         <action name="0">
-                            <type>enable</type>
-                            <label translate="true">100 times</label>
-                            <url path="angel_raffleclient/test/tickets">
-                                <param name="total_time">100</param>
-                            </url>
-                        </action>
-                        <action name="1">
-                            <type>disable</type>
-                            <label translate="true">500 times</label>
-                            <url path="angel_raffleclient/test/tickets">
-                                <param name="total_time">500</param>
-                            </url>
-                        </action>
-                        <action name="2">
-                            <type>enable</type>
-                            <label translate="true">1000 times</label>
+                            <type>a</type>
+                            <label translate="true">RNG 1.000 times</label>
                             <url path="angel_raffleclient/test/tickets">
                                 <param name="total_time">1000</param>
                             </url>
                         </action>
-                        <action name="3">
-                            <type>disable</type>
-                            <label translate="true">2000 times</label>
-                            <url path="angel_raffleclient/test/tickets">
-                                <param name="total_time">2000</param>
-                            </url>
-                        </action>
-                        <action name="4">
-                            <type>enable</type>
-                            <label translate="true">5000 times</label>
+                        <action name="1">
+                            <type>b</type>
+                            <label translate="true">RNG 5.000 times</label>
                             <url path="angel_raffleclient/test/tickets">
                                 <param name="total_time">5000</param>
                             </url>
                         </action>
-                        <action name="5">
-                            <type>disable</type>
-                            <label translate="true">10000 times</label>
+                        <action name="2">
+                            <type>c</type>
+                            <label translate="true">RNG 10.000 times</label>
                             <url path="angel_raffleclient/test/tickets">
+                                <param name="total_time">10000</param>
+                            </url>
+                        </action>
+                        <action name="3">
+                            <type>d</type>
+                            <label translate="true">RNG winners 1.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsCustomer">
+                                <param name="total_time">1000</param>
+                            </url>
+                        </action>
+                        <action name="4">
+                            <type>e</type>
+                            <label translate="true">RNG winners 5.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsCustomer">
+                                <param name="total_time">5000</param>
+                            </url>
+                        </action>
+                        <action name="5">
+                            <type>f</type>
+                            <label translate="true">RNG winners 10.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsCustomer">
                                 <param name="total_time">10000</param>
                             </url>
                         </action>

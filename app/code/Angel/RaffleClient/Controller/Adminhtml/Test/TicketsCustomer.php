@@ -8,7 +8,7 @@ use Magento\Backend\App\Action\Context;
 use Angel\RaffleClient\Model\Test\ConvertToCsv;
 use Magento\Framework\App\Response\Http\FileFactory;
 
-class Tickets extends Action
+class TicketsCustomer extends Action
 {
 
     /**
@@ -58,6 +58,6 @@ class Tickets extends Action
     public function execute()
     {
         $params = $this->getRequest()->getParams();
-        return $this->fileFactory->create('random_number_'.time().'.csv', $this->converter->generateTest($params), 'var');
+        return $this->fileFactory->create('winning_'.time().'.csv', $this->converter->generateTest($params, true), 'var');
     }
 }

@@ -169,7 +169,6 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
                     for ($i = 0; $i < $prizeQty; $i++) {
                         $rand = $this->randomNumberGenerateModel->generateRand($this->getStart(), $end, $exitRand);
                         if ($rand !== false && $this->getStart() <= $rand && $rand <= $this->getEnd()) {
-                            /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
                             $result[] = $rand;
                             $countNew++;
                         }
@@ -181,6 +180,53 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
 
         }
         return $result;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getBasePrice(){
+        return $this->getInvoiceItem()->getBasePrice();
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getPrice(){
+        return $this->getInvoiceItem()->getPrice();
+    }
+
+    /**
+     * @param $end
+     * @param \Angel\RaffleClient\Model\ResourceModel\Prize\Collection $prizes
+     * @param array $winner
+     */
+    public function checkTestCustomer($end, $prizes, &$prizesArray, &$winners){
+        $exitRand = [];
+        /** @var \Angel\RaffleClient\Model\Prize $prize */
+        try {
+            foreach ($prizes as $prize) {
+                $prizeQty = $prizesArray[$prize->getId()];
+                if ($prizeQty>0){
+                    for ($i = 0; $i < $prizeQty; $i++) {
+                        $rand = $this->randomNumberGenerateModel->generateRand($this->getStart(), $end, $exitRand);
+                        if ($rand !== false && $this->getStart() <= $rand && $rand <= $this->getEnd()) {
+                            $order = $this->getInvoiceItem()->getOrderItem()->getOrder();
+                            if(!isset($winners[$order->getCustomerId()])){
+                                $winners[$order->getCustomerId()] = ['email' => $order->getCustomerEmail(),
+                                    'winning_price' => $prize->getWinningPrice()
+                                ];
+                            } else {
+                                $winners[$order->getCustomerId()]['winning_price'] += $prize->getWinningPrice();
+                            }
+                            $prizesArray[$prize->getId()]--;
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e){
+
+        }
     }
 
     public function validate(){

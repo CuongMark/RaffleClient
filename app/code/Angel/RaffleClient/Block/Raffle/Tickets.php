@@ -1,0 +1,154 @@
+<?php
+namespace Angel\RaffleClient\Block\Raffle;
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+namespace Angel\RaffleClient\Block\Raffle;
+
+use \Magento\Framework\App\ObjectManager;
+use \Magento\Sales\Model\ResourceModel\Order\CollectionFactoryInterface;
+
+/**
+ * Sales order history block
+ *
+ * @api
+ * @since 100.0.2
+ */
+class Tickets extends \Magento\Framework\View\Element\Template
+{
+    /**
+     * @var string
+     */
+    protected $_template = 'raffle/ticket.phtml';
+
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    protected $_customerSession;
+
+    /**
+     * @var \Magento\Sales\Model\Order\Config
+     */
+    protected $_orderConfig;
+
+    /**
+     * @var \Angel\RaffleClient\Model\ResourceModel\Ticket\Collection
+     */
+    protected $tickets;
+
+    /**
+     * @var \Angel\RaffleClient\Model\ResourceModel\Ticket\CollectionFactory
+     */
+    protected $_ticketCollectionFactory;
+
+
+    /**
+     * Tickets constructor.
+     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param \Angel\RaffleClient\Model\ResourceModel\Ticket\CollectionFactory $ticketCollectionFactory
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Sales\Model\Order\Config $orderConfig
+     * @param array $data
+     */
+    public function __construct(
+        \Magento\Framework\View\Element\Template\Context $context,
+        \Angel\RaffleClient\Model\ResourceModel\Ticket\CollectionFactory $ticketCollectionFactory,
+        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Sales\Model\Order\Config $orderConfig,
+        array $data = []
+    ) {
+        $this->_ticketCollectionFactory = $ticketCollectionFactory;
+        $this->_customerSession = $customerSession;
+        $this->_orderConfig = $orderConfig;
+        parent::__construct($context, $data);
+    }
+
+    /**
+     * @return void
+     */
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->pageConfig->getTitle()->set(__('My Tickets'));
+    }
+
+
+    /**
+     * @return \Angel\RaffleClient\Model\ResourceModel\Ticket\Collection|bool
+     */
+    public function getTickets()
+    {
+        if (!($customerId = $this->_customerSession->getCustomerId())) {
+            return false;
+        }
+        if (!$this->tickets) {
+            $this->tickets = $this->_ticketCollectionFactory->create();
+            $this->tickets->addCustomerFilter($this->_customerSession->getCustomerId());
+        }
+        return $this->tickets;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+        if ($this->getTickets()) {
+            $pager = $this->getLayout()->createBlock(
+                \Magento\Theme\Block\Html\Pager::class,
+                'sales.order.history.pager'
+            )->setCollection(
+                $this->getTickets()
+            );
+            $this->setChild('pager', $pager);
+            $this->getTickets()->load();
+        }
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPagerHtml()
+    {
+        return $this->getChildHtml('pager');
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getViewUrl($order)
+    {
+        return $this->getUrl('sales/order/view', ['order_id' => $order->getId()]);
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getTrackUrl($order)
+    {
+        return $this->getUrl('sales/order/track', ['order_id' => $order->getId()]);
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getReorderUrl($order)
+    {
+        return $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackUrl()
+    {
+        return $this->getUrl('customer/account/');
+    }
+}

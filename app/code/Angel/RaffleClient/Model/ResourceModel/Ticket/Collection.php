@@ -7,6 +7,8 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 {
 
     const INVOICE_ITEM_TABLE = 'invoice_item';
+    const INVOICE_TABLE = 'invoice';
+    const ORDER_TABLE = 'order';
     /**
      * Define resource model
      *
@@ -52,6 +54,42 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
             static::INVOICE_ITEM_TABLE.'.entity_id = main_table.invoice_item_id',
             ['product_id' => static::INVOICE_ITEM_TABLE.'.product_id']
         );
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function joinInvoiceTable(){
+        $this->getSelect()->joinLeft(
+            [static::INVOICE_TABLE => $this->getTable('sales_invoice')],
+            static::INVOICE_ITEM_TABLE.'.parent_id ='.static::INVOICE_TABLE.'.entity_id',
+            ['invoice_id' => static::INVOICE_TABLE.'.entity_id']
+        );
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function joinOrderTable(){
+        $this->getSelect()->joinLeft(
+            [static::ORDER_TABLE => $this->getTable('sales_order')],
+            static::ORDER_TABLE.'.entity_id ='.static::INVOICE_TABLE.'.order_id',
+            ['customer_id' => static::ORDER_TABLE.'.customer_id']
+        );
+        return $this;
+    }
+
+    /**
+     * @param int $customer_id
+     * @return $this
+     */
+    public function addCustomerFilter($customer_id){
+        $this->joinInvoiceItemTable();
+        $this->joinInvoiceTable();
+        $this->joinOrderTable();
+        $this->addFieldToFilter(static::ORDER_TABLE.'.customer_id', $customer_id);
         return $this;
     }
 

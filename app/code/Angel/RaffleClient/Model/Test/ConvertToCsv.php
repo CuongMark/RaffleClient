@@ -30,16 +30,30 @@ class ConvertToCsv
     protected $randomNumberGenerate;
 
     /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     */
+    protected $productCollectionFactory;
+
+    /**
+     * @var \Angel\RaffleClient\Model\RaffleFactory
+     */
+    protected $raffleFactory;
+
+    /**
      * ConvertToCsv constructor.
      * @param Filesystem $filesystem
      * @param RandomNumberGenerate $randomNumberGenerate
      */
     public function __construct(
         Filesystem $filesystem,
-        RandomNumberGenerate $randomNumberGenerate
+        RandomNumberGenerate $randomNumberGenerate,
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
+        \Angel\RaffleClient\Model\RaffleFactory $raffleFactory
     ) {
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
         $this->randomNumberGenerate = $randomNumberGenerate;
+        $this->productCollectionFactory = $productCollectionFactory;
+        $this->raffleFactory = $raffleFactory;
     }
 
     /**
@@ -114,5 +128,83 @@ class ConvertToCsv
             'value' => $file,
             'rm' => true  // can delete file after use
         ];
+    }
+
+    public function generateTest($params, $isWinner = false){
+        $name = md5(microtime());
+        $file = 'export/random_numbers_' . $name . '.csv';
+        $this->directory->create('export');
+        $stream = $this->directory->openFile($file, 'w+');
+        $stream->lock();
+
+        $collection = $this->productCollectionFactory->create();
+        if (isset($params['selected']))
+            $collection->addAttributeToFilter('entity_id', $params['selected']);
+        $collection->addAttributeToFilter('type_id', ['in'=> \Angel\RaffleClient\Model\Raffle::getRaffleProductTypes()]);
+        $collection->addAttributeToSelect(['name', 'total_tickets']);
+        foreach ($collection as $product){
+            if ($isWinner){
+                $this->generateRaffleCustomerTest($product, $params['total_time'], $stream);
+            } else {
+                $this->generateRaffleTest($product, $params['total_time'], $stream);
+            }
+        }
+
+        $stream->unlock();
+        $stream->close();
+        return [
+            'type' => 'filename',
+            'value' => $file,
+            'rm' => true  // can delete file after use
+        ];
+    }
+
+    /**
+     * @param \Magento\Catalog\Model\Product $product
+     * @param int $totalTimes
+     * @param \Magento\Framework\Filesystem\File\WriteInterface $stream
+     */
+    public function generateRaffleTest($product, $totalTimes,  &$stream){
+        $raffle = $this->raffleFactory->create()->setProduct($product);
+        $prizes = $raffle->getPrizes()->getTotalPrizesItems();
+        $tickets = $raffle->getTickets();
+        $stream->writeCsv([$product->getName()]);
+        $totalTickets = $raffle->getTotalTicket() - 1;
+        for ($i=0;$i < $totalTimes; $i++) {
+            /** @var \Angel\RaffleClient\Model\Ticket $ticket */
+            $result = $rand = [];
+            $dulicatePrizes = $prizes;
+            foreach ($tickets as $ticket) {
+                $rand = $ticket->checkTest($totalTickets, $dulicatePrizes);
+                $result = array_merge($rand, $result);
+            }
+            $stream->writeCsv($result);
+        }
+    }
+
+    /**
+     * @param \Magento\Catalog\Model\Product $product
+     * @param int $totalTimes
+     * @param \Magento\Framework\Filesystem\File\WriteInterface $stream
+     */
+    public function generateRaffleCustomerTest($product, $totalTimes,  &$stream){
+        $raffle = $this->raffleFactory->create()->setProduct($product);
+        $tickets = $raffle->getTickets();
+        $stream->writeCsv([$product->getName()]);
+        $totalTickets = $raffle->getTotalTicket() - 1;
+        $winners = $prizesArray = [];
+        foreach ($raffle->getPrizes() as $prize){
+            $prizesArray[$prize->getId()] = $prize->getTotal();
+        }
+        for ($i=0;$i < $totalTimes; $i++) {
+            $dulicatePrizesArray = $prizesArray;
+            /** @var \Angel\RaffleClient\Model\Ticket $ticket */
+            foreach ($tickets as $ticket) {
+                $ticket->checkTestCustomer($totalTickets, $raffle->getPrizes(), $dulicatePrizesArray, $winners);
+            }
+        }
+        foreach ($winners as $winner){
+            $stream->writeCsv($winner);
+        }
     }
 }

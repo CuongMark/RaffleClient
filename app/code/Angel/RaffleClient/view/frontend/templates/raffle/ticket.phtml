@@ -1,9 +1,52 @@
 <?php
 /**
- * @var $block \Angel\RaffleClient\Block\Raffle\Ticket
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+/** @var \Angel\RaffleClient\Block\Raffle\Tickets $block */
 ?>
-<div>
-	<?= $block->dispayTickets() ?>
-	<?= __('Hello Angel_RaffleClient::raffle/ticket.phtml') ?>
-</div>
+<?php $_tickets = $block->getTickets(); ?>
+<?php if ($_tickets && count($_tickets)): ?>
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history" id="my-tickets-table">
+            <caption class="table-caption"><?= /* @escapeNotVerified */ __('Tickets') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col id"><?= /* @escapeNotVerified */ __('Name') ?></th>
+                <th scope="col" class="col id"><?= /* @escapeNotVerified */ __('Order #') ?></th>
+                <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Start Number') ?></th>
+                <th scope="col" class="col shipping"><?= /* @escapeNotVerified */ __('End Number') ?></th>
+                <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Price') ?></th>
+                <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Purchased Time') ?></th>
+                <th scope="col" class="col status"><?= /* @escapeNotVerified */ __('Status') ?></th>
+                <th scope="col" class="col actions"><?= /* @escapeNotVerified */ __('Action') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($_tickets as $_ticket): ?>
+                <tr>
+                    <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getRaffleName() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getRealOrderId() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($_ticket->getCreatedAt()) ?></td>
+                    <?php $extra = $block->getChildBlock('extra.container'); ?>
+                    <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>" class="col shipping"><?= $_ticket->getShippingAddress() ? $block->escapeHtml($_ticket->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->formatPrice($_ticket->getPrice()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ $_ticket->getStatusLabel() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                        <a href="<?= /* @escapeNotVerified */ $block->getViewUrl($_ticket) ?>" class="action view">
+                            <span><?= /* @escapeNotVerified */ __('View Order') ?></span>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?= $block->getPagerHtml() ?></div>
+    <?php endif ?>
+<?php else: ?>
+    <div class="message info empty"><span><?= /* @escapeNotVerified */ __('You have placed no tickets.') ?></span></div>
+<?php endif ?>
