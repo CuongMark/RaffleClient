@@ -71,6 +71,21 @@
 				</item>
 			</argument>
 		</column>
+		<actionsColumn name="product_actions" class="Angel\RaffleClient\Ui\Component\Listing\Tickets\Columns\ProductActions" sortOrder="1">
+			<settings>
+				<indexField>product_id</indexField>
+			</settings>
+		</actionsColumn>
+		<actionsColumn name="order_actions" class="Angel\RaffleClient\Ui\Component\Listing\Tickets\Columns\OrderActions" sortOrder="1">
+			<settings>
+				<indexField>product_id</indexField>
+			</settings>
+		</actionsColumn>
+		<actionsColumn name="customer_actions" class="Angel\RaffleClient\Ui\Component\Listing\Tickets\Columns\CustomerActions" sortOrder="1">
+			<settings>
+				<indexField>product_id</indexField>
+			</settings>
+		</actionsColumn>
 		<column name="invoice_item_id">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">

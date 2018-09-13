@@ -1,12 +1,13 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
 	<menu>
-		<!--<add action="raffle/index/index" id="Angel_RaffleClient::index_index" module="Angel_RaffleClient" parent="Angel::top_level" resource="Angel_RaffleClient::index_index" sortOrder="9999" title="index index"/>-->
 		<add id="Angel::top_level" module="Angel_RaffleClient" resource="Magento_Backend::content" sortOrder="10" title="Raffle"/>
-		<!--<add action="angel_raffleclient/prize/index" id="Angel_RaffleClient::angel_raffleclient_prize" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Prize"/>-->
-		<add action="angel_raffleclient/ticket/index" id="Angel_RaffleClient::angel_raffleclient_ticket" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Ticket"/>
-		<add action="angel_raffleclient/randomnumber/index" id="Angel_RaffleClient::angel_raffleclient_randomnumber" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Random Numbers"/>
-		<add action="angel_raffleclient/test/index" id="Angel_RaffleClient::angel_raffleclient_test_tickets" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Raffles"/>
-		<add action="angel_raffleclient/test/new" id="Angel_RaffleClient::angel_raffleclient_test" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Test"/>		<!--<add action="angel_raffleclient/transaction/index" id="Angel_RaffleClient::angel_raffleclient_transaction" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Transaction"/>-->
+		<add action="angel_raffleclient/ticket/index" id="Angel_RaffleClient::angel_raffleclient_ticket" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="20" title="Tickets"/>
+		<add action="angel_raffleclient/test/index" id="Angel_RaffleClient::angel_raffleclient_test_tickets" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="10" title="Raffles"/>
+		<add action="angel_raffleclient/test/new" id="Angel_RaffleClient::angel_raffleclient_test" module="Angel_RaffleClient" parent="Angel::top_level" resource="Magento_Backend::content" sortOrder="30" title="Test"/>
+
+		<add id="Angel::fifty_top_level" module="Angel_RaffleClient" resource="Magento_Backend::content" sortOrder="11" title="50/50"/>
+		<add action="angel_raffleclient/fifty/tickets" id="Angel_RaffleClient::angel_raffleclient_ticket_fiftys" module="Angel_RaffleClient" parent="Angel::fifty_top_level" resource="Magento_Backend::content" sortOrder="30" title="Tickets"/>
+		<add action="angel_raffleclient/fifty/index" id="Angel_RaffleClient::angel_raffleclient_fifty" module="Angel_RaffleClient" parent="Angel::fifty_top_level" resource="Magento_Backend::content" sortOrder="20" title="50/50"/>
 	</menu>
 </config>

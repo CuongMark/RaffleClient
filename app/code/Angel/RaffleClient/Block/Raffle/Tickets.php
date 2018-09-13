@@ -23,6 +23,8 @@ class Tickets extends \Magento\Framework\View\Element\Template
      */
     protected $_template = 'raffle/ticket.phtml';
 
+    protected $_type = \Angel\RaffleClient\Model\Raffle::TYPE_ID;
+
     /**
      * @var \Magento\Customer\Model\Session
      */
@@ -86,6 +88,8 @@ class Tickets extends \Magento\Framework\View\Element\Template
         if (!$this->tickets) {
             $this->tickets = $this->_ticketCollectionFactory->create();
             $this->tickets->addCustomerFilter($this->_customerSession->getCustomerId());
+            $this->tickets->joinPrizes();
+            $this->tickets->joinProductTypeId($this->_type);
         }
         return $this->tickets;
     }
@@ -118,12 +122,12 @@ class Tickets extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param object $order
+     * @param object $ticket
      * @return string
      */
-    public function getViewUrl($order)
+    public function getViewUrl($ticket)
     {
-        return $this->getUrl('sales/order/view', ['order_id' => $order->getId()]);
+        return $this->getUrl('raffle/index/ticket', ['ticket_id' => $ticket->getId()]);
     }
 
     /**

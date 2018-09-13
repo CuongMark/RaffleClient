@@ -3,28 +3,19 @@
 
 namespace Angel\RaffleClient\Block\Product;
 
-class View extends \Magento\Framework\View\Element\Template
+use Magento\Catalog\Api\ProductRepositoryInterface;
+
+class View extends \Magento\Catalog\Block\Product\View
 {
 
-    /**
-     * Constructor
-     *
-     * @param \Magento\Framework\View\Element\Template\Context  $context
-     * @param array $data
-     */
-    public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        array $data = []
-    ) {
-        parent::__construct($context, $data);
+    public function isRaffleFiftyProduct(){
+        return $this->getProduct()->getTypeId() == \Angel\RaffleClient\Model\Fifty::TYPE_ID;
     }
 
-    /**
-     * @return string
-     */
-    public function dispayRaffleInformation()
-    {
-        //Your block code
-        return __('Hello Developer! This how to get the storename: %1 and this is the way to build a url: %2', $this->_storeManager->getStore()->getName(), $this->getUrl('contacts'));
+    public function getRaffleTimeLeft(){
+        $date = new \DateTime();
+        $raffleEnd = new \DateTime($this->getProduct()->getRaffleEnd());
+        $date->getTimestamp();
+        return $raffleEnd->getTimestamp() - $date->getTimestamp();
     }
 }

@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var \Angel\RaffleClient\Block\Raffle\Ticket $block */
+?>
+<h2><?= $block->getTicket()->getRaffle()->getName() ?></h2>
+<span><?= $block->getTicket()->getRaffle()->getDescription() ?></span>
+<?php $_wonNumbers = $block->getTicket()->getWinningNumberCollection(); ?>
+<?php if ($_wonNumbers && count($_wonNumbers)): ?>
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history" id="my-tickets-table">
+            <caption class="table-caption"><?= /* @escapeNotVerified */ __('Won Numbers') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col name"><?= /* @escapeNotVerified */ __('Prize Name') ?></th>
+                <th scope="col" class="col order"><?= /* @escapeNotVerified */ __('Won Number') ?></th>
+                <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Won Price') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php /** @var \Angel\RaffleClient\Model\RandomNumber $_wonNumber */ ?>
+            <?php foreach ($_wonNumbers as $_wonNumber): ?>
+                <tr>
+                    <td data-th="<?= $block->escapeHtml(__('Price Name')) ?>" class="col id"><?= /* @escapeNotVerified */ $_wonNumber->getPrizeName() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Won Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_wonNumber->getNumber() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Won Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $block->getTicket()->formatPrice($_wonNumber->getPrice()) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?= $block->getPagerHtml() ?></div>
+    <?php endif ?>
+<?php else: ?>
+    <div class="message info empty"><span><?= /* @escapeNotVerified */ __('Sorry, You have not won numbers in this ticket.') ?></span></div>
+<?php endif ?>

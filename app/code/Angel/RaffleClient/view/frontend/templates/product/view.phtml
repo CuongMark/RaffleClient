@@ -3,7 +3,15 @@
  * @var $block \Angel\RaffleClient\Block\Product\View
  */
 ?>
-<div>
-	<?= $block->dispayRaffleInformation() ?>
-	<?= __('Hello Angel_RaffleClient::product/view.phtml') ?>
-</div>
+<?php if ($block->isRaffleFiftyProduct()): ?>
+    <div><?= __('Time Left') ?>: <span id="fity_countdown" data-mage-init='{"angel/countdown": {"time_left":<?php echo $block->getRaffleTimeLeft() ?>}}'></span></div>
+    <?php
+    /**
+     * Copyright © Magento, Inc. All rights reserved.
+     * See COPYING.txt for license details.
+     */
+
+// @codingStandardsIgnoreFile
+    /** @var \Angel\RaffleClient\Block\Raffle\Tickets $block */
+    ?>
+<?php endif; ?>

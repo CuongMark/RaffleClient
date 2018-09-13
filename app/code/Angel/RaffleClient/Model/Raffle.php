@@ -71,7 +71,15 @@ class Raffle
      */
     protected $randomNumberFactory;
 
+    /**
+     * @var RandomNumberGenerate
+     */
     protected $randomNumberGenerateModel;
+
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\DateTimeFactory
+     */
+    protected $dateTimeFactory;
 
     /**
      * @return array
@@ -88,7 +96,8 @@ class Raffle
         \Angel\RaffleClient\Model\RandomNumberGenerate $randomNumberGenerateModel,
         \Angel\RaffleClient\Model\ResourceModel\Ticket\Collection $ticketCollection,
         \Angel\RaffleClient\Model\ResourceModel\RandomNumber\CollectionFactory $randomNumberCollectionFactory,
-        \Angel\RaffleClient\Model\ResourceModel\Prize\CollectionFactory $prizeCollectionFactory
+        \Angel\RaffleClient\Model\ResourceModel\Prize\CollectionFactory $prizeCollectionFactory,
+        \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory
     ){
         $this->productFactory = $productFactory;
         $this->prizeFactory = $prizeFactory;
@@ -99,6 +108,7 @@ class Raffle
         $this->currentTicketNumber = false;
         $this->randomNumberFactory = $randomNumberFactory;
         $this->randomNumberGenerateModel = $randomNumberGenerateModel;
+        $this->dateTimeFactory = $dateTimeFactory;
     }
 
     /**
@@ -119,6 +129,14 @@ class Raffle
      */
     public function getProduct(){
         return $this->product;
+    }
+
+    public function getName(){
+        return $this->getProduct()->getName();
+    }
+
+    public function getDescription(){
+        return $this->getProduct()->getDescription();
     }
 
     /**
@@ -291,17 +309,19 @@ class Raffle
     public function isAbleToGenerateByTicket(){
         //Todo check raffle type
         return true;
-        return $this->getProduct()->getData('raffle_type');
     }
 
     /**
      * create and check Random Number
      */
-    public function check(){
-        //Todo check end time
-        if (!$this->getProduct()->getTypeId()==fifty::TYPE_ID
+    public function generateFiftyRaffleTicket(){
+        if ($this->getProduct()->getTypeId()==fifty::TYPE_ID
             || $this->getTotalRNGs()){
-            return $this;
+            $endTime = $this->dateTimeFactory->create()->date('Y-m-d H:i:s', $this->getProduct()->getRaffleEnd());
+            $now = $this->dateTimeFactory->create()->date();
+            if ($now < $endTime) {
+                return $this;
+            }
         }
         /** random number from start */
         $start = 0;
@@ -321,10 +341,23 @@ class Raffle
                         /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
                         $randomNumberModel = $this->randomNumberFactory->create();
                         $randomNumberModel->setPrizeId($_prize->getId())
-                            ->setNumber($rand);
+                            ->setNumber($rand)
+                            ->setPrice($_prize->getWinningPrice());
                         $randomNumberModel->getResource()->save($randomNumberModel);
                     }
                 }
+            }
+            $tickets = $this->getTickets();
+            /** @var \Angel\RaffleClient\Model\Ticket $_ticket */
+            foreach ($tickets as $_ticket){
+                $_ticket->setStatus(Ticket::LOSE);
+                foreach ($exitRand as $number){
+                    if ($_ticket->getStart() <= $number && $_ticket->getEnd() >= $number){
+                        $_ticket->setStatus(Ticket::WON);
+                        break;
+                    }
+                }
+                $_ticket->save();
             }
         } catch (\Exception $e){
 

@@ -1,21 +1,24 @@
 <?php
 
 
-namespace Angel\RaffleClient\Controller\Adminhtml\Ticket;
+namespace Angel\RaffleClient\Controller\Index;
 
-class Index extends \Magento\Backend\App\Action
+class Fiftytickets extends \Magento\Framework\App\Action\Action
 {
 
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     */
     protected $resultPageFactory;
 
     /**
      * Constructor
      *
-     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\App\Action\Context  $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory
     ) {
         $this->resultPageFactory = $resultPageFactory;
@@ -23,14 +26,12 @@ class Index extends \Magento\Backend\App\Action
     }
 
     /**
-     * Index action
+     * Execute view action
      *
      * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
-        $resultPage = $this->resultPageFactory->create();
-            $resultPage->getConfig()->getTitle()->prepend(__("Tickets"));
-            return $resultPage;
+        return $this->resultPageFactory->create();
     }
 }

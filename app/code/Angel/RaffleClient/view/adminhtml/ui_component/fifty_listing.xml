@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">fifty_listing.fifty_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>product_columns</spinner>
+        <deps>
+            <dep>fifty_listing.fifty_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="fifty_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="dataScope" xsi:type="string">filters.store_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Magento_Catalog::products</aclResource>
+        <dataProvider class="Angel\RaffleClient\Ui\DataProvider\Product\FiftyDataProvider" name="fifty_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters">
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <settings>
+                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    <caption translate="true">All Store Views</caption>
+                    <label translate="true">Store View</label>
+                    <dataScope>store_id</dataScope>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <action name="test">
+                <settings>
+                    <type>test</type>
+                    <label translate="true">Test RNG</label>
+                    <actions>
+                        <action name="0">
+                            <type>a</type>
+                            <label translate="true">RNG 1.000 times</label>
+                            <url path="angel_raffleclient/test/tickets">
+                                <param name="total_time">1000</param>
+                            </url>
+                        </action>
+                        <action name="1">
+                            <type>b</type>
+                            <label translate="true">RNG 5.000 times</label>
+                            <url path="angel_raffleclient/test/tickets">
+                                <param name="total_time">5000</param>
+                            </url>
+                        </action>
+                        <action name="2">
+                            <type>c</type>
+                            <label translate="true">RNG 10.000 times</label>
+                            <url path="angel_raffleclient/test/tickets">
+                                <param name="total_time">10000</param>
+                            </url>
+                        </action>
+                        <action name="3">
+                            <type>d</type>
+                            <label translate="true">RNG winners 1.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsCustomer">
+                                <param name="total_time">1000</param>
+                            </url>
+                        </action>
+                        <action name="4">
+                            <type>e</type>
+                            <label translate="true">RNG winners 5.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsCustomer">
+                                <param name="total_time">5000</param>
+                            </url>
+                        </action>
+                        <action name="5">
+                            <type>f</type>
+                            <label translate="true">RNG winners 10.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsCustomer">
+                                <param name="total_time">10000</param>
+                            </url>
+                        </action>
+                        <action name="6">
+                            <type>g</type>
+                            <label translate="true">Distribution RNG 1.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsDistribution">
+                                <param name="total_time">1000</param>
+                            </url>
+                        </action>
+                        <action name="7">
+                            <type>h</type>
+                            <label translate="true">Distribution RNG 5.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsDistribution">
+                                <param name="total_time">5000</param>
+                            </url>
+                        </action>
+                        <action name="8">
+                            <type>i</type>
+                            <label translate="true">Distribution RNG 10.000 times</label>
+                            <url path="angel_raffleclient/test/ticketsDistribution">
+                                <param name="total_time">10000</param>
+                            </url>
+                        </action>
+                    </actions>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="product_columns" class="Magento\Catalog\Ui\Component\Listing\Columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">fifty_listing.fifty_listing.product_columns.actions</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">edit</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids" sortOrder="0">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="entity_id" sortOrder="10">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="thumbnail" class="Magento\Catalog\Ui\Component\Listing\Columns\Thumbnail" component="Magento_Ui/js/grid/columns/thumbnail" sortOrder="20">
+            <settings>
+                <altField>name</altField>
+                <hasPreview>1</hasPreview>
+                <addField>true</addField>
+                <label translate="true">Thumbnail</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="name" sortOrder="30">
+            <settings>
+                <addField>true</addField>
+                <filter>text</filter>
+                <label translate="true">Name</label>
+            </settings>
+        </column>
+        <column name="type_id" component="Magento_Ui/js/grid/columns/select" sortOrder="40">
+            <settings>
+                <options class="Angel\RaffleClient\Model\Product\Type"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Type</label>
+            </settings>
+        </column>
+        <column name="sku" sortOrder="60">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">SKU</label>
+            </settings>
+        </column>
+        <column name="price" class="Magento\Catalog\Ui\Component\Listing\Columns\Price" sortOrder="70">
+            <settings>
+                <addField>true</addField>
+                <filter>textRange</filter>
+                <label translate="true">Price</label>
+            </settings>
+        </column>
+        <column name="status" component="Magento_Ui/js/grid/columns/select" sortOrder="90">
+            <settings>
+                <addField>true</addField>
+                <options class="Magento\Catalog\Model\Product\Attribute\Source\Status"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Magento\Catalog\Ui\Component\Listing\Columns\ProductActions" sortOrder="200">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

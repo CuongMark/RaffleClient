@@ -9,6 +9,9 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     const INVOICE_ITEM_TABLE = 'invoice_item';
     const INVOICE_TABLE = 'invoice';
     const ORDER_TABLE = 'order';
+    const PRIZE_TABLE = 'prize';
+    const RANDOM_NUMBER_TABLE = 'random';
+    const PRODUCT_ENTITY = 'product';
     /**
      * Define resource model
      *
@@ -48,7 +51,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     /**
      * @return $this
      */
-    protected function joinInvoiceItemTable(){
+    public function joinInvoiceItemTable(){
         if (!isset($this->isJoinedInvoieItem)) {
             $this->isJoinedInvoieItem = true;
             $this->getSelect()->joinLeft(
@@ -63,7 +66,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     /**
      * @return $this
      */
-    protected function joinInvoiceTable(){
+    public function joinInvoiceTable(){
         if (!isset($this->isJoinedInvoie)) {
             $this->isJoinedInvoie = true;
             $this->getSelect()->joinLeft(
@@ -78,11 +81,60 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     /**
      * @return $this
      */
-    protected function joinOrderTable(){
+    public function joinOrderTable(){
         $this->getSelect()->joinLeft(
             [static::ORDER_TABLE => $this->getTable('sales_order')],
             static::ORDER_TABLE.'.entity_id ='.static::INVOICE_TABLE.'.order_id',
-            ['customer_id' => static::ORDER_TABLE.'.customer_id', 'order_increment_id' => static::ORDER_TABLE.'.increment_id']
+            ['customer_id' => static::ORDER_TABLE.'.customer_id', 'order_increment_id' => static::ORDER_TABLE.'.increment_id', 'order_id' => static::ORDER_TABLE.'.entity_id', 'customer_email' => static::ORDER_TABLE.'.customer_email']
+        );
+        return $this;
+    }
+
+    protected function joinWinningNumbers(){
+
+    }
+
+    /**
+     * @return $this
+     */
+    public function joinPrizes(){
+        $this->joinInvoiceItemTable();
+        $this->getSelect()->joinLeft(
+            [static::PRIZE_TABLE => $this->getTable('angel_raffleclient_prize')],
+            static::PRIZE_TABLE.'.product_id ='.static::INVOICE_ITEM_TABLE.'.product_id',
+            []
+        );
+        $this->getSelect()->joinLeft(
+            [static::RANDOM_NUMBER_TABLE => $this->getTable('angel_raffleclient_randomnumber')],
+            static::RANDOM_NUMBER_TABLE.'.prize_id ='.static::PRIZE_TABLE.'.prize_id and '.static::RANDOM_NUMBER_TABLE.'.number >= main_table.start and '.static::RANDOM_NUMBER_TABLE.'.number <= main_table.end',
+            ['winning_numbers' => 'GROUP_CONCAT('.static::RANDOM_NUMBER_TABLE.'.number)', 'winning_price' => 'SUM('.static::RANDOM_NUMBER_TABLE.'.price)']
+        )->group('main_table.ticket_id');
+        return $this;
+    }
+
+    /**
+     * @param string|null $type_id
+     * @return $this
+     */
+    public function joinProductTypeId($type_id = null){
+        $this->joinInvoiceItemTable();
+        $this->getSelect()->joinLeft(
+            [static::PRODUCT_ENTITY => $this->getTable('catalog_product_entity')],
+            static::PRODUCT_ENTITY.'.entity_id = '.static::INVOICE_ITEM_TABLE .'.product_id',
+            []
+        );
+        if ($type_id){
+            $this->addFieldToFilter(static::PRODUCT_ENTITY.'.type_id', $type_id);
+        }
+        return $this;
+    }
+
+    public function joinProductName(){
+        $productNameAttributeId = \Magento\Framework\App\ObjectManager::getInstance()->create('Magento\Eav\Model\Config')
+            ->getAttribute(\Magento\Catalog\Model\Product::ENTITY, \Magento\Catalog\Api\Data\ProductInterface::NAME)
+            ->getAttributeId();
+        $this->getSelect()->joinLeft(['product_varchar' => $this->getTable('catalog_product_entity_varchar')],
+            "product_varchar.entity_id = ".static::INVOICE_ITEM_TABLE.".product_id AND product_varchar.attribute_id = $productNameAttributeId", ['raffle_name' => 'product_varchar.value']
         );
         return $this;
     }

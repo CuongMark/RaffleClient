@@ -14,7 +14,7 @@
 		</referenceBlock>
 		<referenceContainer name="content">
 			<uiComponent name="raffle_listing"/>
-			<!--<block class="Magento\Catalog\Block\Adminhtml\Product" name="products_list"/>-->
+			<block class="Angel\RaffleClient\Block\Adminhtml\Raffle" name="products_list"/>
 		</referenceContainer>
 	</body>
 </page>

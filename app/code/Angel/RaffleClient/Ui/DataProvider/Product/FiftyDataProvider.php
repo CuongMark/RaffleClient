@@ -15,7 +15,7 @@ namespace Angel\RaffleClient\Ui\DataProvider\Product;
  * @method \Magento\Catalog\Model\ResourceModel\Product\Collection getCollection
  * @since 100.1.0
  */
-class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider
+class FiftyDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider
 {
     /**
      * Get data
@@ -24,7 +24,7 @@ class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\Produ
      */
     public function getData()
     {
-        $this->getCollection()->addAttributeToFilter('type_id', ['in'=> [\Angel\RaffleClient\Model\Raffle::TYPE_ID]]);
+        $this->getCollection()->addAttributeToFilter('type_id', ['in'=> [\Angel\RaffleClient\Model\Fifty::TYPE_ID]]);
         if (!$this->getCollection()->isLoaded()) {
             $this->getCollection()->load();
         }

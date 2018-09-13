@@ -1,8 +1,14 @@
 <?xml version="1.0" ?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+		<css src="Angel_RaffleClient::css/countdown/timeTo.css"/>
+		<css src="Angel_RaffleClient::css/countdown/timebox.css"/>
+		<css src="Angel_RaffleClient::css/auctionbox.css"/>
+	</head>
 	<body>
-		<referenceBlock name="information">
-			<block as="product_view" class="Angel\RaffleClient\Block\Product\View" name="product.view" template="Angel_RaffleClient::product/view.phtml"/>
-		</referenceBlock>
+		<attribute name="class" value="auction-product"/>
+		<referenceContainer name="product.info.main">
+			<block class="Angel\RaffleClient\Block\Product\View" name="raffle.block" as="raffle.block" after="product.info.price" cacheable="false" template="Angel_RaffleClient::product/view.phtml"/>
+		</referenceContainer>
 	</body>
 </page>

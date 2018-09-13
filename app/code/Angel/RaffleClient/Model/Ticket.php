@@ -15,6 +15,9 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     const NOT_CHECKED = 0;
     const WAIT = 2;
     const PAID = 3;
+    const WON = 4;
+    const LOSE = 5;
+    const FALSE = 5;
 
     protected $_eventPrefix = 'angel_raffleclient_ticket';
 
@@ -29,6 +32,11 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     protected $prizeFactory;
 
     /**
+     * @var RaffleFactory
+     */
+    protected $raffleFactory;
+
+    /**
      * @var Raffle
      */
     protected $raffle;
@@ -37,6 +45,16 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      * @var \Magento\Sales\Model\Order\Invoice\Item
      */
     protected $invoiceItem;
+
+    /**
+     * @var \Magento\Customer\Model\Customer
+     */
+    protected $customer;
+
+    /**
+     * @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection
+     */
+    protected $randomNumberCollection;
 
     /**
      * @var RandomNumberGenerate
@@ -53,11 +71,26 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      */
     protected $priceCurrency;
 
+    /**
+     * Ticket constructor.
+     * @param \Magento\Framework\Model\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param ItemFactory $invoiceItemFactory
+     * @param RaffleFactory $raffleFactory
+     * @param PrizeFactory $prizeFactory
+     * @param RandomNumberFactory $randomNumberFactory
+     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param RandomNumberGenerate $numberGenerate
+     * @param PriceCurrencyInterface $priceCurrency
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
+     * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
+     * @param array $data
+     */
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Sales\Model\Order\Invoice\ItemFactory $invoiceItemFactory,
-        \Angel\RaffleClient\Model\Raffle $raffle,
+        \Angel\RaffleClient\Model\RaffleFactory $raffleFactory,
         \Angel\RaffleClient\Model\PrizeFactory $prizeFactory,
         \Angel\RaffleClient\Model\RandomNumberFactory $randomNumberFactory,
         \Angel\RaffleClient\Model\RandomNumberGenerate $numberGenerate,
@@ -68,7 +101,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     ){
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
         $this->invoiceItemFactory = $invoiceItemFactory;
-        $this->raffle = $raffle;
+        $this->raffleFactory = $raffleFactory;
         $this->prizeFactory = $prizeFactory;
         $this->randomNumberGenerateModel = $numberGenerate;
         $this->randomNumberFactory = $randomNumberFactory;
@@ -129,16 +162,17 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
             return $this;
         }
         /** random number from start */
-        $start = $this->getRaffle()->getCurrentLargestTicketNumber() + 1;
+        $start = $this->getStart();
         $end = $this->getRaffle()->getTotalTicket() -1;
         if ($start > $end){
-            $this->setStatus(static::CHECKED)->save();
+            $this->setStatus(static::FALSE)->save();
             return $this;
         }
         $prizes = $this->getRaffle()->getPrizes();
         $exitRand = [];
         /** @var \Angel\RaffleClient\Model\Prize $_prize */
         try {
+            $isWinning = false;
             foreach ($prizes as $_prize) {
                 $prizeQty = $_prize->getTotalRandomNumberNeedToGenerate();
                 if ($prizeQty>0){
@@ -148,13 +182,19 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
                             /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
                             $randomNumberModel = $this->randomNumberFactory->create();
                             $randomNumberModel->setPrizeId($_prize->getId())
-                                ->setNumber($rand);
+                                ->setNumber($rand)
+                                ->setPrice($_prize->getWinningPrice());
                             $randomNumberModel->getResource()->save($randomNumberModel);
+                            $isWinning = true;
                         }
                     }
                 }
             }
-            $this->setStatus(static::CHECKED)->save();
+            if ($isWinning){
+                $this->setStatus(static::WON)->save();
+            } else {
+                $this->setStatus(static::LOSE)->save();
+            }
         } catch (\Exception $e){
 
         }
@@ -255,10 +295,69 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     }
 
     /**
+     * @return \Magento\Customer\Model\Customer
+     */
+    public function getCustomer(){
+        if (!$this->customer){
+            $this->customer = $this->getInvoiceItem()->getInvoice()->getOrder()->getCustomer();
+        }
+        return $this->customer;
+    }
+
+    public function getCustomerId(){
+        return $this->getInvoiceItem()->getInvoice()->getOrder()->getCustomerId();
+    }
+
+    /**
      * @return string|null
      */
     public function getOrderIncrementId(){
         return $this->getData('order_increment_id');
+    }
+
+    /**
+     * @return ResourceModel\RandomNumber\Collection
+     */
+    public function getWinningNumberCollection(){
+        if (!$this->randomNumberCollection){
+            $this->randomNumberCollection = $this->getRaffle()->getRandomNumbers()
+                ->addFieldToFilter('number', ['gteq' => $this->getStart()])
+                ->addFieldToFilter('number', ['lteq' => $this->getEnd()]);
+        }
+        return $this->randomNumberCollection;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderId(){
+        return $this->getData('order_id');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWinningNumbers(){
+        return $this->getData('winning_numbers');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWinningNumbersFormated(){
+        $winningNumbers = explode(',', $this->getWinningNumbers());
+        foreach ($winningNumbers as $key => &$number){
+            if ($number==''){
+                unset($number);
+            } else {
+                $number = $this->getRaffle()->getProduct()->getRafflePrefix() . ' ' . $number;
+            }
+        }
+        return implode(', ', $winningNumbers);
+    }
+
+    public function getWinningPrice(){
+        return $this->getData('winning_price');
     }
 
     /**
@@ -287,13 +386,17 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     public function getStatusLabel(){
         switch ($this->getStatus()){
             case static::NOT_CHECKED:
-                return __('Enable');
+                return __('Not Checked');
             case static::CHECKED:
-                return __('Enable');
+                return __('Checked');
             case static::WAIT:
-                return __('Enable');
+                return __('Waitting');
             case static::PAID:
-                return __('Enable');
+                return __('Paid');
+            case static::WON:
+                return __('Won');
+            case static::LOSE:
+                return __('Lose');
             default:
                 return __('Enable');
         }
@@ -312,8 +415,8 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      * @return Raffle
      */
     public function getRaffle(){
-        if (!$this->raffle->getProduct()){
-            $this->raffle = $this->raffle->setProduct($this->getInvoiceItem()->getProductId());
+        if (!isset($this->raffle)){
+            $this->raffle = $this->raffleFactory->create()->setProduct($this->getInvoiceItem()->getProductId());
         }
         return $this->raffle;
     }

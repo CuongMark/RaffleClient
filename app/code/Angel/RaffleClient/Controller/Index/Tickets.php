@@ -36,14 +36,6 @@ class Tickets extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $data = [
-            'label' => 'â',
-            'price' => 5,
-            'price_type' => 'fixed',
-            'total' => 3,
-            'sort_order' => 3,
-        ];
-        $this->prizeFactory->create()->setData($data)->save();
         return $this->resultPageFactory->create();
     }
 }

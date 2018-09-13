@@ -1,8 +1,10 @@
 <?xml version="1.0" ?>
+
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-	<body>
-		<referenceContainer name="content">
-			<block as="raffle_ticket" class="Angel\RaffleClient\Block\Raffle\Ticket" name="raffle.ticket" template="Angel_RaffleClient::raffle/ticket.phtml"/>
-		</referenceContainer>
-	</body>
+<update handle="customer_account"/>
+<body>
+	<referenceContainer name="content">
+		<block as="raffle_ticket" class="Angel\RaffleClient\Block\Raffle\Ticket" name="raffle.ticket" template="Angel_RaffleClient::index/ticket.phtml"/>
+	</referenceContainer>
+</body>
 </page>

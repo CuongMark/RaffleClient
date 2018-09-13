@@ -5,7 +5,7 @@
  * See COPYING.txt for license details.
  */
 
-namespace Angel\RaffleClient\Ui\DataProvider\Product\Form;
+namespace Angel\RaffleClient\Ui\DataProvider\Raffle\Form;
 
 use Magento\Framework\App\RequestInterface;
 use Magento\Ui\DataProvider\AbstractDataProvider;
@@ -76,15 +76,11 @@ class TicketsDataProvider extends AbstractDataProvider
         if ($this->request->getParam('product_id'))
             $this->getCollection()->getRaffleTickets($this->request->getParam('product_id'));
 
-        $this->getCollection()->joinInvoiceItemTable()
-            ->joinInvoiceTable()
-            ->joinOrderTable()
-            ->joinPrizes()
-            ->joinProductName();
+        $this->getCollection()->joinProductTypeId(\Angel\RaffleClient\Model\Raffle::TYPE_ID);
 
         $arrItems = [
             'totalRecords' => $this->getCollection()->getSize(),
-            'items' => [],
+            'items' => []
         ];
 
         foreach ($this->getCollection() as $item) {

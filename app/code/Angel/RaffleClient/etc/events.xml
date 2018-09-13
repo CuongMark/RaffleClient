@@ -18,4 +18,11 @@
 	<event name="controller_action_catalog_product_save_entity_after">
 		<observer name="angel_raffleclient_controller_action_catalog_product_save_entity_after" instance="Angel\RaffleClient\Observer\Catalog\ControllerProductSaveAfter" />
 	</event>
+
+	<event name="catalog_controller_category_init_after">
+		<observer name="angel_raffleclient_controller_action_catalog_controller_category_init_after" instance="Angel\RaffleClient\Observer\Catalog\ControllerCategoryInitAfter" />
+	</event>
+	<event name="catalog_controller_product_init_after">
+		<observer name="angel_raffleclient_controller_action_catalog_controller_product_init_before" instance="Angel\RaffleClient\Observer\Catalog\ControllerProductInitBefore" />
+	</event>
 </config>

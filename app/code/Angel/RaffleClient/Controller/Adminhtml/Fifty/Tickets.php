@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Angel\RaffleClient\Controller\Adminhtml\Ticket;
+namespace Angel\RaffleClient\Controller\Adminhtml\Fifty;
 
-class Index extends \Magento\Backend\App\Action
+class Tickets extends \Magento\Backend\App\Action
 {
 
     protected $resultPageFactory;
@@ -30,7 +30,7 @@ class Index extends \Magento\Backend\App\Action
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
-            $resultPage->getConfig()->getTitle()->prepend(__("Tickets"));
-            return $resultPage;
+        $resultPage->getConfig()->getTitle()->prepend(__("Tickets"));
+        return $resultPage;
     }
 }
