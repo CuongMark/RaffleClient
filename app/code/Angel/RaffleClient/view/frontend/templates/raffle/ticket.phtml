@@ -20,7 +20,7 @@
                 <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('End Number') ?></th>
                 <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Price') ?></th>
                 <th scope="col" class="col winning"><?= /* @escapeNotVerified */ __('Winning Numbers') ?></th>
-                <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Winning Price') ?></th>
+                <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Winning Prizes') ?></th>
                 <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Purchased Time') ?></th>
                 <th scope="col" class="col status"><?= /* @escapeNotVerified */ __('Status') ?></th>
                 <th scope="col" class="col actions"><?= /* @escapeNotVerified */ __('Action') ?></th>
@@ -53,5 +53,5 @@
         <div class="order-products-toolbar toolbar bottom"><?= $block->getPagerHtml() ?></div>
     <?php endif ?>
 <?php else: ?>
-    <div class="message info empty"><span><?= /* @escapeNotVerified */ __('You have placed no tickets.') ?></span></div>
+    <div class="message info empty"><span><?= /* @escapeNotVerified */ __('You have not purchase any tickets.') ?></span></div>
 <?php endif ?>
