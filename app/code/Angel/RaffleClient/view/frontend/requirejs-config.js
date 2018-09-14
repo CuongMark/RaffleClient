@@ -9,6 +9,8 @@ var config = {
             'angel/countdown': 'Angel_RaffleClient/js/countdown/jquery.simple-timer'
         }
     },
-    paths:{},
+    paths:{
+        'angel/countdown': 'Angel_RaffleClient/js/countdown/jquery.simple-timer'
+    },
     shim: {}
 };

@@ -315,14 +315,19 @@ class Raffle
      * create and check Random Number
      */
     public function generateFiftyRaffleTicket(){
-        if ($this->getProduct()->getTypeId()==fifty::TYPE_ID
-            || $this->getTotalRNGs()){
-            $endTime = $this->dateTimeFactory->create()->date('Y-m-d H:i:s', $this->getProduct()->getRaffleEnd());
-            $now = $this->dateTimeFactory->create()->date();
-            if ($now < $endTime) {
-                return $this;
-            }
+        if ($this->getProduct()->getTypeId()!=fifty::TYPE_ID
+            || !$this->getTotalRNGs()
+            || $this->getTotalPrizes() < $this->getCurrentLargestTicketNumber()
+        ){
+            return $this;
         }
+
+        $endTime = $this->dateTimeFactory->create()->date('Y-m-d H:i:s', $this->getProduct()->getRaffleEnd());
+        $now = $this->dateTimeFactory->create()->date();
+        if ($now < $endTime) {
+            return $this;
+        }
+
         /** random number from start */
         $start = 0;
         $end = $this->getCurrentLargestTicketNumber();

@@ -1,18 +1,15 @@
 <?php
-
 /**
- * Copyright © 2016 Magestore. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
-namespace Angel\RaffleClient\Ui\DataProvider\Product\Form;
+namespace Angel\RaffleClient\Ui\DataProvider\Product;
 
 use Magento\Framework\App\RequestInterface;
 use Magento\Ui\DataProvider\AbstractDataProvider;
-use Angel\RaffleClient\Model\ResourceModel\RandomNumber\Grid\CollectionFactory;
-use Angel\RaffleClient\Model\ResourceModel\RandomNumber\Grid\Collection;
+use Angel\RaffleClient\Model\ResourceModel\Prize\CollectionFactory;
+use Angel\RaffleClient\Model\ResourceModel\Prize\Collection;
 use Magento\Review\Model\Review;
-use Magento\Framework\UrlInterface;
 
 /**
  * Class ReviewDataProvider
@@ -22,7 +19,7 @@ use Magento\Framework\UrlInterface;
  * @method Collection getCollection
  * @since 100.1.0
  */
-class RandomNumberDataProvider extends AbstractDataProvider
+class ReviewDataProvider extends AbstractDataProvider
 {
     /**
      * @var CollectionFactory
@@ -35,11 +32,6 @@ class RandomNumberDataProvider extends AbstractDataProvider
      * @since 100.1.0
      */
     protected $request;
-
-    /**
-     * @var UrlInterface
-     */
-    protected $urlBuilder;
 
     /**
      * @param string $name
@@ -56,7 +48,6 @@ class RandomNumberDataProvider extends AbstractDataProvider
         $requestFieldName,
         CollectionFactory $collectionFactory,
         RequestInterface $request,
-        UrlInterface $urlBuilder,
         array $meta = [],
         array $data = []
     ) {
@@ -64,7 +55,6 @@ class RandomNumberDataProvider extends AbstractDataProvider
         $this->collectionFactory = $collectionFactory;
         $this->collection = $this->collectionFactory->create();
         $this->request = $request;
-        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -73,8 +63,8 @@ class RandomNumberDataProvider extends AbstractDataProvider
      */
     public function getData()
     {
-        if ($this->request->getParam('product_id'))
-            $this->getCollection()->addProductIdToFilter($this->request->getParam('current_product_id'));
+
+        $this->getCollection()->addFieldToFilter('product_id', $this->request->getParam('current_product_id', 0));
 
         $arrItems = [
             'totalRecords' => $this->getCollection()->getSize(),
@@ -85,10 +75,29 @@ class RandomNumberDataProvider extends AbstractDataProvider
             $arrItems['items'][] = $item->toArray([]);
         }
 
-        $configData = $this->getConfigData();
-        $configData['update_url'] = $this->urlBuilder->getUrl('mui/index/render', ['product_id' => $this->request->getParam('product_id')]);
-        $this->setConfigData($configData);
-
         return $arrItems;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @since 100.1.0
+     */
+    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    {
+        $field = $filter->getField();
+
+        if (in_array($field, ['review_id', 'created_at', 'status_id'])) {
+            $filter->setField('rt.' . $field);
+        }
+
+        if (in_array($field, ['title', 'nickname', 'detail'])) {
+            $filter->setField('rdt.' . $field);
+        }
+
+        if ($field === 'review_created_at') {
+            $filter->setField('rt.created_at');
+        }
+
+        parent::addFilter($filter);
     }
 }

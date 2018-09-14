@@ -143,4 +143,46 @@ class RandomNumber extends AbstractModifier
         ];
     }
 
+    /**
+     * Returns Buttons Set configuration
+     *
+     * @return array
+     */
+    protected function getCustomButtons()
+    {
+        return [
+            'arguments' => [
+                'data' => [
+                    'config' => [
+                        'formElement' => 'container',
+                        'componentType' => 'container',
+                        'label' => false,
+                        'content' => __(' '),
+                        'template' => 'Angel_RaffleClient/form/components/button-list',
+                    ],
+                ],
+            ],
+            'children' => [
+                'download_summary_button' => [
+                    'arguments' => [
+                        'data' => [
+                            'config' => [
+                                'formElement' => 'container',
+                                'componentType' => 'container',
+                                'component' => 'Angel_RaffleClient/js/form/components/export-button',
+                                'actions' => [
+                                    [
+                                        'render_url' => $this->urlBuilder->getUrl('angel_raffleclient/randomnumber/exportCSV', ['id' => $this->request->getParam('id')]),
+                                    ]
+                                ],
+                                'title' => __('Export To CSV'),
+                                'provider' => null,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
 }

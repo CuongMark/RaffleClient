@@ -74,7 +74,7 @@ class TicketsDataProvider extends AbstractDataProvider
     public function getData()
     {
         if ($this->request->getParam('product_id'))
-            $this->getCollection()->getRaffleTickets($this->request->getParam('product_id'));
+            $this->getCollection()->getRaffleTickets($this->request->getParam('current_product_id'));
 
         $this->getCollection()->joinInvoiceItemTable()
             ->joinInvoiceTable()

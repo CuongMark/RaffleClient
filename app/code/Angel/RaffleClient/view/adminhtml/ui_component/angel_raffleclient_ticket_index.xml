@@ -42,7 +42,7 @@
 						<item name="cvs" xsi:type="array">
 							<item name="value" xsi:type="string">csv</item>
 							<item name="label" xsi:type="string" translate="true">CSV</item>
-							<item name="url" xsi:type="string">mui/export/gridToCsv</item>
+							<item name="url" xsi:type="string">angel_raffleclient/ticket/exportCSV</item>
 						</item>
 					</item>
 				</item>

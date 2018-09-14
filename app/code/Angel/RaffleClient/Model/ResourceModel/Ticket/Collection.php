@@ -99,16 +99,22 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
      */
     public function joinPrizes(){
         $this->joinInvoiceItemTable();
-        $this->getSelect()->joinLeft(
-            [static::PRIZE_TABLE => $this->getTable('angel_raffleclient_prize')],
-            static::PRIZE_TABLE.'.product_id ='.static::INVOICE_ITEM_TABLE.'.product_id',
-            []
-        );
-        $this->getSelect()->joinLeft(
-            [static::RANDOM_NUMBER_TABLE => $this->getTable('angel_raffleclient_randomnumber')],
-            static::RANDOM_NUMBER_TABLE.'.prize_id ='.static::PRIZE_TABLE.'.prize_id and '.static::RANDOM_NUMBER_TABLE.'.number >= main_table.start and '.static::RANDOM_NUMBER_TABLE.'.number <= main_table.end',
-            ['winning_numbers' => 'GROUP_CONCAT('.static::RANDOM_NUMBER_TABLE.'.number)', 'winning_price' => 'SUM('.static::RANDOM_NUMBER_TABLE.'.price)']
-        )->group('main_table.ticket_id');
+        if (!isset($this->_isJoinedPrizes)) {
+            $this->_isJoinedPrizes = true;
+            $this->getSelect()->joinLeft(
+                [static::PRIZE_TABLE => $this->getTable('angel_raffleclient_prize')],
+                static::PRIZE_TABLE . '.product_id =' . static::INVOICE_ITEM_TABLE . '.product_id',
+                []
+            );
+        }
+        if (!isset($this->_isJoinedNumers)) {
+            $this->_isJoinedNumers = true;
+            $this->getSelect()->joinLeft(
+                [static::RANDOM_NUMBER_TABLE => $this->getTable('angel_raffleclient_randomnumber')],
+                static::RANDOM_NUMBER_TABLE . '.prize_id =' . static::PRIZE_TABLE . '.prize_id and ' . static::RANDOM_NUMBER_TABLE . '.number >= main_table.start and ' . static::RANDOM_NUMBER_TABLE . '.number <= main_table.end',
+                ['winning_numbers' => 'GROUP_CONCAT(' . static::RANDOM_NUMBER_TABLE . '.number)', 'winning_price' => 'SUM(' . static::RANDOM_NUMBER_TABLE . '.price)']
+            )->group('main_table.ticket_id');
+        }
         return $this;
     }
 
