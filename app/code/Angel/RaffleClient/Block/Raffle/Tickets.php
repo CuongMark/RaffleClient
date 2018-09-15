@@ -90,6 +90,7 @@ class Tickets extends \Magento\Framework\View\Element\Template
             $this->tickets->addCustomerFilter($this->_customerSession->getCustomerId());
             $this->tickets->joinPrizes();
             $this->tickets->joinProductTypeId($this->_type);
+            $this->tickets->addFieldToFilter('main_table.status', ['neq' => \Angel\RaffleClient\Model\Ticket::TRASH]);
         }
         return $this->tickets;
     }
@@ -128,6 +129,15 @@ class Tickets extends \Magento\Framework\View\Element\Template
     public function getViewUrl($ticket)
     {
         return $this->getUrl('raffle/index/ticket', ['ticket_id' => $ticket->getId()]);
+    }
+
+    /**
+     * @param object $ticket
+     * @return string
+     */
+    public function getTrashUrl($ticket)
+    {
+        return $this->getUrl('raffle/index/trash', ['ticket_id' => $ticket->getId()]);
     }
 
     /**

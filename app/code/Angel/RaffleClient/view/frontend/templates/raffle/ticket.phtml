@@ -36,13 +36,18 @@
                     <td data-th="<?= $block->escapeHtml(__('End Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getEnd() ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->formatPrice($_ticket->getPrice()) ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Winning Numbers')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->getWinningNumbersFormated() ?></td>
-                    <td data-th="<?= $block->escapeHtml(__('Winning Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->formatPrice($_ticket->getWinningPrice()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Winning Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->formatPrice($_ticket->getWinningPrice(), 'long') ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Purchased Time')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($_ticket->getCreatedAt()) ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ $_ticket->getStatusLabel() ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
                         <a href="<?= /* @escapeNotVerified */ $block->getViewUrl($_ticket) ?>" class="action view">
-                            <span><?= /* @escapeNotVerified */ __('View Tickets') ?></span>
+                            <span><?= /* @escapeNotVerified */ __('View') ?></span>
                         </a>
+                        <?php if ($_ticket->getStatus() == \Angel\RaffleClient\Model\Ticket::LOSE || $_ticket->getStatus() == \Angel\RaffleClient\Model\Ticket::CHECKED): ?>
+                            <a href="<?= /* @escapeNotVerified */ $block->getTrashUrl($_ticket) ?>" class="action view">
+                                <span><?= /* @escapeNotVerified */ __('Move To Trash') ?></span>
+                            </a>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

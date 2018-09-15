@@ -17,7 +17,8 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     const PAID = 3;
     const WON = 4;
     const LOSE = 5;
-    const FALSE = 5;
+    const FALSE = 6;
+    const TRASH = 7;
 
     protected $_eventPrefix = 'angel_raffleclient_ticket';
 
