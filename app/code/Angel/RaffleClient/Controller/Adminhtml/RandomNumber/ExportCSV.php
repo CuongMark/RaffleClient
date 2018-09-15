@@ -7,7 +7,7 @@ namespace Angel\RaffleClient\Controller\Adminhtml\RandomNumber;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Angel\RaffleClient\Model\ResourceModel\Ticket\Grid\ConvertToCsv;
+use Angel\RaffleClient\Model\ResourceModel\RandomNumber\Grid\ConvertToCsv;
 use Magento\Framework\App\Response\Http\FileFactory;
 use Magento\Framework\App\ObjectManager;
 use Magento\Ui\Component\MassAction\Filter;

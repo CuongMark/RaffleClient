@@ -1,18 +1,16 @@
 <?php
-
 /**
- * Copyright © 2016 Magestore. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
-namespace Angel\RaffleClient\Ui\DataProvider\Product\Form;
+ namespace Angel\RaffleClient\Ui\DataProvider\Product\Form;
 
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Cache\Frontend\Adapter\Zend;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Angel\RaffleClient\Model\ResourceModel\Ticket\CollectionFactory;
 use Angel\RaffleClient\Model\ResourceModel\Ticket\Collection;
 use Magento\Review\Model\Review;
-use Magento\Framework\UrlInterface;
 
 /**
  * Class ReviewDataProvider
@@ -37,11 +35,6 @@ class TicketsDataProvider extends AbstractDataProvider
     protected $request;
 
     /**
-     * @var UrlInterface
-     */
-    protected $urlBuilder;
-
-    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -56,7 +49,6 @@ class TicketsDataProvider extends AbstractDataProvider
         $requestFieldName,
         CollectionFactory $collectionFactory,
         RequestInterface $request,
-        UrlInterface $urlBuilder,
         array $meta = [],
         array $data = []
     ) {
@@ -64,7 +56,6 @@ class TicketsDataProvider extends AbstractDataProvider
         $this->collectionFactory = $collectionFactory;
         $this->collection = $this->collectionFactory->create();
         $this->request = $request;
-        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -73,9 +64,8 @@ class TicketsDataProvider extends AbstractDataProvider
      */
     public function getData()
     {
-        if ($this->request->getParam('product_id'))
-            $this->getCollection()->getRaffleTickets($this->request->getParam('current_product_id'));
-
+        if ($this->request->getParam('current_product_id', 0))
+            $this->getCollection()->getRaffleTickets($this->request->getParam('current_product_id', 0));
         $this->getCollection()->joinInvoiceItemTable()
             ->joinInvoiceTable()
             ->joinOrderTable()
@@ -90,11 +80,20 @@ class TicketsDataProvider extends AbstractDataProvider
         foreach ($this->getCollection() as $item) {
             $arrItems['items'][] = $item->toArray([]);
         }
-
-        $configData = $this->getConfigData();
-        $configData['update_url'] = $this->urlBuilder->getUrl('mui/index/render', ['product_id' => $this->request->getParam('product_id')]);
-        $this->setConfigData($configData);
-
         return $arrItems;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @since 100.1.0
+     */
+    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    {
+        $field = $filter->getField();
+        if (in_array($field, ['winning_price'])) {
+            $filter->setField('random.' . $field);
+        }
+
+        parent::addFilter($filter);
     }
 }

@@ -26,7 +26,7 @@ class RaffleTickets extends AbstractModifier
     const GROUP_REVIEW = 'raffle_ticket';
     const GROUP_CONTENT = 'content';
     const DATA_SCOPE_REVIEW = 'grouped';
-    const SORT_ORDER = 20;
+    const SORT_ORDER = 2;
     const LINK_TYPE = 'associated';
 
     protected $_fieldsetContent = 'Tickets';
@@ -77,19 +77,24 @@ class RaffleTickets extends AbstractModifier
             return $meta;
         }
 
+        $product = $this->locator->getProduct();
+        if (!in_array($product->getTypeId(), \Angel\RaffleClient\Model\Raffle::getRaffleProductTypes()) || !$product->getId()){
+            return $meta;
+        }
+
         $meta[static::GROUP_REVIEW] = [
             'children' => [
                 'export_button' => $this->getCustomButtons(),
-                'angel_raffleclient_ticket_index' => [
+                'raffle_tickets' => [
                     'arguments' => [
                         'data' => [
                             'config' => [
                                 'autoRender' => true,
                                 'componentType' => 'insertListing',
-                                'dataScope' => 'angel_raffleclient_ticket_index',
-                                'externalProvider' => 'angel_raffleclient_ticket_index.angel_raffleclient_ticket_index_data_source',
-                                'selectionsProvider' => 'angel_raffleclient_ticket_index.angel_raffleclient_ticket_index.product_columns.ids',
-                                'ns' => 'angel_raffleclient_ticket_index',
+                                'dataScope' => 'raffle_tickets',
+                                'externalProvider' => 'raffle_tickets.raffle_tickets_data_source',
+                                'selectionsProvider' => 'raffle_tickets.raffle_tickets.product_columns.ids',
+                                'ns' => 'raffle_tickets',
                                 'render_url' => $this->urlBuilder->getUrl('mui/index/render'),
                                 'realTimeLink' => false,
                                 'behaviourType' => 'simple',

@@ -102,7 +102,7 @@ class Raffle extends \Magento\Backend\Block\Widget\Container
     protected function _getProductCreateUrl($type)
     {
         return $this->getUrl(
-            'catalog/*/new',
+            'catalog/product/new',
             ['set' => $this->_productFactory->create()->getDefaultAttributeSetId(), 'type' => $type]
         );
     }

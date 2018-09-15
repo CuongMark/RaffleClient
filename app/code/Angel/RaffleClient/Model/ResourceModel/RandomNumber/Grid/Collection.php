@@ -46,7 +46,7 @@ class Collection extends \Magento\Framework\View\Element\UiComponent\DataProvide
         $this->getSelect()->joinLeft(
             [static::PRIZE_TABLE => $this->getTable('angel_raffleclient_prize')],
             static::PRIZE_TABLE.'.prize_id = main_table.prize_id',
-            ['product_id' => static::PRIZE_TABLE.'.product_id']
+            ['product_id' => static::PRIZE_TABLE.'.product_id', 'prize_name' => static::PRIZE_TABLE.'.label']
         );
         if ($productId)
             $this->getSelect()->where(static::PRIZE_TABLE.'.product_id = ?', $productId);

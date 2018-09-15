@@ -10,6 +10,9 @@
         <item name="js_config" xsi:type="array">
             <item name="provider" xsi:type="string">raffle_winning_numbers.raffle_winning_numbers_data_source</item>
         </item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\BackButton</item>
+        </item>
     </argument>
     <settings>
         <spinner>review_columns</spinner>
@@ -26,7 +29,8 @@
         </settings>
         <dataProvider class="Angel\RaffleClient\Ui\DataProvider\Product\Form\RandomNumberDataProvider" name="raffle_winning_numbers_data_source">
             <settings>
-                <primaryFieldName>random_number_id</primaryFieldName>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>review_id</primaryFieldName>
             </settings>
         </dataProvider>
     </dataSource>
@@ -66,7 +70,7 @@
                 <sorting>asc</sorting>
             </settings>
         </column>
-        <column name="label" sortOrder="30">
+        <column name="prize_name" sortOrder="30">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="truncate" xsi:type="number">50</item>
@@ -76,40 +80,27 @@
             </argument>
             <settings>
                 <filter>text</filter>
-                <label translate="true">Label</label>
+                <label translate="true">Prize</label>
+            </settings>
+        </column>
+        <column name="number" sortOrder="50">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="truncate" xsi:type="number">50</item>
+                    <item name="nl2br" xsi:type="boolean">true</item>
+                    <item name="escape" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Numbers</label>
             </settings>
         </column>
         <column name="price" class="Magento\Catalog\Ui\Component\Listing\Columns\Price" sortOrder="70">
             <settings>
-                <addField>true</addField>
+                <addField>false</addField>
                 <filter>textRange</filter>
                 <label translate="true">Price</label>
-            </settings>
-        </column>
-        <!--<column name="price" sortOrder="40">-->
-        <!--<argument name="data" xsi:type="array">-->
-        <!--<item name="config" xsi:type="array">-->
-        <!--<item name="truncate" xsi:type="number">50</item>-->
-        <!--<item name="nl2br" xsi:type="boolean">true</item>-->
-        <!--<item name="escape" xsi:type="boolean">true</item>-->
-        <!--</item>-->
-        <!--</argument>-->
-        <!--<settings>-->
-        <!--<filter>text</filter>-->
-        <!--<label translate="true">Price</label>-->
-        <!--</settings>-->
-        <!--</column>-->
-        <column name="total" sortOrder="50">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="truncate" xsi:type="number">50</item>
-                    <item name="nl2br" xsi:type="boolean">true</item>
-                    <item name="escape" xsi:type="boolean">true</item>
-                </item>
-            </argument>
-            <settings>
-                <filter>text</filter>
-                <label translate="true">Review</label>
             </settings>
         </column>
     </columns>

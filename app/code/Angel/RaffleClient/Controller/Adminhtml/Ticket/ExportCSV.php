@@ -69,7 +69,9 @@ class ExportCSV extends Action
      */
     public function execute()
     {
-        return $this->fileFactory->create('tickets.csv', $this->converter->getCsvFile(), 'var');
+        $productId = $this->getRequest()->getParam('id');
+        $raffleType = $this->getRequest()->getParam('type');
+        return $this->fileFactory->create('tickets.csv', $this->converter->getCsvFile($productId, $raffleType), 'var');
     }
 
     /**

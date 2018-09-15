@@ -231,7 +231,7 @@ class Raffle
             $ticket->getResource()->save($ticket);
             return $ticket;
         } catch (\Exception $e){
-            \Zend_Debug::dump($e->getMessage());
+//            \Zend_Debug::dump($e->getMessage());
             // TOTO show exception message
         }
         return null;

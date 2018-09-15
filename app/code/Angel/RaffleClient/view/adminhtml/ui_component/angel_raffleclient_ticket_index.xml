@@ -42,7 +42,7 @@
 						<item name="cvs" xsi:type="array">
 							<item name="value" xsi:type="string">csv</item>
 							<item name="label" xsi:type="string" translate="true">CSV</item>
-							<item name="url" xsi:type="string">angel_raffleclient/ticket/exportCSV</item>
+							<item name="url" xsi:type="string">angel_raffleclient/ticket/exportCSV/type/raffle</item>
 						</item>
 					</item>
 				</item>
@@ -74,27 +74,22 @@
 		<actionsColumn name="product_actions" class="Angel\RaffleClient\Ui\Component\Listing\Tickets\Columns\ProductActions" sortOrder="1">
 			<settings>
 				<indexField>product_id</indexField>
+				<label translate="true">Raffle Name</label>
 			</settings>
 		</actionsColumn>
-		<actionsColumn name="order_actions" class="Angel\RaffleClient\Ui\Component\Listing\Tickets\Columns\OrderActions" sortOrder="1">
+		<actionsColumn name="order_actions" class="Angel\RaffleClient\Ui\Component\Listing\Tickets\Columns\OrderActions" sortOrder="10">
 			<settings>
-				<indexField>product_id</indexField>
+				<indexField>order_id</indexField>
+				<label translate="true">Order</label>
 			</settings>
 		</actionsColumn>
-		<actionsColumn name="customer_actions" class="Angel\RaffleClient\Ui\Component\Listing\Tickets\Columns\CustomerActions" sortOrder="1">
+		<actionsColumn name="customer_actions" class="Angel\RaffleClient\Ui\Component\Listing\Tickets\Columns\CustomerActions" sortOrder="20">
 			<settings>
-				<indexField>product_id</indexField>
+				<indexField>customer_id</indexField>
+				<label translate="true">Customers</label>
 			</settings>
 		</actionsColumn>
-		<column name="invoice_item_id">
-			<argument name="data" xsi:type="array">
-				<item name="config" xsi:type="array">
-					<item name="filter" xsi:type="string">text</item>
-					<item name="label" translate="true" xsi:type="string">invoice_item_id</item>
-				</item>
-			</argument>
-		</column>
-		<column name="start">
+		<column name="start" sortOrder="30">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">text</item>
@@ -102,7 +97,7 @@
 				</item>
 			</argument>
 		</column>
-		<column name="end">
+		<column name="end" sortOrder="40">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">text</item>
@@ -110,13 +105,33 @@
 				</item>
 			</argument>
 		</column>
-		<column name="status">
+		<column name="status" sortOrder="50">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">text</item>
 					<item name="label" translate="true" xsi:type="string">status</item>
 				</item>
 			</argument>
+		</column>
+		<column name="winning_price" class="Magento\Catalog\Ui\Component\Listing\Columns\Price" sortOrder="60">
+			<settings>
+				<addField>false</addField>
+				<filter>textRange</filter>
+				<label translate="true">Winning Prizes</label>
+			</settings>
+		</column>
+		<column name="winning_numbers" sortOrder="70">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="truncate" xsi:type="number">50</item>
+					<item name="nl2br" xsi:type="boolean">true</item>
+					<item name="escape" xsi:type="boolean">true</item>
+				</item>
+			</argument>
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Winning Numbers</label>
+			</settings>
 		</column>
 	</columns>
 </listing>

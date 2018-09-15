@@ -222,6 +222,10 @@ class Raffle extends AbstractModifier
         return $this;
     }
 
+    public function getChildren(){
+        return [];
+    }
+
     /**
      * Get config for grid for "select" types
      *

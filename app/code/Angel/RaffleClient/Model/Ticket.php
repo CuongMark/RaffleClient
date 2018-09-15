@@ -366,11 +366,11 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      * @param float $value
      * @return string
      */
-    public function formatPrice($value)
+    public function formatPrice($value, $isHtml = true)
     {
         return $this->priceCurrency->format(
             $value,
-            true,
+            $isHtml,
             PriceCurrencyInterface::DEFAULT_PRECISION,
             1 //Todo getStore
         );

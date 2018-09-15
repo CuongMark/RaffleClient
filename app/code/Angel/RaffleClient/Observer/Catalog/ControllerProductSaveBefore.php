@@ -45,21 +45,6 @@ class ControllerProductSaveBefore implements ObserverInterface
      */
     public function execute(EventObserver $observer)
     {
-        $product = $observer->getEvent()->getProduct();
         /* process add/ edit product */
-
-        $array = $product->getData('quantity_and_stock_status');
-        if(!is_array($array)){
-            return;
-        }
-        if(array_key_exists('use_config_qty',$array)){
-            if(!$product->getData('quantity_and_stock_status')['use_config_qty']){
-                $productData = $product->getData();
-                $postData = $this->_request->getParam('product');
-                $currentQty = $postData['global_stock']['global_available_qty'];
-                $productData['quantity_and_stock_status']['qty'] = $currentQty;
-                $product->setData($productData);
-            }
-        }
     }
 }

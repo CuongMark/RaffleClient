@@ -8,7 +8,7 @@
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">raffle_tickets.raffle_tickets_data_source</item>
+            <item name="provider" xsi:type="string">raffle_review_listing.raffle_review_listing_data_source</item>
         </item>
         <item name="buttons" xsi:type="array">
             <item name="back" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\BackButton</item>
@@ -17,17 +17,17 @@
     <settings>
         <spinner>review_columns</spinner>
         <deps>
-            <dep>raffle_tickets.raffle_tickets_data_source</dep>
+            <dep>raffle_review_listing.raffle_review_listing_data_source</dep>
         </deps>
     </settings>
-    <dataSource name="raffle_tickets_data_source" component="Magento_Ui/js/grid/provider">
+    <dataSource name="raffle_review_listing_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
             <storageConfig>
                 <param name="cacheRequests" xsi:type="boolean">false</param>
             </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <dataProvider class="Angel\RaffleClient\Ui\DataProvider\Product\Form\TicketsDataProvider" name="raffle_tickets_data_source">
+        <dataProvider class="Angel\RaffleClient\Ui\DataProvider\Product\ReviewDataProvider" name="raffle_review_listing_data_source">
             <settings>
                 <requestFieldName>entity_id</requestFieldName>
                 <primaryFieldName>review_id</primaryFieldName>
@@ -63,14 +63,14 @@
                 </param>
             </childDefaults>
         </settings>
-        <column name="ticket_id" sortOrder="0">
+        <column name="prize_id" sortOrder="0">
             <settings>
                 <filter>textRange</filter>
                 <label translate="true">ID</label>
                 <sorting>asc</sorting>
             </settings>
         </column>
-        <column name="start" sortOrder="30">
+        <column name="label" sortOrder="30">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="truncate" xsi:type="number">50</item>
@@ -80,43 +80,17 @@
             </argument>
             <settings>
                 <filter>text</filter>
-                <label translate="true">Start</label>
+                <label translate="true">Name</label>
             </settings>
         </column>
-        <column name="end" sortOrder="30">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="truncate" xsi:type="number">50</item>
-                    <item name="nl2br" xsi:type="boolean">true</item>
-                    <item name="escape" xsi:type="boolean">true</item>
-                </item>
-            </argument>
+        <column name="price" class="Magento\Catalog\Ui\Component\Listing\Columns\Price" sortOrder="70">
             <settings>
-                <filter>text</filter>
-                <label translate="true">End</label>
-            </settings>
-        </column>
-        <column name="winning_numbers" sortOrder="30">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="truncate" xsi:type="number">50</item>
-                    <item name="nl2br" xsi:type="boolean">true</item>
-                    <item name="escape" xsi:type="boolean">true</item>
-                </item>
-            </argument>
-            <settings>
-                <filter>text</filter>
-                <label translate="true">Winning Numbers</label>
-            </settings>
-        </column>
-        <column name="winning_price" class="Magento\Catalog\Ui\Component\Listing\Columns\Price" sortOrder="70">
-            <settings>
-                <addField>false</addField>
+                <addField>true</addField>
                 <filter>textRange</filter>
-                <label translate="true">Winning Prizes</label>
+                <label translate="true">Price</label>
             </settings>
         </column>
-        <column name="winning_numbers" sortOrder="30">
+        <column name="total" sortOrder="50">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="truncate" xsi:type="number">50</item>
@@ -126,33 +100,7 @@
             </argument>
             <settings>
                 <filter>text</filter>
-                <label translate="true">Winning Numbers</label>
-            </settings>
-        </column>
-        <column name="order_increment_id" sortOrder="30">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="truncate" xsi:type="number">50</item>
-                    <item name="nl2br" xsi:type="boolean">true</item>
-                    <item name="escape" xsi:type="boolean">true</item>
-                </item>
-            </argument>
-            <settings>
-                <filter>text</filter>
-                <label translate="true">Order Id</label>
-            </settings>
-        </column>
-        <column name="customer_email" sortOrder="30">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="truncate" xsi:type="number">50</item>
-                    <item name="nl2br" xsi:type="boolean">true</item>
-                    <item name="escape" xsi:type="boolean">true</item>
-                </item>
-            </argument>
-            <settings>
-                <filter>text</filter>
-                <label translate="true">Customers</label>
+                <label translate="true">Review</label>
             </settings>
         </column>
     </columns>

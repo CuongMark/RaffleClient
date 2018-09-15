@@ -21,6 +21,10 @@ class ControllerProductSaveAfter implements ObserverInterface
      */
     protected $prizeFactory;
 
+    /**
+     * @var \Angel\RaffleClient\Model\RaffleFactory
+     */
+    protected $raffleFactory;
 
     /**
      * ControllerProductSaveAfter constructor.
@@ -28,11 +32,13 @@ class ControllerProductSaveAfter implements ObserverInterface
      */
     public function __construct(
         \Magento\Framework\App\RequestInterface $request,
-        \Angel\RaffleClient\Model\PrizeFactory $prizeFactory
+        \Angel\RaffleClient\Model\PrizeFactory $prizeFactory,
+        \Angel\RaffleClient\Model\RaffleFactory $raffleFactory
     )
     {
         $this->prizeFactory = $prizeFactory;
         $this->_request = $request;
+        $this->raffleFactory = $raffleFactory;
     }
 
     /**
@@ -61,6 +67,10 @@ class ControllerProductSaveAfter implements ObserverInterface
                 $prize->setData('sort_order', $_prize['sort_order']);
                 $prize->save();
             }
+        }
+
+        if ($product->getTypeId() == \Angel\RaffleClient\Model\Fifty::TYPE_ID){
+            $this->raffleFactory->create()->setProduct($product)->generateFiftyRaffleTicket();
         }
         return $this;
     }

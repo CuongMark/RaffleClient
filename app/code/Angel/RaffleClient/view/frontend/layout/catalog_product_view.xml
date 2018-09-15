@@ -6,7 +6,6 @@
 		<css src="Angel_RaffleClient::css/auctionbox.css"/>
 	</head>
 	<body>
-		<attribute name="class" value="auction-product"/>
 		<referenceContainer name="product.info.main">
 			<block class="Angel\RaffleClient\Block\Product\View" name="raffle.block" as="raffle.block" after="product.info.price" cacheable="false" template="Angel_RaffleClient::product/view.phtml"/>
 		</referenceContainer>

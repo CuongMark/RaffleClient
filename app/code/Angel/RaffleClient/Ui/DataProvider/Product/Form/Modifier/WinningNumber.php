@@ -26,7 +26,7 @@ class WinningNumber extends AbstractModifier
     const GROUP_REVIEW = 'raffle_winning_number';
     const GROUP_CONTENT = 'content';
     const DATA_SCOPE_REVIEW = 'grouped';
-    const SORT_ORDER = 20;
+    const SORT_ORDER = 3;
     const LINK_TYPE = 'associated';
 
     protected $_fieldsetContent = 'Winning Numbers';
@@ -73,23 +73,28 @@ class WinningNumber extends AbstractModifier
      */
     public function modifyMeta(array $meta)
     {
-        if (!$this->locator->getProduct()->getId() || !$this->getModuleManager()->isOutputEnabled('Magento_Review')) {
+        if (!$this->locator->getProduct()->getId()) {
+            return $meta;
+        }
+
+        $product = $this->locator->getProduct();
+        if (!in_array($product->getTypeId(), \Angel\RaffleClient\Model\Raffle::getRaffleProductTypes()) || !$product->getId()){
             return $meta;
         }
 
         $meta[static::GROUP_REVIEW] = [
             'children' => [
                 'export_button' => $this->getCustomButtons(),
-                'angel_raffleclient_randomnumber_index' => [
+                'raffle_winning_numbers' => [
                     'arguments' => [
                         'data' => [
                             'config' => [
                                 'autoRender' => true,
                                 'componentType' => 'insertListing',
-                                'dataScope' => 'angel_raffleclient_randomnumber_index',
-                                'externalProvider' => 'angel_raffleclient_randomnumber_index.angel_raffleclient_randomnumber_index_data_source',
-                                'selectionsProvider' => 'angel_raffleclient_randomnumber_index.angel_raffleclient_randomnumber_index.product_columns.ids',
-                                'ns' => 'angel_raffleclient_randomnumber_index',
+                                'dataScope' => 'raffle_winning_numbers',
+                                'externalProvider' => 'raffle_winning_numbers.raffle_winning_numbers_data_source',
+                                'selectionsProvider' => 'raffle_winning_numbers.raffle_winning_numbers.product_columns.ids',
+                                'ns' => 'raffle_winning_numbers',
                                 'render_url' => $this->urlBuilder->getUrl('mui/index/render'),
                                 'realTimeLink' => false,
                                 'behaviourType' => 'simple',

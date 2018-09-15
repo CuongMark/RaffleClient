@@ -5,13 +5,4 @@
 ?>
 <?php if ($block->isRaffleFiftyProduct()): ?>
     <div><?= __('Time Left') ?>: <span id="fity_countdown" data-mage-init='{"angel/countdown": {"time_left":<?php echo $block->getRaffleTimeLeft() ?>}}'></span></div>
-    <?php
-    /**
-     * Copyright © Magento, Inc. All rights reserved.
-     * See COPYING.txt for license details.
-     */
-
-// @codingStandardsIgnoreFile
-    /** @var \Angel\RaffleClient\Block\Raffle\Tickets $block */
-    ?>
 <?php endif; ?>

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Angel_RaffleClient::css/countdown/timeTo.css"/>
+        <css src="Angel_RaffleClient::css/countdown/timebox.css"/>
+        <css src="Angel_RaffleClient::css/auctionbox.css"/>
+    </head>
+    <body>
+        <referenceBlock name="category.products.list">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Angel_RaffleClient::product/list.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

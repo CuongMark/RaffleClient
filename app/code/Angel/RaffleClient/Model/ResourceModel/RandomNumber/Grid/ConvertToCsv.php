@@ -9,6 +9,7 @@ namespace Angel\RaffleClient\Model\ResourceModel\RandomNumber\Grid;
 use Magento\Framework\Filesystem;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\Ui\Model\Export\MetadataProvider;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
 
 class ConvertToCsv extends \Magento\Ui\Model\Export\ConvertToCsv
 {
@@ -17,14 +18,28 @@ class ConvertToCsv extends \Magento\Ui\Model\Export\ConvertToCsv
      */
     protected $raffle;
 
+    /**
+     * @var PriceCurrencyInterface
+     */
+    protected $priceCurrency;
+
+    /**
+     * @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\CollectionFactory
+     */
+    protected $collectionFactory;
+
     public function __construct(
         Filesystem $filesystem,
         Filter $filter,
         MetadataProvider $metadataProvider,
         \Angel\RaffleClient\Model\Raffle $raffle,
+        \Angel\RaffleClient\Model\ResourceModel\RandomNumber\CollectionFactory $collectionFactory,
+        PriceCurrencyInterface $priceCurrency,
         $pageSize = 200
     ){
         $this->raffle = $raffle;
+        $this->priceCurrency = $priceCurrency;
+        $this->collectionFactory = $collectionFactory;
         parent::__construct($filesystem, $filter, $metadataProvider, $pageSize);
     }
 
@@ -35,11 +50,15 @@ class ConvertToCsv extends \Magento\Ui\Model\Export\ConvertToCsv
         $this->directory->create('export');
         $stream = $this->directory->openFile($file, 'w+');
         $stream->lock();
-        $collection = $this->raffle->setProduct($product_id)->getTickets();
-        $stream->writeCsv(['Raffle Name', 'Winning Numbers', 'Winning Prizes']);
-        /** @var \Angel\RaffleClient\Model\Ticket $item */
+        if ($product_id)
+            $collection = $this->raffle->setProduct($product_id)->getRandomNumbers();
+        else {
+            $collection = $this->collectionFactory->create();
+        }
+        $stream->writeCsv(['Raffle', 'Winning Numbers', 'Winning Prizes']);
+        /** @var \Angel\RaffleClient\Model\RandomNumber $item */
         foreach ($collection as $item){
-            $data = [$item->getRaffle()->getName(), $item->getWinningNumbers(), $item->getPrice()];
+            $data = [$item->getPrizeName(), $item->getNumber(), $this->formatPrice($item->getPrice())];
             $stream->writeCsv($data);
         }
         $stream->unlock();
@@ -50,5 +69,21 @@ class ConvertToCsv extends \Magento\Ui\Model\Export\ConvertToCsv
             'value' => $file,
             'rm' => true  // can delete file after use
         ];
+    }
+
+    /**
+     * Retrieve formated price
+     *
+     * @param float $value
+     * @return string
+     */
+    public function formatPrice($value)
+    {
+        return $this->priceCurrency->format(
+            $value,
+            false,
+            PriceCurrencyInterface::DEFAULT_PRECISION,
+            1 //Todo getStore
+        );
     }
 }
