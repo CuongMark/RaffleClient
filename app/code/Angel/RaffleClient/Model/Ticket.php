@@ -164,7 +164,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
         }
         /** random number from start */
         $start = $this->getStart();
-        $end = $this->getRaffle()->getTotalTicket() -1;
+        $end = $this->getRaffle()->getTotalTicket();
         if ($start > $end){
             $this->setStatus(static::FALSE)->save();
             return $this;

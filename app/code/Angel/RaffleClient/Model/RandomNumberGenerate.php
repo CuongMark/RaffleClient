@@ -32,7 +32,7 @@ class RandomNumberGenerate
             $exitRand[] = $start;
             return $start;
         }
-        if ($end - $start <= count($exitRand))
+        if ($end - $start +1 <= count($exitRand))
             return false;
         $rand = rand($start, $end);
         while (in_array($rand, $exitRand)){

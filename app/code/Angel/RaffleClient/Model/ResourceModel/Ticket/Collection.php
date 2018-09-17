@@ -45,7 +45,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
         if (isset($result[0]) && $result[0]){
             return $result[0];
         }
-        return -1;
+        return 0;
     }
 
     /**
@@ -79,14 +79,18 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     }
 
     /**
+     * @param int|null $orderId
      * @return $this
      */
-    public function joinOrderTable(){
+    public function joinOrderTable($orderId = null){
         $this->getSelect()->joinLeft(
             [static::ORDER_TABLE => $this->getTable('sales_order')],
             static::ORDER_TABLE.'.entity_id ='.static::INVOICE_TABLE.'.order_id',
             ['customer_id' => static::ORDER_TABLE.'.customer_id', 'order_increment_id' => static::ORDER_TABLE.'.increment_id', 'order_id' => static::ORDER_TABLE.'.entity_id', 'customer_email' => static::ORDER_TABLE.'.customer_email']
         );
+        if ($orderId){
+            $this->addFieldToFilter(static::ORDER_TABLE.'.entity_id', $orderId);
+        }
         return $this;
     }
 

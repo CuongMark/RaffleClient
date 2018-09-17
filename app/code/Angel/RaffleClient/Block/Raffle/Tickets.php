@@ -141,24 +141,6 @@ class Tickets extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param object $order
-     * @return string
-     */
-    public function getTrackUrl($order)
-    {
-        return $this->getUrl('sales/order/track', ['order_id' => $order->getId()]);
-    }
-
-    /**
-     * @param object $order
-     * @return string
-     */
-    public function getReorderUrl($order)
-    {
-        return $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]);
-    }
-
-    /**
      * @return string
      */
     public function getBackUrl()

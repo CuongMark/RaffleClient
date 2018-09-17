@@ -152,7 +152,7 @@ class Raffle
      */
     public function getCurrentLargestTicketNumber(){
         if ($this->product->isObjectNew()){
-            return -1;
+            return 0;
         }
         if ($this->currentTicketNumber === false){
             $this->currentTicketNumber = $this->ticketCollection->getCurrentLargestTicketNumber($this->getProduct()->getId());
@@ -174,7 +174,7 @@ class Raffle
      */
     public function getTotalTicket(){
         if($this->getProduct()->getTypeId() == Fifty::TYPE_ID){
-            return $this->getCurrentLargestTicketNumber() + 1;
+            return $this->getCurrentLargestTicketNumber();
         }
         if ($this->getProduct()->getTotalTickets()){
             return (int) $this->getProduct()->getTotalTickets();
@@ -193,9 +193,9 @@ class Raffle
             if (!$this->getTotalTicket()){
                 return true;
             } else if (!$endNumber){
-                return $this->getCurrentLargestTicketNumber() > $this->getTotalTicket();
+                return (boolean)$this->getCurrentLargestTicketNumber() > $this->getTotalTicket();
             } else {
-                return $endNumber >= $this->getTotalTicket();
+                return $endNumber > $this->getTotalTicket();
             }
         }
         return true;
@@ -216,8 +216,8 @@ class Raffle
                 throw new Exception(__('Unable to create ticket for %1 raffle product', $this->getProduct()->getName()));
             }
             $start = $this->getCurrentLargestTicketNumber() + 1;
-            $endNumber = $this->getCurrentLargestTicketNumber() + $qty;
-            if ($this->isOverTotalTicket($endNumber)){
+            $endNumber = $start + $qty -1;
+            if ($this->isOverTotalTicket($endNumber) === true){
                 throw new Exception(__('The ticket number is over total ticket'));
             }
             /** @var \Angel\RaffleClient\Model\Ticket $ticket */
@@ -231,7 +231,6 @@ class Raffle
             $ticket->getResource()->save($ticket);
             return $ticket;
         } catch (\Exception $e){
-//            \Zend_Debug::dump($e->getMessage());
             // TOTO show exception message
         }
         return null;
