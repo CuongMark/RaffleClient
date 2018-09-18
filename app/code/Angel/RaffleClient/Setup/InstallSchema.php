@@ -6,6 +6,7 @@ namespace Angel\RaffleClient\Setup;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\DB\Ddl\Table;
 
 class InstallSchema implements InstallSchemaInterface
 {
@@ -26,14 +27,14 @@ class InstallSchema implements InstallSchemaInterface
             \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
             null,
             ['identity' => true,'nullable' => false,'primary' => true,'unsigned' => true,],
-            'Entity ID'
+            'Prize ID'
         );
 
         $table_angel_raffleclient_prize->addColumn(
             'product_id',
             \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
             null,
-            [],
+            ['unsigned' => true, 'nullable' => false],
             'Product Id'
         );
 
@@ -85,6 +86,14 @@ class InstallSchema implements InstallSchemaInterface
             'Raffle Status'
         );
 
+        $table_angel_raffleclient_prize->addForeignKey(
+            $setup->getFkName('angel_raffleclient_prize', 'product_id', 'catalog_product_entity', 'entity_id'),
+            'product_id',
+            $setup->getTable('catalog_product_entity'),
+            'entity_id',
+            Table::ACTION_CASCADE
+        );
+
         $table_angel_raffleclient_ticket = $setup->getConnection()->newTable($setup->getTable('angel_raffleclient_ticket'));
 
         $table_angel_raffleclient_ticket->addColumn(
@@ -99,7 +108,7 @@ class InstallSchema implements InstallSchemaInterface
             'invoice_item_id',
             \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
             null,
-            [],
+            ['unsigned' => true, 'nullable' => false],
             'Invoice Item Id'
         );
 
@@ -135,6 +144,14 @@ class InstallSchema implements InstallSchemaInterface
             'Ticket Status'
         );
 
+        $table_angel_raffleclient_ticket->addForeignKey(
+            $setup->getFkName('angel_raffleclient_ticket', 'invoice_item_id', 'sales_invoice_item', 'entity_id'),
+            'invoice_item_id',
+            $setup->getTable('sales_invoice_item'),
+            'entity_id',
+            Table::ACTION_CASCADE
+        );
+
         $table_angel_raffleclient_randomnumber = $setup->getConnection()->newTable($setup->getTable('angel_raffleclient_randomnumber'));
 
         $table_angel_raffleclient_randomnumber->addColumn(
@@ -149,7 +166,7 @@ class InstallSchema implements InstallSchemaInterface
             'prize_id',
             \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
             null,
-            [],
+            ['unsigned' => true, 'nullable' => false],
             'Prize Id'
         );
 
@@ -177,6 +194,14 @@ class InstallSchema implements InstallSchemaInterface
             'base winning price'
         );
 
+//        $table_angel_raffleclient_randomnumber->addForeignKey(
+//            $setup->getFkName('angel_raffleclient_randomnumber', 'prize_id', 'angel_raffleclient_prize', 'prize_id'),
+//            'prize_id',
+//            $setup->getTable('angel_raffleclient_prize'),
+//            'prize_id',
+//            Table::ACTION_CASCADE
+//        );
+
         $table_angel_raffleclient_transaction = $setup->getConnection()->newTable($setup->getTable('angel_raffleclient_transaction'));
 
         $table_angel_raffleclient_transaction->addColumn(
@@ -191,7 +216,7 @@ class InstallSchema implements InstallSchemaInterface
             'ticket_id',
             \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
             null,
-            [],
+            ['unsigned' => true, 'nullable' => false],
             'Ticket Id'
         );
 
@@ -219,41 +244,13 @@ class InstallSchema implements InstallSchemaInterface
             'price'
         );
 
-        $table_angel_raffleclient_test = $setup->getConnection()->newTable($setup->getTable('angel_raffleclient_test'));
-
-        $table_angel_raffleclient_test->addColumn(
-            'test_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-            null,
-            ['identity' => true,'nullable' => false,'primary' => true,'unsigned' => true,],
-            'Entity ID'
+        $table_angel_raffleclient_transaction->addForeignKey(
+            $setup->getFkName('angel_raffleclient_transaction', 'ticket_id', 'angel_raffleclient_ticket', 'ticket_id'),
+            'ticket_id',
+            $setup->getTable('angel_raffleclient_ticket'),
+            'ticket_id',
+            Table::ACTION_CASCADE
         );
-
-        $table_angel_raffleclient_test->addColumn(
-            'Total',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-            null,
-            [],
-            'Total'
-        );
-
-        $table_angel_raffleclient_test->addColumn(
-            'total_numbers',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-            null,
-            ['default' => '1'],
-            'Total Random number to generate'
-        );
-
-        $table_angel_raffleclient_test->addColumn(
-            'total_raffles',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-            null,
-            [],
-            'Total Raffles'
-        );
-
-        $setup->getConnection()->createTable($table_angel_raffleclient_test);
 
         $setup->getConnection()->createTable($table_angel_raffleclient_transaction);
 

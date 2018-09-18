@@ -41,7 +41,7 @@ class Success extends \Angel\RaffleClient\Block\Raffle\Tickets
 
     public function hasWinningTicket(){
         foreach ($this->getTickets() as $ticket){
-            if ($ticket->getStatus() == \Angel\RaffleClient\Model\Ticket::WON);
+            if ($ticket->getStatus() == \Angel\RaffleClient\Model\Ticket::WON)
                 return true;
         }
         return false;

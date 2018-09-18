@@ -51,6 +51,7 @@ class ControllerProductSaveAfter implements ObserverInterface
         /** @var \Magento\Catalog\Model\Product $product */
         $product = $observer->getEvent()->getProduct();
         $prizes = $product->getData('prizes');
+        $existPrize = [];
         if (is_array($prizes)){
             foreach ($prizes as $_prize){
                 /** @var \Angel\RaffleClient\Model\Prize $prize */
@@ -66,6 +67,14 @@ class ControllerProductSaveAfter implements ObserverInterface
                 $prize->setData('total', $_prize['total']);
                 $prize->setData('sort_order', $_prize['sort_order']);
                 $prize->save();
+                $existPrize[] = $prize->getId();
+            }
+        }
+
+        $prizesCollection = $this->raffleFactory->create()->setProduct($product)->getPrizes();
+        foreach ($prizesCollection as $prize){
+            if (!in_array($prize->getId(), $existPrize)){
+                $prize->delete();
             }
         }
 

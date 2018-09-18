@@ -5,14 +5,14 @@
  */
 
 // @codingStandardsIgnoreFile
-/** @var \Angel\RaffleClient\Block\Raffle\Tickets $block */
+/** @var \Angel\RaffleClient\Block\Onepage\Success $block */
 ?>
 <?php $_tickets = $block->getTickets(); ?>
 <?php if ($_tickets && count($_tickets)): ?>
     <?php if ($block->hasWinningTicket()): ?>
         <h1 style="color: red"><?= /* @escapeNotVerified */ __('Lucky...! YOU WON!') ?></h1>
     <?php else : ?>
-        <h2><?= /* @escapeNotVerified */ __('Good luck in next times!') ?></h2>
+
     <?php endif; ?>
     <div class="table-wrapper orders-history">
         <table class="data table table-order-items history" id="my-tickets-table">

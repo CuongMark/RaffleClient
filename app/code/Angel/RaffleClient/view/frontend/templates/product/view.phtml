@@ -5,4 +5,5 @@
 ?>
 <?php if ($block->isRaffleFiftyProduct()): ?>
     <div><?= __('Time Left') ?>: <span id="fity_countdown" data-mage-init='{"angel/countdown": {"time_left":<?php echo $block->getRaffleTimeLeft() ?>}}'></span></div>
+    <div><?= __('Current Pot: %1', $block->getCurrentPotFormated()) ?> </div>
 <?php endif; ?>

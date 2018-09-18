@@ -299,7 +299,15 @@ class Raffle
      */
     public function getTotalPricePaid(){
         // todo return sum of invoice
-        return $this->getProduct()->getPrice() * ($this->getCurrentLargestTicketNumber() + 1);
+        return $this->getTickets()->getCurrentTicketsPaid();
+//        return $this->getProduct()->getPrice() * ($this->getCurrentLargestTicketNumber());
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrentHeightPot(){
+        return ($this->getTotalPricePaid() + $this->getProduct()->getStartPot())/2;
     }
 
     /**
@@ -307,7 +315,7 @@ class Raffle
      */
     public function isAbleToGenerateByTicket(){
         //Todo check raffle type
-        return true;
+        return $this->getProduct()->getTypeId()==self::TYPE_ID;
     }
 
     /**
@@ -315,8 +323,8 @@ class Raffle
      */
     public function generateFiftyRaffleTicket(){
         if ($this->getProduct()->getTypeId()!=fifty::TYPE_ID
-            || !$this->getTotalRNGs()
-            || $this->getTotalPrizes() < $this->getCurrentLargestTicketNumber()
+            || $this->getTotalRNGs()
+            || $this->getTotalPrizes() > $this->getCurrentLargestTicketNumber()
         ){
             return $this;
         }
@@ -328,7 +336,7 @@ class Raffle
         }
 
         /** random number from start */
-        $start = 0;
+        $start = 1;
         $end = $this->getCurrentLargestTicketNumber();
         if ($start > $end){
             return $this;
@@ -364,7 +372,6 @@ class Raffle
                 $_ticket->save();
             }
         } catch (\Exception $e){
-
         }
         return $this;
     }

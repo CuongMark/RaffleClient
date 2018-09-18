@@ -55,6 +55,7 @@ class Raffle extends AbstractModifier
     const FIELD_TOTAL_NAME = 'total';
     const FIELD_IS_DELETE = 'is_delete';
     const FIELD_IS_USE_DEFAULT = 'is_use_default';
+    const SERIAL_FIELD = 'raffle_serial';
     /**
      * @var array
      * @since 101.0.0
@@ -132,9 +133,12 @@ class Raffle extends AbstractModifier
     public function modifyData(array $data)
     {
         $product = $this->locator->getProduct();
+
         if (!in_array($product->getTypeId(), \Angel\RaffleClient\Model\Raffle::getRaffleProductTypes())){
             return $data;
         }
+        $serial = isset($data[$this->locator->getProduct()->getId()][static::DATA_SOURCE_DEFAULT][self::SERIAL_FIELD])&&$data[$this->locator->getProduct()->getId()][static::DATA_SOURCE_DEFAULT][self::SERIAL_FIELD]
+            ?$data[$this->locator->getProduct()->getId()][static::DATA_SOURCE_DEFAULT][self::SERIAL_FIELD]:$this->generateRandomString();
         $collection = $this->prizeCollection->addFieldToFilter('product_id', $product->getId());
         return array_replace_recursive(
             $data,
@@ -142,11 +146,22 @@ class Raffle extends AbstractModifier
                 $this->locator->getProduct()->getId() => [
                     static::DATA_SOURCE_DEFAULT => [
                         static::FIELD_ENABLE => 1,
-                        static::GRID_PRIZE_NAME => $collection->getData()
+                        static::GRID_PRIZE_NAME => $collection->getData(),
+                        self::SERIAL_FIELD =>$serial
                     ]
                 ]
             ]
         );
+    }
+
+    protected function generateRandomString($length = 13) {
+        $characters = '0123456789';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 
     /**
@@ -164,6 +179,7 @@ class Raffle extends AbstractModifier
         }
         $this->meta = $meta;
         $this->createCustomOptionsPanel();
+        $this->disableSerialField();
         return $this->meta;
     }
 
@@ -184,6 +200,32 @@ class Raffle extends AbstractModifier
         }
 
         return $data;
+    }
+
+    protected function disableSerialField(){
+        $this->meta = array_replace_recursive(
+            $this->meta,
+            [
+                static::GROUP_RAFFLE_NAME => [
+                    'children' => [
+                        'container_raffle_serial' => [
+                            'children' => [
+                                'raffle_serial' =>[
+                                    'arguments' => [
+                                        'data' => [
+                                            'config' => [
+                                                'disabled' => true,
+                                            ],
+                                        ],
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+        return $this;
     }
 
     /**
@@ -563,9 +605,6 @@ class Raffle extends AbstractModifier
         $fieldCode = 'raffle_end';
         $elementPath = $this->arrayManager->findPath($fieldCode, $meta, null, 'children');
         $containerPath = $this->arrayManager->findPath(static::CONTAINER_PREFIX . $fieldCode, $meta, null, 'children');
-//        \Zend_Debug::dump($elementPath);
-//        \Zend_Debug::dump($meta['raffle']['children']['container_raffle_end']['children']['raffle_end']['arguments']);
-//        die('adsf');
         if ($elementPath) {
             $meta = $this->arrayManager->merge(
                 $containerPath,

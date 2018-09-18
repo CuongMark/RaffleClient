@@ -49,6 +49,30 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     }
 
     /**
+     * @param int|null $productId
+     * @return int
+     */
+    public function getCurrentTicketsPaid($productId = null)
+    {
+        $this->joinInvoiceItemTable();
+        if ($productId)
+            $this->addFieldToFilter(static::INVOICE_ITEM_TABLE.'.product_id', $productId);
+
+        $idsSelect = clone $this->getSelect();
+        $idsSelect->reset(\Magento\Framework\DB\Select::ORDER);
+        $idsSelect->reset(\Magento\Framework\DB\Select::LIMIT_COUNT);
+        $idsSelect->reset(\Magento\Framework\DB\Select::LIMIT_OFFSET);
+        $idsSelect->reset(\Magento\Framework\DB\Select::COLUMNS);
+
+        $idsSelect->columns('SUM('.static::INVOICE_ITEM_TABLE.'.price)', 'main_table');
+        $result = $this->getConnection()->fetchCol($idsSelect, $this->_bindParams);
+        if (isset($result[0]) && $result[0]){
+            return $result[0];
+        }
+        return 0;
+    }
+
+    /**
      * @return $this
      */
     public function joinInvoiceItemTable(){
