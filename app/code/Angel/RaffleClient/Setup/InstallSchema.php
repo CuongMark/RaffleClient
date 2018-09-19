@@ -244,13 +244,13 @@ class InstallSchema implements InstallSchemaInterface
             'price'
         );
 
-        $table_angel_raffleclient_transaction->addForeignKey(
-            $setup->getFkName('angel_raffleclient_transaction', 'ticket_id', 'angel_raffleclient_ticket', 'ticket_id'),
-            'ticket_id',
-            $setup->getTable('angel_raffleclient_ticket'),
-            'ticket_id',
-            Table::ACTION_CASCADE
-        );
+//        $table_angel_raffleclient_transaction->addForeignKey(
+//            $setup->getFkName('angel_raffleclient_transaction', 'ticket_id', 'angel_raffleclient_ticket', 'ticket_id'),
+//            'ticket_id',
+//            $setup->getTable('angel_raffleclient_ticket'),
+//            'ticket_id',
+//            Table::ACTION_CASCADE
+//        );
 
         $setup->getConnection()->createTable($table_angel_raffleclient_transaction);
 

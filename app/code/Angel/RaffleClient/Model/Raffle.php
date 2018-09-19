@@ -241,7 +241,7 @@ class Raffle
      * @return int
      */
     public function getTotalRNGs(){
-        if ($this->totalRNGs === false){
+        if (!isset($this->totalRNGs)){
             /** @var \Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection $randomNumberCollection */
             $randomNumberCollection = $this->randomNumberCollectionFactory->create();
             $this->totalRNGs = $randomNumberCollection->addProductIdToFilter($this->getProduct()->getId())->getTotalRNG();
@@ -307,7 +307,11 @@ class Raffle
      * @return float
      */
     public function getCurrentHeightPot(){
-        return ($this->getTotalPricePaid() + $this->getProduct()->getStartPot())/2;
+        return ($this->getTotalPricePaid()) + $this->getProduct()->getStartPot();
+    }
+
+    public function isFinished(){
+        return (boolean)$this->getTotalRNGs();
     }
 
     /**

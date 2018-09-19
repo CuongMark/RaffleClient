@@ -13,6 +13,11 @@ class View extends \Magento\Catalog\Block\Product\View
     protected $raffleFactory;
 
     /**
+     * @var \Angel\RaffleClient\Model\Raffle
+     */
+    protected $raffle;
+
+    /**
      * @var \Magento\Framework\Pricing\PriceCurrencyInterface
      * @deprecated 101.1.0
      */
@@ -67,11 +72,18 @@ class View extends \Magento\Catalog\Block\Product\View
         return $raffleEnd->getTimestamp() - $date->getTimestamp();
     }
 
+    public function isRaffleFinished(){
+        return $this->getRaffle()->isFinished();
+    }
+
     /**
      * @return \Angel\RaffleClient\Model\Raffle
      */
     public function getRaffle(){
-        return $this->raffleFactory->create()->setProduct($this->getProduct());
+        if (!isset($this->raffle)){
+            $this->raffle = $this->raffleFactory->create()->setProduct($this->getProduct());
+        }
+        return $this->raffle;
     }
 
     /**
@@ -83,6 +95,14 @@ class View extends \Magento\Catalog\Block\Product\View
 
     public function getCurrentPotFormated(){
         return $this->priceCurrency->format($this->getCurrentPot());
+    }
+
+    public function getPriceCurrency(){
+        return $this->priceCurrency;
+    }
+
+    public function getRandomNumbers(){
+        return $this->getRaffle()->getRandomNumbers();
     }
 
 

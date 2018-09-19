@@ -4,6 +4,37 @@
  */
 ?>
 <?php if ($block->isRaffleFiftyProduct()): ?>
-    <div><?= __('Time Left') ?>: <span id="fity_countdown" data-mage-init='{"angel/countdown": {"time_left":<?php echo $block->getRaffleTimeLeft() ?>}}'></span></div>
-    <div><?= __('Current Pot: %1', $block->getCurrentPotFormated()) ?> </div>
+    <?php if (!$block->isRaffleFinished()): ?>
+        <div><?= __('Time Left') ?>: <span id="fity_countdown" data-mage-init='{"angel/countdown": {"time_left":<?php echo $block->getRaffleTimeLeft() ?>}}'></span></div>
+        <div><?= __('Current Pot: %1', $block->getCurrentPotFormated()) ?> </div>
+    <?php else: ?>
+        <div>
+            <?php $_wonNumbers = $block->getRandomNumbers(); ?>
+            <?php if ($_wonNumbers && count($_wonNumbers)): ?>
+                <div class="table-wrapper orders-history">
+                    <table class="data table table-order-items history" id="my-tickets-table">
+                        <caption class="table-caption"><?= /* @escapeNotVerified */ __('Won Numbers') ?></caption>
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col name"><?= /* @escapeNotVerified */ __('Prize Name') ?></th>
+                            <th scope="col" class="col order"><?= /* @escapeNotVerified */ __('Won Number') ?></th>
+                            <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Won Price') ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php /** @var \Angel\RaffleClient\Model\RandomNumber $_wonNumber */ ?>
+                        <?php foreach ($_wonNumbers as $_wonNumber): ?>
+                            <tr>
+                                <td data-th="<?= $block->escapeHtml(__('Price Name')) ?>" class="col id"><?= /* @escapeNotVerified */ $_wonNumber->getPrizeName() ?></td>
+                                <td data-th="<?= $block->escapeHtml(__('Won Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_wonNumber->getNumber() ?></td>
+                                <td data-th="<?= $block->escapeHtml(__('Won Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $block->getPriceCurrency()->format($_wonNumber->getPrice()) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+            <?php endif ?>
+        </div>
+    <?php endif; ?>
 <?php endif; ?>

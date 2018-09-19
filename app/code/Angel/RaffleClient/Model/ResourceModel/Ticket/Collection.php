@@ -64,7 +64,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
         $idsSelect->reset(\Magento\Framework\DB\Select::LIMIT_OFFSET);
         $idsSelect->reset(\Magento\Framework\DB\Select::COLUMNS);
 
-        $idsSelect->columns('SUM('.static::INVOICE_ITEM_TABLE.'.price)', 'main_table');
+        $idsSelect->columns('SUM('.static::INVOICE_ITEM_TABLE.'.row_total)', 'main_table');
         $result = $this->getConnection()->fetchCol($idsSelect, $this->_bindParams);
         if (isset($result[0]) && $result[0]){
             return $result[0];
