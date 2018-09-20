@@ -306,6 +306,7 @@ class Raffle extends AbstractModifier
                         'deleteValue' => '1',
                         'renderDefaultRecord' => false,
                         'sortOrder' => $sortOrder,
+//                        'disabled' => true,
                     ],
                 ],
             ],
@@ -417,7 +418,7 @@ class Raffle extends AbstractModifier
             'arguments' => [
                 'data' => [
                     'config' => [
-                        'label' => __('Price'),
+                        'label' => __('Prize'),
                         'componentType' => Field::NAME,
                         'component' => 'Magento_Catalog/js/components/custom-options-component',
                         'formElement' => Input::NAME,
@@ -459,12 +460,13 @@ class Raffle extends AbstractModifier
      */
     protected function getPriceTypeFieldConfig($sortOrder, array $config = [])
     {
+        $product = $this->locator->getProduct();
         return array_replace_recursive(
             [
                 'arguments' => [
                     'data' => [
                         'config' => [
-                            'label' => __('Price Type'),
+                            'label' => __('Prize Type'),
                             'component' => 'Magento_Catalog/js/components/custom-options-price-type',
                             'componentType' => Field::NAME,
                             'formElement' => Select::NAME,

@@ -84,7 +84,7 @@ class Prize extends \Magento\Framework\Model\AbstractModel implements PrizeInter
         if ($this->getPriceType() == static::FIXED){
             return (float)$this->getPrice();
         } else if($this->getPriceType() == static::PERCENT){
-            return $this->getRaffle()->getTotalPricePaid() * $this->getPrice() / 100;
+            return $this->getRaffle()->getCurrentPot() * $this->getPrice() / 100;
         }
         return 0;
     }

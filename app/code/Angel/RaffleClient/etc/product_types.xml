@@ -11,7 +11,7 @@
             <attribute name="refundable" value="false"/>
         </customAttributes>
     </type>
-    <type name="fifty" label="Raffle 50/50" modelInstance="Magento\Catalog\Model\Product\Type\Virtual" indexPriority="300" sortOrder="2" isQty="true">
+    <type name="fifty" label="Raffle 50/50" modelInstance="Magento\Catalog\Model\Product\Type\Virtual" indexPriority="300" sortOrder="2" isQty="false">
         <customAttributes>
             <attribute name="is_real_product" value="false"/>
             <attribute name="refundable" value="false"/>

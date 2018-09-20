@@ -12,6 +12,7 @@ interface TicketInterface
     const STATUS = 'status';
     const TICKET_ID = 'ticket_id';
     const END = 'end';
+    const REVEAL_AT = 'reveal_at';
 
     /**
      * Get ticket_id
@@ -90,4 +91,17 @@ interface TicketInterface
      * @return \Angel\RaffleClient\Api\Data\TicketInterface
      */
     public function setStatus($status);
+
+    /**
+     * Get reveal_at
+     * @return string|null
+     */
+    public function getRevealAt();
+
+    /**
+     * Set reveal_at
+     * @param string $revealAt
+     * @return \Angel\RaffleClient\Api\Data\TicketInterface
+     */
+    public function setRevealAt($revealAt);
 }

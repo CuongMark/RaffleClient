@@ -1,10 +1,10 @@
 define([], function () {
     getTimeFormated = function(time, format) {
         if (typeof format == 'undefined'){
-            format = '%d Day(s) %h:%m:%s'
+            format = '%d %h:%m:%s'
         }
         if (time<=0){
-            return format.replace(/%d|%h|%m|%s/gi, function (x) { return '00' });
+            return 'Finished';
         }
         var days = Math.floor(time/86400);
         var hours = Math.floor((time - 86400*days)/3600);

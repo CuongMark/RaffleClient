@@ -194,13 +194,13 @@ class InstallSchema implements InstallSchemaInterface
             'base winning price'
         );
 
-//        $table_angel_raffleclient_randomnumber->addForeignKey(
-//            $setup->getFkName('angel_raffleclient_randomnumber', 'prize_id', 'angel_raffleclient_prize', 'prize_id'),
-//            'prize_id',
-//            $setup->getTable('angel_raffleclient_prize'),
-//            'prize_id',
-//            Table::ACTION_CASCADE
-//        );
+        $table_angel_raffleclient_randomnumber->addForeignKey(
+            $setup->getFkName('angel_raffleclient_randomnumber', 'prize_id', 'angel_raffleclient_prize', 'prize_id'),
+            'prize_id',
+            $setup->getTable('angel_raffleclient_prize'),
+            'prize_id',
+            Table::ACTION_CASCADE
+        );
 
         $table_angel_raffleclient_transaction = $setup->getConnection()->newTable($setup->getTable('angel_raffleclient_transaction'));
 
@@ -244,20 +244,17 @@ class InstallSchema implements InstallSchemaInterface
             'price'
         );
 
-//        $table_angel_raffleclient_transaction->addForeignKey(
-//            $setup->getFkName('angel_raffleclient_transaction', 'ticket_id', 'angel_raffleclient_ticket', 'ticket_id'),
-//            'ticket_id',
-//            $setup->getTable('angel_raffleclient_ticket'),
-//            'ticket_id',
-//            Table::ACTION_CASCADE
-//        );
-
-        $setup->getConnection()->createTable($table_angel_raffleclient_transaction);
-
-        $setup->getConnection()->createTable($table_angel_raffleclient_randomnumber);
+        $table_angel_raffleclient_transaction->addForeignKey(
+            $setup->getFkName('angel_raffleclient_transaction', 'ticket_id', 'angel_raffleclient_ticket', 'ticket_id'),
+            'ticket_id',
+            $setup->getTable('angel_raffleclient_ticket'),
+            'ticket_id',
+            Table::ACTION_CASCADE
+        );
 
         $setup->getConnection()->createTable($table_angel_raffleclient_ticket);
-
         $setup->getConnection()->createTable($table_angel_raffleclient_prize);
+        $setup->getConnection()->createTable($table_angel_raffleclient_randomnumber);
+        $setup->getConnection()->createTable($table_angel_raffleclient_transaction);
     }
 }

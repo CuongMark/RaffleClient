@@ -73,6 +73,14 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
                         <?php if ($_product->getTypeId() == \Angel\RaffleClient\Model\Fifty::TYPE_ID): ?>
                             <?php $raffleEnd = new \DateTime($_product->getRaffleEnd()); ?>
                             <div><span data-mage-init='{"angel/countdown": {"time_left":<?= $raffleEnd->getTimestamp() - $date->getTimestamp() ?>}}'></span></div>
+                            <?php
+                                /** @var \Angel\RaffleClient\Model\Raffle $raffle */
+                                $raffle = \Magento\Framework\App\ObjectManager::getInstance()->create(\Angel\RaffleClient\Model\Raffle::class)->setProduct($_product);
+                                $priceCurrency = \Magento\Framework\App\ObjectManager::getInstance()->create(\Magento\Framework\Pricing\PriceCurrencyInterface::class);
+                                ?>
+                            <?php if ($raffle->getCurrentPot()): ?>
+                                <?= $priceCurrency->format($raffle->getCurrentPot()) ?>
+                            <?php endif; ?>
                         <?php endif; ?>
                         <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
                         <?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>

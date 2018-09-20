@@ -25,4 +25,7 @@
 	<event name="catalog_controller_product_init_after">
 		<observer name="angel_raffleclient_controller_action_catalog_controller_product_init_before" instance="Angel\RaffleClient\Observer\Catalog\ControllerProductInitBefore" />
 	</event>
+	<event name="catalog_product_is_salable_after">
+		<observer name="angel_raffleclient_catalog_product_is_salable_after" instance="Angel\RaffleClient\Observer\Catalog\ProductIsSalableAfter" />
+	</event>
 </config>

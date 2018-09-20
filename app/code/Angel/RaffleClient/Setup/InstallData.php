@@ -200,7 +200,7 @@ class InstallData implements InstallDataInterface
                 'filterable' => false,
                 'comparable' => false,
                 'visible_on_front' => false,
-                'used_in_product_listing' => false,
+                'used_in_product_listing' => true,
                 'unique' => false,
                 'apply_to' => '',
                 'system' => 1,
@@ -209,34 +209,34 @@ class InstallData implements InstallDataInterface
             ]
         );
 
-        $eavSetup->addAttribute(
-            \Magento\Catalog\Model\Product::ENTITY,
-            'minimum_tickets',
-            [
-                'type' => 'varchar',
-                'backend' => '',
-                'frontend' => '',
-                'label' => 'Minimum Tickets',
-                'input' => 'text',
-                'class' => '',
-                'source' => '',
-                'global' => 1,
-                'visible' => true,
-                'required' => false,
-                'user_defined' => false,
-                'default' => null,
-                'searchable' => false,
-                'filterable' => false,
-                'comparable' => false,
-                'visible_on_front' => false,
-                'used_in_product_listing' => false,
-                'unique' => false,
-                'apply_to' => 'fifty',
-                'system' => 1,
-                'group' => 'Raffle',
-                'option' => array('values' => array(""))
-            ]
-        );
+//        $eavSetup->addAttribute(
+//            \Magento\Catalog\Model\Product::ENTITY,
+//            'minimum_tickets',
+//            [
+//                'type' => 'int',
+//                'backend' => '',
+//                'frontend' => '',
+//                'label' => 'Minimum Tickets',
+//                'input' => 'text',
+//                'class' => '',
+//                'source' => '',
+//                'global' => 1,
+//                'visible' => true,
+//                'required' => false,
+//                'user_defined' => false,
+//                'default' => null,
+//                'searchable' => false,
+//                'filterable' => false,
+//                'comparable' => false,
+//                'visible_on_front' => false,
+//                'used_in_product_listing' => false,
+//                'unique' => false,
+//                'apply_to' => 'fifty',
+//                'system' => 1,
+//                'group' => 'Raffle',
+//                'option' => array('values' => array(""))
+//            ]
+//        );
 
         $eavSetup->addAttribute(
             \Magento\Catalog\Model\Product::ENTITY,

@@ -73,6 +73,11 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     protected $priceCurrency;
 
     /**
+     * @var \Magento\Framework\Stdlib\DateTime\DateTime
+     */
+    protected $dateTime;
+
+    /**
      * Ticket constructor.
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
@@ -96,6 +101,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
         \Angel\RaffleClient\Model\RandomNumberFactory $randomNumberFactory,
         \Angel\RaffleClient\Model\RandomNumberGenerate $numberGenerate,
         PriceCurrencyInterface $priceCurrency,
+        \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
@@ -107,6 +113,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
         $this->randomNumberGenerateModel = $numberGenerate;
         $this->randomNumberFactory = $randomNumberFactory;
         $this->priceCurrency = $priceCurrency;
+        $this->dateTime = $dateTime;
     }
 
     /**
@@ -115,44 +122,6 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     protected function _construct()
     {
         $this->_init(\Angel\RaffleClient\Model\ResourceModel\Ticket::class);
-    }
-
-    /**
-     * create and check Random Number
-     */
-    public function check1(){
-        if (!$this->getRaffle()->isAbleToGenerateByTicket()){
-            return;
-        }
-        /** rest total prizes */
-        $qty = $this->getRaffle()->getTotalPrizes() - $this->getRaffle()->getTotalRNGs();
-        /** random number from start */
-        $start = $this->getRaffle()->getCurrentLargestTicketNumber() + 1;
-        $end = $this->getRaffle()->getTotalTicket() -1;
-        if ($start > $end){
-            return;
-        }
-
-        $RNGs = $this->randomNumberGenerateModel->randomNumberArrayGenerate($start, $end, $qty);
-        $prizes = $this->getRaffle()->getPrizes();
-
-        $i = 0;
-        /** @var \Angel\RaffleClient\Model\Prize $_prize */
-        foreach ($prizes as $_prize){
-            $prizeQty = $_prize->getTotalRandomNumberNeedToGenerate();
-            if ($prizeQty > 0){
-                $next = $i + $prizeQty;
-                for ($i; $i < $next; $i++){
-                    if (isset($RNGs[$i]) && $this->getStart() <= $RNGs[$i] && $RNGs >= $this->getEnd()){
-                        /** @var \Angel\RaffleClient\Model\RandomNumber $randomNumberModel */
-                        $randomNumberModel = $this->randomNumberFactory->create();
-                        $randomNumberModel->setPrizeId($_prize->getId())
-                            ->setNumber($RNGs[$i]);
-                        $randomNumberModel->getResource()->save($randomNumberModel);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -191,6 +160,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
                     }
                 }
             }
+            $this->setRevealAt((strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp())));
             if ($isWinning){
                 $this->setStatus(static::WON)->save();
             } else {
@@ -242,7 +212,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      * @return float|null
      */
     public function getPrice(){
-        return $this->getInvoiceItem()->getPrice();
+        return $this->getInvoiceItem()->getRowTotal();
     }
 
     /**
@@ -534,5 +504,24 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
     public function setStatus($status)
     {
         return $this->setData(self::STATUS, $status);
+    }
+
+    /**
+     * Get reveal_at
+     * @return string
+     */
+    public function getRevealAt()
+    {
+        return $this->getData(self::REVEAL_AT);
+    }
+
+    /**
+     * Set reveal_at
+     * @param string $revealAt
+     * @return \Angel\RaffleClient\Api\Data\TicketInterface
+     */
+    public function setRevealAt($revealAt)
+    {
+        return $this->setData(self::REVEAL_AT, $revealAt);
     }
 }

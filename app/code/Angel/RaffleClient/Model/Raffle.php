@@ -306,7 +306,7 @@ class Raffle
     /**
      * @return float
      */
-    public function getCurrentHeightPot(){
+    public function getCurrentPot(){
         return ($this->getTotalPricePaid()) + $this->getProduct()->getStartPot();
     }
 
@@ -320,6 +320,21 @@ class Raffle
     public function isAbleToGenerateByTicket(){
         //Todo check raffle type
         return $this->getProduct()->getTypeId()==self::TYPE_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSaleAbleFiftyTicket(){
+        if ($this->getTotalRNGs()){
+            return false;
+        }
+        $endTime = $this->dateTimeFactory->create()->date('Y-m-d H:i:s', $this->getProduct()->getRaffleEnd());
+        $now = $this->dateTimeFactory->create()->date();
+        if ($now > $endTime) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -373,6 +388,7 @@ class Raffle
                         break;
                     }
                 }
+                $_ticket->setRevealAt($now);
                 $_ticket->save();
             }
         } catch (\Exception $e){

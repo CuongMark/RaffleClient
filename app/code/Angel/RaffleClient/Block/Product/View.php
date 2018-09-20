@@ -90,7 +90,7 @@ class View extends \Magento\Catalog\Block\Product\View
      * @return float
      */
     public function getCurrentPot(){
-        return $this->getRaffle()->getCurrentHeightPot();
+        return $this->getRaffle()->getCurrentPot();
     }
 
     public function getCurrentPotFormated(){
