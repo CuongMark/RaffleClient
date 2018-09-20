@@ -270,9 +270,10 @@ class InstallData implements InstallDataInterface
         //associate these attributes with new product type
         $fieldList = [
             'price',
-            'special_price',
-            'special_from_date',
-            'special_to_date'
+//            'special_price',
+//            'special_from_date',
+//            'special_to_date',
+            'tier_price',
         ];
 
         // make these attributes applicable to new product type

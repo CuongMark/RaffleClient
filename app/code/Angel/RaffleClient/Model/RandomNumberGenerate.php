@@ -12,8 +12,8 @@ class RandomNumberGenerate
         if ($start <0 || $end <0 || $qty <= 0 || $end - $start < $qty)
             return null;
         $result = [];
-        while ($qty >= count($result)){
-            $randomNumber = rand($start, $end);
+        while ($qty > count($result)){
+            $randomNumber = mt_rand($start, $end);
             if (!in_array($randomNumber, $result)){
                 $result[] = $randomNumber;
             }
@@ -34,9 +34,9 @@ class RandomNumberGenerate
         }
         if ($end - $start +1 <= count($exitRand))
             return false;
-        $rand = rand($start, $end);
+        $rand = mt_rand($start, $end);
         while (in_array($rand, $exitRand)){
-            $rand = rand($start, $end);
+            $rand = mt_rand($start, $end);
         }
         $exitRand[] = $rand;
         return $rand;

@@ -133,5 +133,19 @@
 				<label translate="true">Winning Numbers</label>
 			</settings>
 		</column>
+		<column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="50">
+			<settings>
+				<filter>dateRange</filter>
+				<dataType>date</dataType>
+				<label translate="true">Purchased At</label>
+			</settings>
+		</column>
+		<column name="reveal_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="50">
+			<settings>
+				<filter>dateRange</filter>
+				<dataType>date</dataType>
+				<label translate="true">Reveal At</label>
+			</settings>
+		</column>
 	</columns>
 </listing>

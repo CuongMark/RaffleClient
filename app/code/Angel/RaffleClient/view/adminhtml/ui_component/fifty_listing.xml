@@ -185,6 +185,20 @@
                 <label translate="true">Price</label>
             </settings>
         </column>
+        <column name="raffle_start" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="50">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Start Time</label>
+            </settings>
+        </column>
+        <column name="raffle_end" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="50">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">End Time</label>
+            </settings>
+        </column>
         <column name="status" component="Magento_Ui/js/grid/columns/select" sortOrder="90">
             <settings>
                 <addField>true</addField>

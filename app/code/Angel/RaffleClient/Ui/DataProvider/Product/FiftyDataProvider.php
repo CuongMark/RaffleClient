@@ -25,6 +25,7 @@ class FiftyDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\Product
     public function getData()
     {
         $this->getCollection()->addAttributeToFilter('type_id', ['in'=> [\Angel\RaffleClient\Model\Fifty::TYPE_ID]]);
+        $this->getCollection()->addAttributeToSelect(['raffle_start', 'raffle_end']);
         if (!$this->getCollection()->isLoaded()) {
             $this->getCollection()->load();
         }

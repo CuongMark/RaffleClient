@@ -87,7 +87,7 @@ class ConvertToCsv
     public function generate($total, $totalNumbers, $totalRaffles){
         $result = [];
         for($i=0;$i<$totalRaffles;$i++){
-            $result[] = $this->randomNumberGenerate->randomNumberArrayGenerate(0, $total -1, $totalNumbers);
+            $result[] = $this->randomNumberGenerate->randomNumberArrayGenerate(1, $total, $totalNumbers);
         }
         return $result;
     }

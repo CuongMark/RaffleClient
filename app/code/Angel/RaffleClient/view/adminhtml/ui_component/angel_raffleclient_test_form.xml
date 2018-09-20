@@ -12,10 +12,8 @@
 		</item>
 		<item name="template" xsi:type="string">templates/form/collapsible</item>
 		<item name="buttons" xsi:type="array">
-			<!--<item name="back" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\BackButton</item>-->
-			<item name="save_and_continue" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\Distribution</item>
+			<!--<item name="save_and_continue" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\Distribution</item>-->
 			<item name="save" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\SaveButton</item>
-			<!--<item name="save_and_continue" xsi:type="string">Angel\RaffleClient\Block\Adminhtml\Test\Edit\SaveAndContinueButton</item>-->
 		</item>
 	</argument>
 	<dataSource name="test_form_data_source">
@@ -57,7 +55,7 @@
 						<item name="validate-greater-than-zero" xsi:type="boolean">true</item>
 						<item name="less-than-equals-to" xsi:type="number">100000</item>
 					</item>
-					<item name="notice" translate="true" xsi:type="string">The total tickets purchased for each raffles. The number from 0 to total tickets subtract 1.</item>
+					<item name="notice" translate="true" xsi:type="string">The total tickets purchased for each raffles. The number from 1 to last ticket.</item>
 				</item>
 			</argument>
 		</field>
