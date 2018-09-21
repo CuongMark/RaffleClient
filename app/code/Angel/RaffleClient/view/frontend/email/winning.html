@@ -3,7 +3,7 @@
   ~ See COPYING.txt for license details.
   -->
 
-<!--@subject {{trans "Successfully send gift card to %recipientName" recipientName=$recipientName }} @-->
+<!--@subject {{trans "Winning Raffle Ticket %recipientName" recipientName=$recipientName }} @-->
 <!--@vars
 {"htmlescape var=$name":"Recipient Name",
 "htmlescape var=$sendername":"Sender name",
@@ -15,8 +15,7 @@
 @-->
 
 <!--@styles
-body,td { background:#FFFFFF; margin:0; padding:0; color:#2f2f2f; font:13px/1.35em Verdana, Arial, Helvetica, sans-serif; }
-pre{ white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}
+body,td { color:#2f2f2f; font:13px/1.35em Verdana, Arial, Helvetica, sans-serif; }
 @-->
 
 <div style="font:13px/1.35em Verdana, Arial, Helvetica, sans-serif;">
@@ -28,7 +27,7 @@ pre{ white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; 
                     <tr>
                         <td valign="top">
                             <a href="{{store url=""}}">
-                                <img src="{{var logo_url}}" alt="{{var store.getFrontendName()}}"  style="margin-bottom:10px;" border="0"/>
+                            <img src="{{var logo_url}}" alt="{{var store.getFrontendName()}}"  style="margin-bottom:10px;" border="0"/>
                             </a>
                         </td>
                     </tr>
@@ -40,7 +39,7 @@ pre{ white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; 
                         <td valign="top">
                             <p>
                                 <strong>{{trans "Dear %name" name=$name }}</strong>,<br/>
-                                {{trans "Your friend has received the Gift Card you sent. You can continue purchasing other products"}}
+                                {{trans "Your have purchased a winning raffle ticket(s). You can view your ticket purchases at MY ACCOUNT "}}
                                 <a href="{{store url=""}}">{{trans "here"}}</a>.<br/>
                             </p>
                             <p>{{trans "Enjoy!"}}</p>

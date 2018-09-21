@@ -1,0 +1,94 @@
+<!--
+  ~ Copyright © 2017 Magestore. All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
+
+<!--@subject {{trans "Winning Raffle Ticket %recipientName" recipientName=$recipientName }} @-->
+<!--@vars
+{"htmlescape var=$name":"Recipient Name",
+"htmlescape var=$sendername":"Sender name",
+"var code":"Gift Card Code",
+"var balance":"Gift Card Balance",
+"var status":"Status",
+"htmlescape var=$message":"Message",
+"var expiredat":"Expired At"}
+@-->
+
+<!--@styles
+body,td { background:#FFFFFF; margin:0; padding:0; color:#2f2f2f; font:13px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+pre{ white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}
+@-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style type="text/css">
+        {{var template_styles|raw}}
+
+        {{css file="css/email.css"}}
+    </style>
+</head>
+<body>
+{{inlinecss file="css/email-inline.css"}}
+
+<!-- Begin wrapper table -->
+<table class="wrapper" width="100%">
+    <tr>
+        <td class="wrapper-inner" align="center">
+            <table class="main" align="center">
+                <tr>
+                    <td class="header">
+                        <a class="logo" href="{{store url=""}}">
+                        <img
+                                {{if logo_width}}
+                                width="{{var logo_width}}"
+                                {{else}}
+                                width="180"
+                                {{/if}}
+
+                        {{if logo_height}}
+                        height="{{var logo_height}}"
+                        {{else}}
+                        height="52"
+                        {{/if}}
+
+                        src="{{var logo_url}}"
+                        alt="{{var logo_alt}}"
+                        border="0"
+                        />
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="main-content">
+
+                    <!-- [ middle starts here] -->
+                    <table cellspacing="0" cellpadding="0" border="0" width="660">
+                        <tr>
+                            <td valign="top">
+                                <p>
+                                    <strong>{{trans "Dear %name" name=$name }}</strong>,<br/>
+                                    {{trans "Your have purchased a winning raffle ticket(s). You can view your ticket purchases at MY ACCOUNT "}}
+                                    <a href="{{store url=""}}">{{trans "here"}}</a>.<br/>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+
+                        <!-- End Content -->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="footer">
+                        <p class="closing">{{trans "Enjoy"}}!</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- End wrapper table -->
+</body>

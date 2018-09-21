@@ -11,13 +11,14 @@
  * Time: 22:26
  */
 
-namespace Angel\RaffleClient\Helper;
+namespace Angel\RaffleClient\Service;
 
 class Email
 {
-    const EMAIL_TEMPLATE_WINNING = "winning";
-    const EMAIL_TEMPLATE_LOSE = "lose";
-    const EMAIL_TEMPLATE_FINISHED = "finished";
+    const EMAIL_TEMPLATE_WINNING = "raffle_winning";
+    const EMAIL_TEMPLATE_LOSE = "raffle_lose";
+    const EMAIL_TEMPLATE_FINISHED = "raffle_finished_admin";
+    const EMAIL_TEMPLATE_NEW_TICKET = "raffle_new_ticket";
 
     /** @var array of name and email of the sender ['name'=>'sender_name', 'email'=>'steve@magetore.com']  */
     protected $_sender;
@@ -135,8 +136,23 @@ class Email
                     $transport->sendMessage();
                 }
             } catch (\Exception $e) {
+                \Zend_Debug::dump($e->__toString());
                 return;
             }
         }
+    }
+
+
+    /**
+     * @param \Angel\RaffleClient\Model\Ticket $ticket
+     */
+    public function sendWinningEmail($ticket = null){
+//        $this->setReceivers($ticket->getCustomerEmail());
+        $this->setReceivers('cuonglv53@gmail.com');
+        $this->setEmailTemplate(self::EMAIL_TEMPLATE_WINNING);
+        $templateVars = [];
+        $this->setTemplateVars($templateVars);
+        //send email
+        $this->sendEmail();
     }
 }
