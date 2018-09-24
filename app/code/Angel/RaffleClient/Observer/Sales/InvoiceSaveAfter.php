@@ -15,6 +15,9 @@ class InvoiceSaveAfter implements \Magento\Framework\Event\ObserverInterface
     public function execute(
         \Magento\Framework\Event\Observer $observer
     ) {
+        /** @var \Magento\Sales\Model\Order\Invoice $invoice */
+//        $invoice = $observer->getData('invoice');
+//        \Zend_Debug::dump(array_keys($invoice->getData()));
 //        die('asdfasdfasd');
         //Your observer code
     }

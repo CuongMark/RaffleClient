@@ -3,7 +3,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Angel\RaffleClient\Block\Raffle;
+namespace Angel\RaffleClient\Block\Raffle\Email;
 
 use \Magento\Framework\App\ObjectManager;
 use \Magento\Sales\Model\ResourceModel\Order\CollectionFactoryInterface;
@@ -19,7 +19,7 @@ class Tickets extends \Magento\Framework\View\Element\Template
     /**
      * @var string
      */
-    protected $_template = 'raffle/ticket.phtml';
+    protected $_template = 'raffle/email/tickets.phtml';
 
     protected $_type = \Angel\RaffleClient\Model\Raffle::TYPE_ID;
 

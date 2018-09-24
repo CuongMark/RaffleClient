@@ -7,7 +7,6 @@
 <!--@vars
 {"htmlescape var=$name":"Recipient Name",
 "htmlescape var=$sendername":"Sender name",
-"layout handle=\"raffle_email_new_ticket\" order=$order area=\"frontend\"":"Order Items Grid",
 "var code":"Gift Card Code",
 "var balance":"Gift Card Balance",
 "var status":"Status",
@@ -66,18 +65,18 @@ pre{ white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; 
                 <tr>
                     <td class="main-content">
 
-                        <!-- [ middle starts here] -->
-                        <table cellspacing="0" cellpadding="0" border="0" width="660">
-                            <tr>
-                                <td valign="top">
-                                    <p>
-                                        <strong>{{trans "Dear %name" name=$name }}</strong>,<br/>
-                                        {{trans "Your have purchased a winning raffle ticket(s). You can view your ticket purchases at "}}
-                                        <a href="{{store url=""}}">{{trans "MY ACCOUNT"}}</a>.<br/>
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
+                    <!-- [ middle starts here] -->
+                    <table cellspacing="0" cellpadding="0" border="0" width="660">
+                        <tr>
+                            <td valign="top">
+                                <p>
+                                    <strong>{{trans "Dear %name" name=$name }}</strong>,<br/>
+                                    {{trans "Your have purchased a winning raffle ticket(s). You can view your ticket purchases at MY ACCOUNT "}}
+                                    <a href="{{store url=""}}">{{trans "here"}}</a>.<br/>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
                         <!-- End Content -->
                     </td>
                 </tr>

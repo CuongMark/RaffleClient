@@ -15,9 +15,8 @@ namespace Angel\RaffleClient\Service;
 
 class Email
 {
-    const EMAIL_TEMPLATE_WINNING = "raffle_winning";
-    const EMAIL_TEMPLATE_LOSE = "raffle_lose";
-    const EMAIL_TEMPLATE_FINISHED = "raffle_finished_admin";
+    const EMAIL_TEMPLATE_UPDATE = "raffle_update_ticket";
+    const EMAIL_TEMPLATE_FINISHED = "raffle_finished";
     const EMAIL_TEMPLATE_NEW_TICKET = "raffle_new_ticket";
 
     /** @var array of name and email of the sender ['name'=>'sender_name', 'email'=>'steve@magetore.com']  */
@@ -125,7 +124,7 @@ class Email
                         ->setTemplateIdentifier($this->getEmailTemplate())
                         ->setTemplateOptions(
                             [
-                                'area' => \Magento\Framework\App\Area::AREA_ADMINHTML,
+                                'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
                                 'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
                             ]
                         )
@@ -136,7 +135,6 @@ class Email
                     $transport->sendMessage();
                 }
             } catch (\Exception $e) {
-                \Zend_Debug::dump($e->__toString());
                 return;
             }
         }
@@ -144,13 +142,16 @@ class Email
 
 
     /**
-     * @param \Angel\RaffleClient\Model\Ticket $ticket
+     * @param \Angel\RaffleClient\Model\Ticket[] $tickets
+     * @param \Magento\Sales\Model\Order  $order
      */
-    public function sendWinningEmail($ticket = null){
-//        $this->setReceivers($ticket->getCustomerEmail());
-        $this->setReceivers('cuonglv53@gmail.com');
-        $this->setEmailTemplate(self::EMAIL_TEMPLATE_WINNING);
-        $templateVars = [];
+    public function sendWinningEmail($tickets, $order){
+        $this->setReceivers($order->getCustomerEmail());
+        $this->setEmailTemplate(self::EMAIL_TEMPLATE_NEW_TICKET);
+        $templateVars = [
+            'tickets' => $tickets,
+            'name' => $order->getCustomerLastname()
+        ];
         $this->setTemplateVars($templateVars);
         //send email
         $this->sendEmail();

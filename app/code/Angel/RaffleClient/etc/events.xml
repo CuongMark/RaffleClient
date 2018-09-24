@@ -6,10 +6,10 @@
 	<event name="sales_order_save_after">
 		<observer instance="Angel\RaffleClient\Observer\Sales\OrderSaveAfter" name="angel_raffleclient_observer_sales_ordersaveafter_sales_order_save_after"/>
 	</event>
-	<event name="sales_invoice_save_after">
+	<event name="sales_order_invoice_save_after">
 		<observer instance="Angel\RaffleClient\Observer\Sales\InvoiceSaveAfter" name="angel_raffleclient_observer_sales_invoicesaveafter_sales_invoice_save_after"/>
 	</event>
-	<event name="sales_creditmemo_save_after">
+	<event name="sales_order_creditmemo_save_after">
 		<observer instance="Angel\RaffleClient\Observer\Sales\CreditmemoSaveAfter" name="angel_raffleclient_observer_sales_creditmemosaveafter_sales_creditmemo_save_after"/>
 	</event>
 	<event name="sales_invoice_item_save_after">

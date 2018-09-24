@@ -1,0 +1,49 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var \Angel\RaffleClient\Block\Raffle\Tickets $block */
+?>
+<h1>ticketssssssss</h1>
+<?php $_tickets = $block->getTickets(); ?>
+<?php if ($_tickets && count($_tickets)): ?>
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history" id="my-tickets-table">
+            <caption class="table-caption"><?= /* @escapeNotVerified */ __('Tickets') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col name"><?= /* @escapeNotVerified */ __('Name') ?></th>
+                <th scope="col" class="col order"><?= /* @escapeNotVerified */ __('Order Number') ?></th>
+                <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Start Number') ?></th>
+                <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('End Number') ?></th>
+                <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Price') ?></th>
+                <th scope="col" class="col winning"><?= /* @escapeNotVerified */ __('Winning Numbers') ?></th>
+                <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Winning Prizes') ?></th>
+                <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Purchased At') ?></th>
+                <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Reveal At') ?></th>
+                <th scope="col" class="col status"><?= /* @escapeNotVerified */ __('Status') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php /** @var \Angel\RaffleClient\Model\Ticket $_ticket */ ?>
+            <?php foreach ($_tickets as $_ticket): ?>
+                <tr>
+                    <td data-th="<?= $block->escapeHtml(__('Name')) ?>" class="col id"><a href="<?= $_ticket->getRaffle()->getProduct()->getProductUrl() ?>" ><?= /* @escapeNotVerified */ $_ticket->getRaffle()->getName() ?></a></td>
+                    <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><a href="<?= $block->getUrl('sales/order/view', ['order_id' => $_ticket->getId()]) ?>" ><?= /* @escapeNotVerified */ $_ticket->getOrderIncrementId() ?></a></td>
+                    <td data-th="<?= $block->escapeHtml(__('Start Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getStart() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('End Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getEnd() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->formatPrice($_ticket->getPrice()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Winning Numbers')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->getWinningNumbersFormated() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Winning Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->getWinningPrice()?$_ticket->formatPrice($_ticket->getWinningPrice()):'' ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Purchased At')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($_ticket->getCreatedAt(), 2 , true) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Reveal At')) ?>" class="col date"><?= /* @escapeNotVerified */ $_ticket->getRevealAt()?$block->formatDate($_ticket->getRevealAt(), 2 , true):'' ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ $_ticket->getStatusLabel() ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif ?>

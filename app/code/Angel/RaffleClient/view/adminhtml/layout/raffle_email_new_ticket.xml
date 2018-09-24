@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Tickets" design_abstraction="custom">
+    <body>
+        <block class="Angel\RaffleClient\Block\Raffle\Email\Tickets" name="items" template="Angel_RaffleClient::raffle/email/items.phtml" cacheable="false" />
+    </body>
+</page>
