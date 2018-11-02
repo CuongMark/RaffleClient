@@ -139,6 +139,15 @@ class Tickets extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * @param object $ticket
+     * @return string
+     */
+    public function getTransferToGiftUrl($ticket)
+    {
+        return $this->getUrl('raffle/index/transferToGift', ['ticket_id' => $ticket->getId()]);
+    }
+
+    /**
      * @return string
      */
     public function getBackUrl()

@@ -1,7 +1,7 @@
 define([], function () {
     getTimeFormated = function(time, format) {
         if (typeof format == 'undefined'){
-            format = '%d %h:%m:%s'
+            format = '<span class="countdown_row countdown_show4"><span class="countdown_section"><span class="countdown_amount">%d</span><br>Days</span><span class="countdown_section"><span class="countdown_amount">%h</span><br>Hours</span><span class="countdown_section"><span class="countdown_amount">%m</span><br>Minutes</span><span class="countdown_section"><span class="countdown_amount">%s</span><br>Seconds</span></span>';
         }
         if (time<=0){
             return 'Finished';
@@ -16,11 +16,11 @@ define([], function () {
                     case '%d':
                         return days?days:'0';
                     case '%h':
-                        return hours?hours:'00';
+                        return hours?hours:'0';
                     case '%m':
-                        return minutes?minutes:'00';
+                        return minutes?minutes:'0';
                     case '%s':
-                        return seconds?seconds:'00';
+                        return seconds?seconds:'0';
 
                 }
             });
@@ -33,7 +33,7 @@ define([], function () {
         // retrieve the value from the span
         var sec = config.time_left;
         var timer = setInterval(function() {
-            node.innerText = getTimeFormated(--sec);
+            node.innerHTML = getTimeFormated(--sec);
             if (sec <= 0) {
                 clearInterval(timer);
             }

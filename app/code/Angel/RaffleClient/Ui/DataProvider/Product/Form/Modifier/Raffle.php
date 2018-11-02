@@ -591,7 +591,7 @@ class Raffle extends AbstractModifier
                                     'config' => [
                                         'default' => '',
                                         'options' => [
-                                            'dateFormat' > 'Y-m-d',
+                                            'dateFormat' => 'Y-m-d',
                                             'timeFormat' => 'HH:mm:ss',
                                             'showsTime' => true
                                         ]
@@ -619,7 +619,7 @@ class Raffle extends AbstractModifier
                                     'config' => [
                                         'default' => '',
                                         'options' => [
-                                            'dateFormat' > 'Y-m-d',
+                                            'dateFormat' => 'Y-m-d',
                                             'timeFormat' => 'HH:mm:ss',
                                             'showsTime' => true
                                         ]

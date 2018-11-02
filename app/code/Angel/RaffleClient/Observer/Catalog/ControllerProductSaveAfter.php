@@ -50,6 +50,9 @@ class ControllerProductSaveAfter implements ObserverInterface
     {
         /** @var \Magento\Catalog\Model\Product $product */
         $product = $observer->getEvent()->getProduct();
+        if (!in_array($product->getTypeId(), \Angel\RaffleClient\Model\Raffle::getRaffleProductTypes())){
+            return $product;
+        }
         $prizes = $product->getData('prizes');
         $existPrize = [];
         if (is_array($prizes)){

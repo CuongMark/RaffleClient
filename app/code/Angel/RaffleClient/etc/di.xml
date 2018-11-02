@@ -18,18 +18,6 @@
 			</argument>
 		</arguments>
 	</type>
-	<!--<virtualType name="Angel\RaffleClient\Model\ResourceModel\Ticket\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">-->
-		<!--<arguments>-->
-			<!--<argument name="mainTable" xsi:type="string">angel_raffleclient_ticket</argument>-->
-			<!--<argument name="resourceModel" xsi:type="string">Angel\RaffleClient\Model\ResourceModel\Ticket</argument>-->
-		<!--</arguments>-->
-	<!--</virtualType>-->
-	<!--<virtualType name="Angel\RaffleClient\Model\ResourceModel\RandomNumber\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">-->
-		<!--<arguments>-->
-			<!--<argument name="mainTable" xsi:type="string">angel_raffleclient_randomnumber</argument>-->
-			<!--<argument name="resourceModel" xsi:type="string">Angel\RaffleClient\Model\ResourceModel\RandomNumber\Collection</argument>-->
-		<!--</arguments>-->
-	<!--</virtualType>-->
 	<virtualType name="Angel\RaffleClient\Model\ResourceModel\Transaction\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
 		<arguments>
 			<argument name="mainTable" xsi:type="string">angel_raffleclient_transaction</argument>

@@ -16,6 +16,11 @@ class Trash extends \Magento\Framework\App\Action\Action
     protected $messageManager;
 
     protected $ticket;
+
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    protected $customerSession;
     /**
      * Constructor
      *
@@ -26,11 +31,13 @@ class Trash extends \Magento\Framework\App\Action\Action
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\Controller\ResultFactory $result,
         \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Angel\RaffleClient\Model\Ticket $ticket
+        \Angel\RaffleClient\Model\Ticket $ticket,
+        \Magento\Customer\Model\Session $customerSession
     ) {
         $this->resultRedirect = $result;
         $this->messageManager = $messageManager;
         $this->ticket = $ticket;
+        $this->customerSession = $customerSession;
         parent::__construct($context);
     }
 
@@ -42,7 +49,7 @@ class Trash extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $ticket = $this->ticket->load($this->getRequest()->getParam('ticket_id'));
-        if ($ticket->getId()) {
+        if ($ticket->getId() && $this->customerSession->getCustomerId() == $ticket->getCustomerId()) {
             $ticket->setStatus(\Angel\RaffleClient\Model\Ticket::TRASH)->save();
             $this->messageManager->addSuccessMessage(__('You moved a ticket to trash'));
         } else {

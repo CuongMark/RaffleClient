@@ -50,6 +50,16 @@
                                 <span><?= /* @escapeNotVerified */ __('Move To Trash') ?></span>
                             </a>
                         <?php endif; ?>
+                        <?php if ($_ticket->getStatus() == \Angel\RaffleClient\Model\Ticket::LOSE || $_ticket->getStatus() == \Angel\RaffleClient\Model\Ticket::CHECKED): ?>
+                            <a href="<?= /* @escapeNotVerified */ $block->getTrashUrl($_ticket) ?>" class="action view">
+                                <span><?= /* @escapeNotVerified */ __('Move To Trash') ?></span>
+                            </a>
+                        <?php endif; ?>
+                        <?php if ($_ticket->getStatus() == \Angel\RaffleClient\Model\Ticket::WON): ?>
+                            <a href="<?= /* @escapeNotVerified */ $block->getTransferToGiftUrl($_ticket) ?>" class="action view">
+                                <span><?= /* @escapeNotVerified */ __('Transfer To Gift Code') ?></span>
+                            </a>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
