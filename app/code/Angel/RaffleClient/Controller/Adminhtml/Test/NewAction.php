@@ -33,4 +33,9 @@ class NewAction extends \Angel\RaffleClient\Controller\Adminhtml\Test
         $resultForward = $this->resultForwardFactory->create();
         return $resultForward->forward('edit');
     }
+
+    public function _isAllowed()
+    {
+        return parent::_isAllowed('Angel_RaffleClient::test');
+    }
 }

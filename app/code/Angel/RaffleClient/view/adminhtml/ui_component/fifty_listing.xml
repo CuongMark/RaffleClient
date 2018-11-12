@@ -24,7 +24,7 @@
             </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <aclResource>Magento_Catalog::products</aclResource>
+        <aclResource>Angel_RaffleClient::fifty_product</aclResource>
         <dataProvider class="Angel\RaffleClient\Ui\DataProvider\Product\FiftyDataProvider" name="fifty_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>

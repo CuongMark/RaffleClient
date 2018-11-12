@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Angel\RaffleClient\Controller\Adminhtml\Test;
+namespace Angel\RaffleClient\Controller\Adminhtml\Ticket;
 
 class Edit extends \Angel\RaffleClient\Controller\Adminhtml\Test
 {
@@ -30,35 +30,35 @@ class Edit extends \Angel\RaffleClient\Controller\Adminhtml\Test
     public function execute()
     {
         // 1. Get ID and create model
-        $id = $this->getRequest()->getParam('test_id');
-        $model = $this->_objectManager->create(\Angel\RaffleClient\Model\Test::class);
-        
+        $id = $this->getRequest()->getParam('id');
+        $model = $this->_objectManager->create(\Angel\RaffleClient\Model\Ticket::class);
+
         // 2. Initial checking
         if ($id) {
             $model->load($id);
             if (!$model->getId()) {
-                $this->messageManager->addErrorMessage(__('This Test no longer exists.'));
+                $this->messageManager->addErrorMessage(__('This Ticket no longer exists.'));
                 /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('*/*/');
             }
         }
-        $this->_coreRegistry->register('angel_raffleclient_test', $model);
-        
+        $this->_coreRegistry->register('angel_raffleclient_ticket', $model);
+
         // 3. Build edit form
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $this->initPage($resultPage)->addBreadcrumb(
-            $id ? __('Edit Test') : __('New Test'),
-            $id ? __('Edit Test') : __('New Test')
+            $id ? __('Edit Ticket') : __('New Ticket'),
+            $id ? __('Edit Ticket') : __('New Ticket')
         );
-        $resultPage->getConfig()->getTitle()->prepend(__('Tests'));
-        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? $model->getTitle() : __('New Test'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Tickets'));
+        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? $model->getTitle() : __('New Ticket'));
         return $resultPage;
     }
 
     public function _isAllowed()
     {
-        return parent::_isAllowed('Angel_RaffleClient::test');
+        return parent::_isAllowed('Angel_RaffleClient::raffle_ticket');
     }
 }

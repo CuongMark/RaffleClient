@@ -94,6 +94,13 @@ class TicketsDataProvider extends AbstractDataProvider
             $filter->setField('random.' . $field);
         }
 
-        parent::addFilter($filter);
+        if ($filter->getField() == 'status'){
+            $this->getCollection()->addFieldToFilter(
+                'main_table.'.$filter->getField(),
+                [$filter->getConditionType() => $filter->getValue()]
+            );
+        } else {
+            parent::addFilter($filter);
+        }
     }
 }

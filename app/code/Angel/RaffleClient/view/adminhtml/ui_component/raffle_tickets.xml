@@ -21,6 +21,7 @@
         </deps>
     </settings>
     <dataSource name="raffle_tickets_data_source" component="Magento_Ui/js/grid/provider">
+        <aclResource>Angel_RaffleClient::raffle_ticket</aclResource>
         <settings>
             <storageConfig>
                 <param name="cacheRequests" xsi:type="boolean">false</param>

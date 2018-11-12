@@ -23,6 +23,7 @@
         <item name="acl" xsi:type="string">Magento_Sales::sales_order</item>
     </argument>
     <dataSource name="angel_raffleclient_product_ticket_listing_data_source">
+        <aclResource>Angel_RaffleClient::raffle_ticket</aclResource>
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">angel_raffleclient_product_ticket_listing_data_source</argument>

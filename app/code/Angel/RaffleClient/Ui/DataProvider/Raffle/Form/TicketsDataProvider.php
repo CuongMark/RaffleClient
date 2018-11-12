@@ -93,4 +93,16 @@ class TicketsDataProvider extends AbstractDataProvider
 
         return $arrItems;
     }
+
+    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    {
+        if ($filter->getField() == 'status'){
+            $this->getCollection()->addFieldToFilter(
+                'main_table.'.$filter->getField(),
+                [$filter->getConditionType() => $filter->getValue()]
+            );
+        } else {
+            parent::addFilter($filter);
+        }
+    }
 }
