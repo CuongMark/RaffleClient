@@ -47,7 +47,7 @@ class Collection extends \Magento\Reports\Model\ResourceModel\Product\Sold\Colle
             [
                 'ordered_qty' => 'order_items.qty_ordered',
                 'order_items_name' => 'order_items.name',
-                'order_items_price' => 'order_items.price',
+                'order_items_price' => 'order_items.row_total',
                 'order_items_sku' => 'order_items.sku'
             ]
         )->joinInner(
