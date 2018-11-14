@@ -165,7 +165,7 @@ class Raffle
      */
     public function isAbleToCreateTicket(){
         // TODO check raffle status
-        return $this->getProduct()->getId() && $this->isRaffleProduct($this->getProduct())
+        return $this->getProduct() && $this->getProduct()->getId() && $this->isRaffleProduct($this->getProduct())
             && !$this->isOverTotalTicket();
     }
 
@@ -213,7 +213,7 @@ class Raffle
             $qty = $invoiceItem->getQty();
             $invoiceItemId = $invoiceItem->getId();
             if (!$this->isAbleToCreateTicket()) {
-                throw new Exception(__('Unable to create ticket for %1 raffle product', $this->getProduct()->getName()));
+                throw new Exception(__('Unable to create ticket for %1 raffle product', $this->getProduct()?$this->getProduct()->getName():''));
             }
             $start = $this->getCurrentLargestTicketNumber() + 1;
             $endNumber = $start + $qty -1;

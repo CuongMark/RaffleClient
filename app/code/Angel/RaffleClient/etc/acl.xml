@@ -6,11 +6,13 @@
 				<resource id="Angel_RaffleClient::raffle" sortOrder="10" title="Raffle">
 					<resource id="Angel_RaffleClient::raffle_product" sortOrder="10" title="Raffle"/>
 					<resource id="Angel_RaffleClient::raffle_ticket" sortOrder="20" title="Ticket"/>
+					<resource id="Angel_RaffleClient::raffle_report" sortOrder="25" title="Report"/>
 					<resource id="Angel_RaffleClient::test" sortOrder="30" title="Test"/>
 				</resource>
 				<resource id="Angel_RaffleClient::fifty" sortOrder="11" title="Fifty">
 					<resource id="Angel_RaffleClient::fifty_product" sortOrder="10" title="Fifty"/>
 					<resource id="Angel_RaffleClient::fifty_ticket" sortOrder="20" title="Ticket"/>
+					<resource id="Angel_RaffleClient::fifty_report" sortOrder="20" title="Report"/>
 				</resource>
 				<resource id="Magento_Backend::stores">
 					<resource id="Magento_Backend::stores_settings">
