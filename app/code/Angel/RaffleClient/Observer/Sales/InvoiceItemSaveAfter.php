@@ -37,7 +37,7 @@ class InvoiceItemSaveAfter implements \Magento\Framework\Event\ObserverInterface
         $invoiceItem = $observer->getData('invoice_item');
         $invoice = $invoiceItem->getInvoice();
         $ticket = $this->raffle->createTicket($invoiceItem);
-        if ($ticket){
+        if ($ticket && $ticket->getTicketId()){
             $ticket->check();
             $newTickets = $invoice->getData('newTickets')?$invoice->getData('newTickets'):[];
             $newTickets[] = $ticket;

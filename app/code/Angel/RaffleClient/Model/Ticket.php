@@ -128,7 +128,7 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      * create and check Random Number
      */
     public function check(){
-        if (!$this->getRaffle()->isAbleToGenerateByTicket() || $this->getStatus() != static::NOT_CHECKED){
+        if (!$this->getRaffle()->getProduct() || !$this->getRaffle()->isAbleToGenerateByTicket() || $this->getStatus() != static::NOT_CHECKED){
             return $this;
         }
         /** random number from start */
