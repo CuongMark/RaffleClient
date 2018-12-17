@@ -19,7 +19,7 @@
                 <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Start Number') ?></th>
                 <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('End Number') ?></th>
                 <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Price') ?></th>
-                <th scope="col" class="col winning"><?= /* @escapeNotVerified */ __('Winning Numbers') ?></th>
+                <th scope="col" class="col winning" style="min-width: 200px;"><?= /* @escapeNotVerified */ __('Winning Numbers') ?></th>
                 <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Winning Prizes') ?></th>
                 <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Purchased At') ?></th>
                 <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Reveal At') ?></th>
@@ -36,7 +36,7 @@
                     <td data-th="<?= $block->escapeHtml(__('Start Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getStart() ?></td>
                     <td data-th="<?= $block->escapeHtml(__('End Number')) ?>" class="col id"><?= /* @escapeNotVerified */ $_ticket->getEnd() ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->formatPrice($_ticket->getPrice()) ?></td>
-                    <td data-th="<?= $block->escapeHtml(__('Winning Numbers')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->getWinningNumbersFormated() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Winning Numbers')) ?>" class="col total"><?= /* @escapeNotVerified */ $block->limitedString($_ticket->getWinningNumbersFormated(), $_ticket->getId()) ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Winning Price')) ?>" class="col total"><?= /* @escapeNotVerified */ $_ticket->getWinningPrice()?$_ticket->formatPrice($_ticket->getWinningPrice()):'' ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Purchased At')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($_ticket->getCreatedAt(), 2 , true) ?></td>
                     <td data-th="<?= $block->escapeHtml(__('Reveal At')) ?>" class="col date"><?= /* @escapeNotVerified */ $_ticket->getRevealAt()?$block->formatDate($_ticket->getRevealAt(), 2 , true):'' ?></td>

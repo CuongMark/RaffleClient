@@ -112,6 +112,22 @@ class Tickets extends \Magento\Framework\View\Element\Template
         return $this;
     }
 
+    public function limitedString($string, $ticketId){
+        // strip tags to avoid breaking any html
+        $string = strip_tags($string);
+        if (strlen($string) > 300) {
+
+            // truncate string
+            $stringCut = substr($string, 0, 200);
+            $endPoint = strrpos($stringCut, ' ');
+
+            //if the string doesn't contain any space then it will cut without word basis.
+            $string = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+            $string .= '...<a href="'. $this->getUrl('raffle/index/ticket', ['ticket_id' => $ticketId]). '" >View Detail</a>';
+            return $string;
+        }
+    }
+
     /**
      * @return string
      */
