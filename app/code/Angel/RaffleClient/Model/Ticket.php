@@ -270,13 +270,13 @@ class Ticket extends \Magento\Framework\Model\AbstractModel implements TicketInt
      */
     public function getCustomer(){
         if (!$this->customer){
-            $this->customer = $this->getInvoiceItem()->getInvoice()->getOrder()->getCustomer();
+            $this->customer = $this->getInvoiceItem()->getOrderItem()->getOrder()->getCustomer();
         }
         return $this->customer;
     }
 
     public function getCustomerId(){
-        return $this->getInvoiceItem()->getInvoice()->getOrder()->getCustomerId();
+        return $this->getInvoiceItem()->getOrderItem()->getOrder()->getCustomerId();
     }
 
     /**
